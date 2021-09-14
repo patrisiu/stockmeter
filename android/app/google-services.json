@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1010107161043",
+    "project_id": "stockmeter-1bee0",
+    "storage_bucket": "stockmeter-1bee0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1010107161043:android:7d21a09d0595dce86eb726",
+        "android_client_info": {
+          "package_name": "com.patrisiu.stockmeter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1010107161043-4sq5t747eoag7i3ge0dr86bv8t4f40hb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.patrisiu.stockmeter",
+            "certificate_hash": "ccb1903c82363ad85771af00303b03f0980ecfed"
+          }
+        },
+        {
+          "client_id": "1010107161043-fecb6h6shetaibullav9ksurp9g6sp1t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkUql2gPdr8AvpVQSpB6tP_KL35AtGmC4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1010107161043-fecb6h6shetaibullav9ksurp9g6sp1t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
