@@ -28,7 +28,7 @@ void callbackDispatcher() async {
 class BackgroundController {
   static const String _uniqueNameTask = StockConstants.uniqueNameTask;
   static const String _taskName = StockConstants.taskName;
-  static const int _maxRetries = 5;
+  static const int _maxRetries = 8;
 
   final DataController _dataController = GetIt.instance<DataController>();
 
@@ -37,22 +37,20 @@ class BackgroundController {
       String notificationCheck =
           sharedPreferences.getString(StockConstants.notificationCheck) ??
               StockConstants.notificationCheckDisabled;
-      await _scheduleNotificationCheckTask(notificationCheck);
+      if (StockConstants.notificationCheckDisabled != notificationCheck) {
+        enableNotificationCheck(notificationCheck);
+      }
     }
   }
 
-  Future<void> _initializeWorkmanager() async =>
-      await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
-
   Future<void> enableNotificationCheck(String option) async {
     await disableNotificationCheck();
-    await _initializeWorkmanager();
+    await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
+    Duration duration = _selectFrequencyDuration(option);
     if (StockConstants.notificationCheck2m == option) {
-      await _enableNotificationCheckOneOffTask(
-          _selectFrequencyDuration(option));
+      await _enableNotificationCheckOneOffTask(duration);
     } else {
-      await _enableNotificationCheckPeriodicTask(
-          _selectFrequencyDuration(option));
+      await _enableNotificationCheckPeriodicTask(duration);
     }
   }
 
@@ -60,7 +58,10 @@ class BackgroundController {
       await Workmanager().registerPeriodicTask(_uniqueNameTask, _taskName,
           existingWorkPolicy: ExistingWorkPolicy.replace,
           frequency: frequency,
-          constraints: Constraints(networkType: NetworkType.not_required));
+          initialDelay: Duration(minutes: 10),
+          constraints: Constraints(
+              networkType: NetworkType.not_required,
+              requiresDeviceIdle: false));
 
   Future<void> _enableNotificationCheckOneOffTask(Duration initialDelay) async {
     String uniqueNameTask =
@@ -195,8 +196,13 @@ class BackgroundController {
     return stocks.map((stock) => _stockAlertMessage(stock)).toList();
   }
 
-  String _stockAlertMessage(Stock stock) =>
-      '${stock.symbol} ${stock.price} ${stock.currency}';
+  String _stockAlertMessage(Stock stock) {
+    String message = '${stock.symbol} ${stock.price}';
+    if (stock.currency != '0') {
+      message += ' ${stock.currency}';
+    }
+    return message;
+  }
 
   void _showNotification(List<String> messages) {
     DateTime dateTimeNow = DateTime.now();

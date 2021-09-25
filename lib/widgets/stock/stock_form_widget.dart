@@ -32,24 +32,17 @@ class _StockFormWidgetState extends State<StockFormWidget> {
   @override
   void initState() {
     super.initState();
-    // _stockDAO = StockDAO(stock);
-    // _onPressedButton = false;
-    // _onDeleteButton = false;
-    // _onlyAlert = _stockDAO.stocks == '0';
-    // _dateTimePicked = _convertDateFromStock(_stockDAO.purchaseDate);
-    // _dateController = TextEditingController();
     _dateController.text = _parseDateToString(_dateTimePicked);
   }
 
   @override
   Widget build(BuildContext context) => Center(
-        child: Container(
-            // width: MediaQuery.of(context).size.width - 10,
-            // height: MediaQuery.of(context).size.height -  80,
-            // padding: EdgeInsets.all(20),
-            color: Colors.black45,
-            child: _buildForm(context)),
-      );
+      child: Container(
+          // width: MediaQuery.of(context).size.width - 10,
+          // height: MediaQuery.of(context).size.height -  80,
+          // padding: EdgeInsets.all(20),
+          color: Colors.black45,
+          child: _buildForm(context)));
 
   Widget _buildForm(BuildContext context) {
     List<Widget> _tradeElements = [

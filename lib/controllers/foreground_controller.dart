@@ -127,27 +127,12 @@ class ForegroundController {
 
   Future<void> createStockFile() async {
     _appModel.createFileOption = false;
-    Map<String, String> authHeaders = await _getAuthHeaders();
-    List<StockFile> currentStockFiles = _appModel.stockFiles;
     try {
-      await _dataController.createSheetFile(authHeaders);
-      List<String> sheetIds = await _getSpreadsheetIds(authHeaders);
-      if (currentStockFiles.isNotEmpty) {
-        List<String> currentStockFileIds =
-            currentStockFiles.map((stockFile) => stockFile.id).toList();
-        String createdSheetId = sheetIds
-            .where((id) => !currentStockFileIds.contains(id))
-            .toList()
-            .first;
-        StockFile createdStockFile = new StockFile(createdSheetId);
-        updateSelectedSpreadsheetId = createdStockFile;
-        _appModel.stockFiles.add(createdStockFile);
-      } else {
-        String sheetId = sheetIds.first;
-        StockFile stockFile = new StockFile(sheetId);
-        updateSelectedSpreadsheetId = stockFile;
-        _appModel.stockFiles = [stockFile];
-      }
+      String sheetId =
+          await _dataController.createSheetFile(await _getAuthHeaders());
+      StockFile stockFile = new StockFile(sheetId);
+      _appModel.stockFiles.add(stockFile);
+      updateSelectedSpreadsheetId = stockFile;
       await _refreshAuthHeaders();
     } on Exception catch (e) {
       _appModel.createFileOption = _appModel.stockFile == null;
@@ -185,7 +170,7 @@ class ForegroundController {
   Future<List<String>> _getSpreadsheetIds(
       Map<String, String> authHeaders) async {
     try {
-      return await _dataController.getSpreadsheetIds(authHeaders);
+      return await _dataController.getSheetIds(authHeaders);
     } on Exception catch (e) {
       ForegroundNotification().error(context, e.toString());
       return [];

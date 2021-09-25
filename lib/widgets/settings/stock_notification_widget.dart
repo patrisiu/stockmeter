@@ -1,4 +1,5 @@
 import 'package:app_settings/app_settings.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -26,22 +27,21 @@ class StockNotificationWidget extends StatelessWidget {
   Widget build(BuildContext context) => ScopedModelDescendant<AppModel>(
       builder: (context, child, model) => _buildStockNotificationWidget(
           context,
-          model.isUserSigned && model.stockFile != null,
+          !kIsWeb && model.isUserSigned && model.stockFile != null,
           model.notificationCheck));
 
   Widget _buildStockNotificationWidget(
           BuildContext context, bool isEnabled, String notificationCheck) =>
       ListTile(
-        enabled: isEnabled,
-        title: const Text('Stock Notification'),
-        subtitle: _configurationDisclaimer,
-        trailing: ElevatedButton(
-            child: Text(notificationCheck),
-            onPressed: isEnabled
-                ? () => _showNotificationCheckOptions(context)
-                : null),
-        onLongPress: AppSettings.openAppSettings,
-      );
+          enabled: isEnabled,
+          title: const Text('Stock Notification'),
+          subtitle: _configurationDisclaimer,
+          trailing: ElevatedButton(
+              child: Text(notificationCheck),
+              onPressed: isEnabled
+                  ? () => _showNotificationCheckOptions(context)
+                  : null),
+          onLongPress: AppSettings.openAppSettings);
 
   void _showNotificationCheckOptions(BuildContext context) {
     List<String> _options = [
