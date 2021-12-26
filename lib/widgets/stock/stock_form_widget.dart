@@ -164,7 +164,7 @@ class _StockFormWidgetState extends State<StockFormWidget> {
       ElevatedButton(
         onPressed: () => Navigator.pop(context),
         child: const Text('Cancel'),
-      ),
+      )
     ];
     List<Widget> _formElements = [
       TextFormField(

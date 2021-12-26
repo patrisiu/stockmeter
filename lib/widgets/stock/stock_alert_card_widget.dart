@@ -61,7 +61,7 @@ class _StockAlertCardState extends State<StockAlertCard> {
       Padding(padding: _edgeInsetsTitle, child: header);
 
   Widget _cardHeaderWidgetSymbolAndAlert() =>
-      widget._stock.alertAbove == null && widget._stock.alertBelow == null
+      widget._stock.alertAbove == 0 && widget._stock.alertBelow == 0
           ? Text(widget._stock.symbol)
           : widget._stock.hasToNotify
               ? _cardHeaderRowSymbolAndAlert(
@@ -70,7 +70,7 @@ class _StockAlertCardState extends State<StockAlertCard> {
                   widget._stock.symbol, Icons.notifications_off_rounded);
 
   Row _cardHeaderRowSymbolAndAlert(String symbol, IconData iconData) =>
-      Row(children: [Text(symbol + ' '), Icon(iconData, size: 14)]);
+      Row(children: [Icon(iconData, size: 14), Text(' ' + symbol)]);
 
   Widget _tableRowHeader(String header) => Padding(
       padding: EdgeInsets.fromLTRB(2, 2, 2, 0),
