@@ -144,10 +144,8 @@ class BackgroundController {
     } on Exception catch (e) {
       if (retry < _maxRetries) {
         await Future<void>.delayed(Duration(seconds: ++retry));
-        _debug(sharedPreferences, ['getAuthHeadersWithRetry', 'retry: $retry']);
         return _getAuthHeadersWithRetry(retry, sharedPreferences);
       } else {
-        BackgroundNotification().show(DateTime.now().toString(), e.toString());
         _debug(sharedPreferences,
             ['getAuthHeadersWithRetry', 'retry: $retry', e.toString()]);
         return null;
@@ -165,12 +163,9 @@ class BackgroundController {
     } on Exception catch (e) {
       if (retry < _maxRetries) {
         await Future<void>.delayed(Duration(seconds: ++retry));
-        _debug(
-            sharedPreferences, ['getStocksToNotifyWithRetry', 'retry: $retry']);
         return _getStocksToNotifyWithRetry(
             authHeaders, spreadsheetId, retry, sharedPreferences);
       } else {
-        BackgroundNotification().show(DateTime.now().toString(), e.toString());
         _debug(sharedPreferences,
             ['getStocksToNotifyWithRetry', 'retry: $retry', e.toString()]);
         return [];
@@ -214,8 +209,14 @@ class BackgroundController {
   }
 
   void _debug(SharedPreferences sharedPreferences, List<String> details) {
-    List<String> messages = [DateTime.now().toString()];
-    messages.addAll(details);
-    sharedPreferences.setStringList(StockConstants.debug, messages);
+    if (sharedPreferences.getBool(StockConstants.debugNotification) ?? false) {
+      List<String> messages = [DateTime.now().toString()];
+      messages.addAll(details);
+      sharedPreferences.setStringList(StockConstants.debug, messages);
+      if (details.first == 'getAuthHeadersWithRetry' ||
+          details.first == 'getStocksToNotifyWithRetry') {
+        BackgroundNotification().show(messages.first, details.last);
+      }
+    }
   }
 }

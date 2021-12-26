@@ -18,6 +18,8 @@ class AppModel extends Model with ScreenModel, AuthModel {
   StockFile? _stockFile;
   List<StockFile> _stockFiles = [];
 
+  bool _debugNotification = false;
+
   StockFile? get stockFile => _stockFile;
 
   set stockFile(StockFile? value) {
@@ -32,6 +34,13 @@ class AppModel extends Model with ScreenModel, AuthModel {
 
   set notificationCheck(String value) {
     _notificationCheck = value;
+    notifyListeners();
+  }
+
+  bool get debugNotification => _debugNotification;
+
+  set debugNotification(bool value) {
+    _debugNotification = value;
     notifyListeners();
   }
 
@@ -63,6 +72,12 @@ class AppModel extends Model with ScreenModel, AuthModel {
     notifyListeners();
   }
 
+  List<StockFile> get stockFiles => _stockFiles;
+
+  set stockFiles(List<StockFile> value) {
+    _stockFiles = value;
+  }
+
   void setSortBy(String value) {
     _sortBy = value;
   }
@@ -85,11 +100,5 @@ class AppModel extends Model with ScreenModel, AuthModel {
         _stocks.sort((a, b) => b.latentProfit.compareTo(a.latentProfit));
         break;
     }
-  }
-
-  List<StockFile> get stockFiles => _stockFiles;
-
-  set stockFiles(List<StockFile> value) {
-    _stockFiles = value;
   }
 }

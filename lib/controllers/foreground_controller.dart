@@ -29,6 +29,8 @@ class ForegroundController {
     this._backgroundController = backgroundController;
     _appModel.setSortBy(
         _sharedPreferences.getString(StockConstants.sortBy) ?? 'Raw Data');
+    _appModel.debugNotification =
+        _sharedPreferences.getBool(StockConstants.debugNotification) ?? false;
   }
 
   Future<bool> signInSilentlyAndLoadHugs() async {
@@ -67,6 +69,7 @@ class ForegroundController {
     _appModel.summary = null;
     _appModel.stocks = [];
     _appModel.notificationCheck = StockConstants.notificationCheckDisabled;
+    _appModel.debugNotification = false;
     _sharedPreferences.clear();
   }
 
@@ -294,6 +297,11 @@ class ForegroundController {
     } on Exception catch (e) {
       ForegroundNotification().error(context, e.toString());
     }
+  }
+
+  set debugHugNotification(bool value) {
+    _appModel.debugNotification = value;
+    _sharedPreferences.setBool(StockConstants.debugNotification, value);
   }
 
   List<String> debugLastBackgroundExecution() =>

@@ -55,4 +55,5 @@ class StockConstants {
   static const String notANumber = 'Not a Number';
 
   static const String debug = 'debug';
+  static const String debugNotification = 'debugNotification';
 }
