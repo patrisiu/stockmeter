@@ -39,6 +39,7 @@ class SheetData {
         StockConstants.tax,
         StockConstants.alertAbove,
         StockConstants.alertBelow,
+        'Notify',
         StockConstants.purchaseCapital,
         StockConstants.price,
         StockConstants.capitalValue,

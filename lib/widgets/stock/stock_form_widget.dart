@@ -24,6 +24,7 @@ class _StockFormWidgetState extends State<StockFormWidget> {
 
   late StockDAO _stockDAO = StockDAO(stock);
   late bool _onlyAlert = _stockDAO.stocks == '0';
+  late bool _hasToNotify = _stockDAO.hasToNotify;
   late bool _onPressedButton = false;
   late bool _onDeleteButton = false;
   late DateTime _dateTimePicked = _convertDateFromStock(_stockDAO.purchaseDate);
@@ -60,7 +61,6 @@ class _StockFormWidgetState extends State<StockFormWidget> {
           onTap: () => !_onlyAlert ? _onTapSelectDate(context) : null,
           child: AbsorbPointer(
               child: TextFormField(
-                  initialValue: _parseDateToString(_dateTimePicked),
                   keyboardType: TextInputType.datetime,
                   controller: _dateController,
                   decoration: InputDecoration(
@@ -76,7 +76,6 @@ class _StockFormWidgetState extends State<StockFormWidget> {
           decoration: InputDecoration(
               enabled: !_onlyAlert,
               icon: Icon(Icons.attach_money_rounded),
-              // hintText: ,
               labelText: StockConstants.purchasePrice),
           onSaved: (String? value) =>
               _stockDAO.purchasePrice = _setValueOrDefault(value),
@@ -87,7 +86,6 @@ class _StockFormWidgetState extends State<StockFormWidget> {
           decoration: InputDecoration(
               enabled: !_onlyAlert,
               icon: Icon(Icons.stars_rounded),
-              // hintText: ,
               labelText: StockConstants.currency),
           onSaved: (String? value) => _stockDAO.currency =
               value == null || value.isEmpty ? '-' : value.toUpperCase()),
@@ -140,6 +138,13 @@ class _StockFormWidgetState extends State<StockFormWidget> {
           subtitle: const Text('Only enter the Alert values'),
           trailing: Switch(
               value: _onlyAlert, onChanged: _onChangedAlertNotificationsOnly)),
+      ListTile(
+          leading: Icon(Icons.notifications_rounded),
+          title: const Text('Has to Notify'),
+          subtitle: const Text(
+              'Receive a notification when the alert has been triggered'),
+          trailing:
+              Switch(value: _hasToNotify, onChanged: _onChangedHasToNotify)),
       TextFormField(
           initialValue: _stockDAO.notes,
           keyboardType: TextInputType.text,
@@ -224,9 +229,7 @@ class _StockFormWidgetState extends State<StockFormWidget> {
 
   Future<void> _onPressedSave() async {
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        _onPressedButton = true;
-      });
+      setState(() => _onPressedButton = true);
       _formKey.currentState!.save();
       await _saveStock();
       Navigator.pop(context);
@@ -249,32 +252,23 @@ class _StockFormWidgetState extends State<StockFormWidget> {
   Future<void> _onPressedDelete() async {
     await showDialog<bool>(
         context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            // shape: RoundedRectangleBorder(
-            // borderRadius: BorderRadius.circular(20.0)), //this right here
-            title: const Text('Delete action will not be reversible.'),
-            content: const Text('Do you want to proceed?'),
-            actions: <Widget>[
-              TextButton(
-                child: Text('No'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text('Yes'),
-                onPressed: () {
-                  setState(() {
-                    _onPressedButton = true;
-                    _onDeleteButton = true;
-                  });
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        });
+        builder: (BuildContext context) => AlertDialog(
+                title: const Text('Delete action will not be reversible.'),
+                content: const Text('Do you want to proceed?'),
+                actions: <Widget>[
+                  TextButton(
+                      child: Text('No'),
+                      onPressed: () => Navigator.of(context).pop()),
+                  TextButton(
+                      child: Text('Yes'),
+                      onPressed: () {
+                        setState(() {
+                          _onPressedButton = true;
+                          _onDeleteButton = true;
+                        });
+                        Navigator.of(context).pop();
+                      })
+                ]));
     if (_onDeleteButton) {
       await foregroundController.deleteStock(_stockDAO.rowIndex);
       await foregroundController.fetchStocks();
@@ -286,6 +280,13 @@ class _StockFormWidgetState extends State<StockFormWidget> {
   void _onChangedAlertNotificationsOnly(bool value) => setState(() {
         _onlyAlert = value;
       });
+
+  void _onChangedHasToNotify(bool value) {
+    _stockDAO.hasToNotify = value;
+    setState(() {
+      _hasToNotify = value;
+    });
+  }
 
   void _onTapSelectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(

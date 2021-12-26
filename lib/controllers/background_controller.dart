@@ -187,8 +187,9 @@ class BackgroundController {
   }
 
   bool _satisfiesShowNotification(Stock stock) =>
-      (stock.alertBelow != 0 && stock.price <= stock.alertBelow!) ||
-      (stock.alertAbove != 0 && stock.price >= stock.alertAbove!);
+      stock.hasToNotify &&
+      ((stock.alertBelow != 0 && stock.price <= stock.alertBelow!) ||
+          (stock.alertAbove != 0 && stock.price >= stock.alertAbove!));
 
   List<String> _convertStocksToMessage(List<Stock> stocks) {
     final symbols = stocks.map((e) => e.symbol).toSet();

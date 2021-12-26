@@ -8,8 +8,8 @@ import 'package:stockmeter/services/google_drive_service.dart';
 import 'package:stockmeter/services/google_sheets_service.dart';
 
 class DataController {
-  static const String _stocksRange = 'stocks!A3:T999';
-  static const String _stockAppendRange = 'stocks!A3:T3:append';
+  static const String _stocksRange = 'stocks!A3:U999';
+  static const String _stockAppendRange = 'stocks!A3:U3:append';
   static const String _spreadsheetName = 'stocks!J1';
 
   final GoogleDriveService _googleDriveService =
@@ -77,15 +77,15 @@ class DataController {
     return int.parse(split[0]);
   }
 
-  String _stockCreateRange(int rowIndex) => 'stocks!J$rowIndex:S$rowIndex';
+  String _stockCreateRange(int rowIndex) => 'stocks!K$rowIndex:T$rowIndex';
 
-  String _stockUpdateRange(int rowIndex) => 'stocks!A$rowIndex:I$rowIndex';
+  String _stockUpdateRange(int rowIndex) => 'stocks!A$rowIndex:J$rowIndex';
 
-  String _stockDeleteRange(int rowIndex) => 'stocks!A$rowIndex:W$rowIndex';
+  String _stockDeleteRange(int rowIndex) => 'stocks!A$rowIndex:X$rowIndex';
 
   String _stockFileNameRange() => 'stocks!J1:J1';
 
-  String _stockNotesRange(int rowIndex) => 'stocks!T$rowIndex:T$rowIndex';
+  String _stockNotesRange(int rowIndex) => 'stocks!U$rowIndex:U$rowIndex';
 
   Future<String?> fetchStockFileName(
       Map<String, String> authHeaders, String spreadsheetId) async {

@@ -24,7 +24,7 @@ class _StockAlertCardState extends State<StockAlertCard> {
     List<Widget> _children = [
       Row(
           mainAxisAlignment: MainAxisAlignment.start,
-          children: [_cardHeader(widget._stock.symbol)]),
+          children: [_cardHeaderPadding(_cardHeaderWidgetSymbolAndAlert())]),
       Table(children: <TableRow>[
         TableRow(children: <Widget>[
           _tableRowHeader(StockConstants.price),
@@ -57,8 +57,20 @@ class _StockAlertCardState extends State<StockAlertCard> {
             child: ListBody(children: _children)));
   }
 
-  Padding _cardHeader(String header) =>
-      Padding(padding: _edgeInsetsTitle, child: Text(header));
+  Padding _cardHeaderPadding(Widget header) =>
+      Padding(padding: _edgeInsetsTitle, child: header);
+
+  Widget _cardHeaderWidgetSymbolAndAlert() =>
+      widget._stock.alertAbove == null && widget._stock.alertBelow == null
+          ? Text(widget._stock.symbol)
+          : widget._stock.hasToNotify
+              ? _cardHeaderRowSymbolAndAlert(
+                  widget._stock.symbol, Icons.notifications_on_rounded)
+              : _cardHeaderRowSymbolAndAlert(
+                  widget._stock.symbol, Icons.notifications_off_rounded);
+
+  Row _cardHeaderRowSymbolAndAlert(String symbol, IconData iconData) =>
+      Row(children: [Text(symbol + ' '), Icon(iconData, size: 14)]);
 
   Widget _tableRowHeader(String header) => Padding(
       padding: EdgeInsets.fromLTRB(2, 2, 2, 0),

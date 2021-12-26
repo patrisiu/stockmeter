@@ -8,6 +8,7 @@ class Stock {
   double? tax;
   double? alertAbove;
   double? alertBelow;
+  late bool hasToNotify;
   late double purchaseCapital;
   late double price;
   late double capitalValue;

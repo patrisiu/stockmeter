@@ -36,8 +36,8 @@ class _StockTradeCardState extends State<StockTradeCard> {
   Widget build(BuildContext context) {
     List<Widget> _cardMainElements = <Widget>[
       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        _cardHeader(widget._stock.symbol),
-        _cardHeader(widget._stock.purchaseDate!)
+        _cardHeaderPadding(_cardHeaderWidgetSymbolAndAlert()),
+        _cardHeaderPadding(Text(widget._stock.purchaseDate!))
       ]),
       Table(children: <TableRow>[
         TableRow(children: <Widget>[
@@ -151,8 +151,20 @@ class _StockTradeCardState extends State<StockTradeCard> {
               borderRadius: BorderRadiusDirectional.circular(4))
           : null;
 
-  Padding _cardHeader(String header) =>
-      Padding(padding: _edgeInsetsTitle, child: Text(header));
+  Padding _cardHeaderPadding(Widget header) =>
+      Padding(padding: _edgeInsetsTitle, child: header);
+
+  Widget _cardHeaderWidgetSymbolAndAlert() =>
+      widget._stock.alertAbove == null && widget._stock.alertBelow == null
+          ? Text(widget._stock.symbol)
+          : widget._stock.hasToNotify
+              ? _cardHeaderRowSymbolAndAlert(
+                  widget._stock.symbol, Icons.notifications_on_rounded)
+              : _cardHeaderRowSymbolAndAlert(
+                  widget._stock.symbol, Icons.notifications_off_rounded);
+
+  Row _cardHeaderRowSymbolAndAlert(String symbol, IconData iconData) => Row(
+      children: [Text(symbol + ' '), Icon(iconData, size: _regularTextSize)]);
 
   Widget _tableRowHeader(String header) => Padding(
       padding: EdgeInsets.fromLTRB(2, 2, 2, 0),

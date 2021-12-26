@@ -12,6 +12,7 @@ class StockDAO {
   String? tax;
   String? alertAbove;
   String? alertBelow;
+  late bool hasToNotify;
   String? notes;
   late int _rowIndex;
 
@@ -25,6 +26,7 @@ class StockDAO {
     tax = stock.tax?.toString();
     alertAbove = stock.alertAbove?.toString();
     alertBelow = stock.alertBelow?.toString();
+    hasToNotify = stock.hasToNotify;
     notes = stock.notes;
     _rowIndex = stock.rowIndex;
   }
@@ -47,7 +49,8 @@ class StockDAO {
       '"$fees", '
       '"$tax", '
       '"$alertAbove", '
-      '"$alertBelow"'
+      '"$alertBelow", '
+      '"$hasToNotify"'
       ']]}';
 
   String rowCalculatedValues(int rowIndex) => '{"values": [['

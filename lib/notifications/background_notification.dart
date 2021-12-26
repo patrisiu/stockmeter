@@ -21,7 +21,7 @@ class BackgroundNotification {
     // Show a notification after every 15 minute with the first
     // appearance happening a minute after invoking the method
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-        'your channel id', 'your channel name', 'your channel description',
+        'your channel id', 'your channel name',
         importance: Importance.max, priority: Priority.high);
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
 
@@ -55,7 +55,7 @@ class BackgroundNotification {
     // Show a notification after every 15 minute with the first
     // appearance happening a minute after invoking the method
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-        'your channel id', 'your channel name', 'your channel description',
+        'your channel id', 'your channel name',
         importance: Importance.max,
         priority: Priority.high,
         styleInformation: new InboxStyleInformation(body));

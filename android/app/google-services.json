@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "1010107161043-4sq5t747eoag7i3ge0dr86bv8t4f40hb.apps.googleusercontent.com",
+          "client_id": "1010107161043-lk3bs7376pmkehfoi3jctljs755vikup.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.patrisiu.stockmeter",
-            "certificate_hash": "ccb1903c82363ad85771af00303b03f0980ecfed"
+            "certificate_hash": "022d9be6b81eea0a330675d4a00589067d77cb7e"
           }
         },
         {
@@ -28,7 +28,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDkUql2gPdr8AvpVQSpB6tP_KL35AtGmC4"
+          "current_key": "AIzaSyCglma1HiRgyoM3uDrXFArXuaNUJzRwnV8"
         }
       ],
       "services": {

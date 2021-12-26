@@ -13,6 +13,8 @@ class StockBuilder {
     stock.tax = double.tryParse(row.elementAt(index++));
     stock.alertAbove = double.tryParse(row.elementAt(index++));
     stock.alertBelow = double.tryParse(row.elementAt(index++));
+    stock.hasToNotify =
+        row.elementAt(index++).toString().toUpperCase() == 'TRUE';
     stock.purchaseCapital = double.tryParse(row.elementAt(index++))!;
     stock.price = double.tryParse(row.elementAt(index++))!;
     stock.capitalValue = double.tryParse(row.elementAt(index++))!;
@@ -23,7 +25,7 @@ class StockBuilder {
     stock.grossProfitDay = double.tryParse(row.elementAt(index++))!;
     stock.netProfitDay = double.tryParse(row.elementAt(index++))!;
     stock.rowIndex = int.tryParse(row.elementAt(index++))!;
-    stock.notes = row.length == 20 ? row.elementAt(index++) : '';
+    stock.notes = row.length == 21 ? row.elementAt(index++) : '';
     return stock;
   }
 
@@ -47,6 +49,8 @@ class StockBuilder {
       '',
       // alertBelow
       '',
+      // hasToNotify
+      'TRUE',
       // purchaseCapital
       '0',
       // price

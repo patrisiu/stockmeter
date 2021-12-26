@@ -57,7 +57,7 @@ class GoogleSheetsService {
       body: body,
     );
     if (response.statusCode != 200) {
-      throw Exception(response.body);
+      throw Exception(response.reasonPhrase);
     }
     return response.body;
   }
@@ -70,7 +70,7 @@ class GoogleSheetsService {
         headers: authHeaders,
         body: '{}');
     if (response.statusCode != 200) {
-      throw Exception(response.body);
+      throw Exception(response.reasonPhrase);
     }
   }
 }
