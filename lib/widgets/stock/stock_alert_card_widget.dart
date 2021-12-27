@@ -110,7 +110,5 @@ class _StockAlertCardState extends State<StockAlertCard> {
     }
   }
 
-  void _handleOnTap() => setState(() {
-        details = !details;
-      });
+  void _handleOnTap() => setState(() => details = !details);
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stockmeter/controllers/foreground_controller.dart';
+import 'package:stockmeter/widgets/StockElevatedButton.dart';
 
 class StockFileNameWidget extends StatefulWidget {
   const StockFileNameWidget({Key? key, required this.stockFileName})
@@ -42,7 +43,7 @@ class _StockFileNameWidgetState extends State<StockFileNameWidget> {
       subtitle: const Text('Name to identify it easier.'),
       trailing: _onPressedButton
           ? null
-          : ElevatedButton(
+          : StockElevatedButton(
               child: Icon(Icons.drive_file_rename_outline_rounded),
               onPressed: () async => await _onPressed()));
 

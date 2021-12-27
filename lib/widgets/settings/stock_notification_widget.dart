@@ -8,6 +8,7 @@ import 'package:stockmeter/controllers/background_controller.dart';
 import 'package:stockmeter/controllers/foreground_controller.dart';
 import 'package:stockmeter/models/app_model.dart';
 import 'package:stockmeter/notifications/foreground_notification.dart';
+import 'package:stockmeter/widgets/StockElevatedButton.dart';
 
 class StockNotificationWidget extends StatelessWidget {
   final ForegroundController _foregroundController =
@@ -35,8 +36,9 @@ class StockNotificationWidget extends StatelessWidget {
       ListTile(
           enabled: isEnabled,
           title: const Text('Stock Notification'),
-          subtitle: _configurationDisclaimer,
-          trailing: ElevatedButton(
+          subtitle: const Text(
+              'Check periodically in the background and notify when some Stock triggers the alert configured.'),
+          trailing: StockElevatedButton(
               child: Text(notificationCheck),
               onPressed: isEnabled
                   ? () => _showNotificationCheckOptions(context)

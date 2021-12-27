@@ -4,6 +4,7 @@ import 'package:stockmeter/configurations/constants.dart';
 import 'package:stockmeter/controllers/foreground_controller.dart';
 import 'package:stockmeter/daos/stock_dao.dart';
 import 'package:stockmeter/models/stock.dart';
+import 'package:stockmeter/widgets/StockElevatedButton.dart';
 
 class StockFormWidget extends StatefulWidget {
   final Stock stock;
@@ -17,6 +18,7 @@ class StockFormWidget extends StatefulWidget {
 class _StockFormWidgetState extends State<StockFormWidget> {
   final ForegroundController foregroundController =
       GetIt.instance<ForegroundController>();
+  final TextStyle _textStyle = TextStyle(color: StockConstants.activeColor);
   final _formKey = GlobalKey<FormState>();
   final Stock stock;
 
@@ -137,14 +139,18 @@ class _StockFormWidgetState extends State<StockFormWidget> {
           title: const Text('Skip Trade Info'),
           subtitle: const Text('Only enter the Alert values'),
           trailing: Switch(
-              value: _onlyAlert, onChanged: _onChangedAlertNotificationsOnly)),
+              value: _onlyAlert,
+              onChanged: _onChangedAlertNotificationsOnly,
+              activeColor: StockConstants.activeColor)),
       ListTile(
           leading: Icon(Icons.notifications_rounded),
           title: const Text('Has to Notify'),
           subtitle: const Text(
               'Receive a notification when the alert has been triggered'),
-          trailing:
-              Switch(value: _hasToNotify, onChanged: _onChangedHasToNotify)),
+          trailing: Switch(
+              value: _hasToNotify,
+              onChanged: _onChangedHasToNotify,
+              activeColor: StockConstants.activeColor)),
       TextFormField(
           initialValue: _stockDAO.notes,
           keyboardType: TextInputType.text,
@@ -153,15 +159,15 @@ class _StockFormWidgetState extends State<StockFormWidget> {
               hintText: 'Free text space for self annotations',
               labelText: StockConstants.notes),
           onSaved: (String? value) => _stockDAO.notes = value ?? ''),
-      ElevatedButton(
+      StockElevatedButton(
           onPressed: !_onPressedButton ? _onPressedSave : null,
           child: const Text('Save')),
-      ElevatedButton(
+      StockElevatedButton(
           onPressed: _stockDAO.rowIndex != 0 && !_onPressedButton
               ? _onPressedDelete
               : null,
           child: const Text('Delete')),
-      ElevatedButton(
+      StockElevatedButton(
         onPressed: () => Navigator.pop(context),
         child: const Text('Cancel'),
       )
@@ -257,10 +263,10 @@ class _StockFormWidgetState extends State<StockFormWidget> {
                 content: const Text('Do you want to proceed?'),
                 actions: <Widget>[
                   TextButton(
-                      child: Text('No'),
+                      child: Text('No', style: _textStyle),
                       onPressed: () => Navigator.of(context).pop()),
                   TextButton(
-                      child: Text('Yes'),
+                      child: Text('Yes', style: _textStyle),
                       onPressed: () {
                         setState(() {
                           _onPressedButton = true;

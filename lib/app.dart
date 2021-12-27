@@ -93,7 +93,11 @@ class _StockMeterAppState extends State<StockMeterApp>
         } else {
           return _buildHugScaffoldWithLoadingInfo(ScopedScreen(), [
             Text(snapshot.data.toString()),
-            SizedBox(child: CircularProgressIndicator(), width: 18, height: 18)
+            SizedBox(
+                child: CircularProgressIndicator(
+                    color: StockConstants.activeColor),
+                width: 18,
+                height: 18)
           ]);
         }
       } else {

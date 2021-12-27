@@ -34,27 +34,25 @@ class _HoursNotificationWidgetState extends State<HoursNotificationWidget> {
 
   Widget _hoursRageSlider(bool isEnabled) {
     RangeValues _currentRangeValues =
-        _foregroundController.getHoursAlertNotification();
-
+    _foregroundController.getHoursAlertNotification();
     return RangeSlider(
-      values: _currentRangeValues,
-      min: 0,
-      max: 24,
-      divisions: 25,
-      labels: RangeLabels(
-        _currentRangeValues.start.round().toString() + 'h',
-        _currentRangeValues.end.round().toString() + 'h',
-      ),
-      activeColor: isEnabled ? null : Colors.white12,
-      inactiveColor: isEnabled ? null : Colors.white12,
-      onChanged: (RangeValues values) {
-        if (isEnabled) {
-          _foregroundController.setHoursAlertNotification(values);
-          setState(() {
-            _currentRangeValues = values;
-          });
-        }
-      },
-    );
+        values: _currentRangeValues,
+        min: 0,
+        max: 24,
+        divisions: 25,
+        labels: RangeLabels(
+          _currentRangeValues.start.round().toString() + 'h',
+          _currentRangeValues.end.round().toString() + 'h',
+        ),
+        activeColor: isEnabled ? StockConstants.activeColor : Colors.white12,
+        inactiveColor: isEnabled ? Colors.white12 : Colors.white12,
+        onChanged: (RangeValues values) {
+          if (isEnabled) {
+            _foregroundController.setHoursAlertNotification(values);
+            setState(() {
+              _currentRangeValues = values;
+            });
+          }
+        });
   }
 }

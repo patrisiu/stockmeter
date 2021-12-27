@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:stockmeter/configurations/constants.dart';
 import 'package:stockmeter/controllers/foreground_controller.dart';
 import 'package:stockmeter/models/app_model.dart';
 
@@ -44,7 +45,8 @@ class _DebugWidgetState extends State<DebugWidget> {
               children: _columnChildren),
           trailing: Switch(
               value: debugNotification,
-              onChanged: (bool value) => _handleOnChanged(value)),
+              onChanged: (bool value) => _handleOnChanged(value),
+              activeColor: StockConstants.activeColor),
           onTap: () => _handleOnTap(context),
           onLongPress: _foregroundController.debugBackgroundExecution);
 

@@ -4,6 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:stockmeter/controllers/foreground_controller.dart';
 import 'package:stockmeter/models/app_model.dart';
 import 'package:stockmeter/models/stock_file.dart';
+import 'package:stockmeter/widgets/StockElevatedButton.dart';
 import 'package:stockmeter/widgets/confirm_alert_dialog_widget.dart';
 import 'package:stockmeter/widgets/create_file_button_widget.dart';
 import 'package:stockmeter/widgets/settings/stock_file_name_widget.dart';
@@ -73,10 +74,9 @@ class DataSourceWidget extends StatelessWidget {
   }
 
   Widget _editStockFileButton(BuildContext context, AppModel model) =>
-      ElevatedButton(
-        child: Icon(Icons.settings),
-        onPressed: () => _editStockFile(context, model),
-      );
+      StockElevatedButton(
+          child: Icon(Icons.settings),
+          onPressed: () => _editStockFile(context, model));
 
   _editStockFile(BuildContext context, AppModel model) async {
     List<Widget> _children = [
@@ -99,7 +99,7 @@ class DataSourceWidget extends StatelessWidget {
           enabled: model.stockFiles.length > 1,
           title: const Text('Select another Stock File'),
           subtitle: Text(_stockNotificationOnlyOnSelectedFile),
-          trailing: ElevatedButton(
+          trailing: StockElevatedButton(
               onPressed: () => _selectStockFileMenu(context, model.stockFiles),
               child: Icon(Icons.find_in_page_rounded))),
       Divider(thickness: 1),
@@ -123,18 +123,18 @@ class DataSourceWidget extends StatelessWidget {
     return await _showSheetIdsAvailable(context, stockFiles);
   }
 
-  Widget _createAnotherStockFileButton(BuildContext context) => ElevatedButton(
-      onPressed: () => _createStockFile(context),
-      child: Icon(Icons.file_copy_rounded));
+  Widget _createAnotherStockFileButton(BuildContext context) =>
+      StockElevatedButton(
+          onPressed: () => _createStockFile(context),
+          child: Icon(Icons.file_copy_rounded));
 
   Future<void> _createStockFile(BuildContext context) async {
     Navigator.of(context).pop();
     await _foregroundController.createStockFile();
   }
 
-  ElevatedButton _deleteStockFileButton(
-          BuildContext context, String spreadsheetId) =>
-      ElevatedButton(
+  Widget _deleteStockFileButton(BuildContext context, String spreadsheetId) =>
+      StockElevatedButton(
           onPressed: () => _deleteStockFile(context, spreadsheetId),
           child: Icon(Icons.delete_forever_rounded));
 

@@ -15,11 +15,9 @@ class _AboutWidgetState extends State<AboutWidget> {
       onTap: _handleOnTap,
       title: const Text('About StockMeter'),
       subtitle:
-          _onTap ? _displayDisclaimer() : const Text('Tap to read About'));
+          _onTap ? _displayDisclaimer() : const Text('Version 1.0.0-beta'));
 
-  void _handleOnTap() => setState(() {
-        _onTap = !_onTap;
-      });
+  void _handleOnTap() => setState(() => _onTap = !_onTap);
 
   Widget _displayDisclaimer() => Column(children: [
         const Text(''),
@@ -39,6 +37,6 @@ class _AboutWidgetState extends State<AboutWidget> {
             'StockMeter uses Google Sheets to store and calculate the financial data. '
             'Because of this, it is required a Google Account and granted access to Google Drive. '
             'In any case, the application stores personal data or access other files beyond the '
-            'strictly Google Sheets files required to work.'),
+            'strictly Google Sheets files required to work.')
       ]);
 }

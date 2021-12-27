@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 class StockConstants {
   static const String appTitle = 'StockMeter';
   static const String mimeType = 'application/vnd.google-apps.spreadsheet';
@@ -56,4 +58,6 @@ class StockConstants {
 
   static const String debug = 'debug';
   static const String debugNotification = 'debugNotification';
+
+  static const Color activeColor = Color(0xFF2196F3);
 }

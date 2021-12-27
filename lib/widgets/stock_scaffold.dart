@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stockmeter/widgets/actions/actions_widget.dart';
-import 'package:stockmeter/widgets/navigation_bar.dart';
+import 'package:stockmeter/widgets/scoped_navigation_bar.dart';
 
 class StockScaffold extends StatelessWidget {
   StockScaffold({

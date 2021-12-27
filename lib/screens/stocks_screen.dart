@@ -28,9 +28,8 @@ class StocksScreen extends StatelessWidget {
     return RefreshIndicator(
         onRefresh: () async => await _foregroundController.fetchStocks(),
         child: ListView(
-          children: _children,
-          physics: const AlwaysScrollableScrollPhysics(),
-        ));
+            children: _children,
+            physics: const AlwaysScrollableScrollPhysics()));
   }
 
   Widget _firstStockDisclaimer() => Container(
