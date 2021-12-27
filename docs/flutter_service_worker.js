@@ -20,9 +20,9 @@ const RESOURCES = {
 "icons/StockMeter-512.png": "7322a2bad860bb1e04019266a6acea3e",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "version.json": "d13e16ea369d9f0534b090f2b9e11970",
-"favicon.png": "44c064c95bc60cd0a82facef9a1698ee",
-"index.html": "3cec2f602dcead16ba9f57668a64bb8a",
-"/": "3cec2f602dcead16ba9f57668a64bb8a"
+"favicon.png": "f38abd5916ac4d52329472fb85397a78",
+"index.html": "4510ad629de76672570e3fe444f14c80",
+"/": "4510ad629de76672570e3fe444f14c80"
 };
 
 // The application shell files that are downloaded before a service worker can
