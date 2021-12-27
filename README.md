@@ -8,15 +8,19 @@ This is a [Flutter](https://flutter.dev/) project for learning purposes. The dev
 tool about Stock Exchanges, Mutual Funds, Indexes and other financial data available in Google products. From this data,
 _trading simulations_ and _customizable notifications_ based on price values are featured.
 
-The data is provided by [Google Finance](https://www.google.com/finance/) and may be delayed by up to 20 minutes. Read
-its [disclaimer](https://www.google.com/googlefinance/disclaimer/#!#disclaimers) for more details. In addition to this
-delay, the _notification_ feature may add an extra time depending on the periodical check configured. For these
-reasons, **this application is for informational purposes, not for trading purposes or advice**.
+## Privacy Policy
 
 StockMeter uses [Google Sheets](https://www.google.com/sheets/about/) to store and calculate the financial data. Because
 of this, it is required a [Google Account](https://www.google.com/account/about/) and granted access to Google Drive. In
 any case, the application stores personal data or access other files beyond the strictly Google Sheets files required to
 work.
+
+## Terms of Service
+
+The data is provided by [Google Finance](https://www.google.com/finance/) and may be delayed by up to 20 minutes. Read
+its [disclaimer](https://www.google.com/googlefinance/disclaimer/#!#disclaimers) for more details. In addition to this
+delay, the _notification_ feature may add an extra time depending on the periodical check configured. For these
+reasons, **this application is for informational purposes, not for trading purposes or advice**.
 
 ## Getting Started
 
