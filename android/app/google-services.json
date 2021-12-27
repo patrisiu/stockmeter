@@ -14,7 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "1010107161043-lk3bs7376pmkehfoi3jctljs755vikup.apps.googleusercontent.com",
+          "client_id": "1010107161043-l3jhj5lh93tqcf7nr6lkj5e6ra006ltr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.patrisiu.stockmeter",
@@ -37,6 +37,13 @@
             {
               "client_id": "1010107161043-fecb6h6shetaibullav9ksurp9g6sp1t.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1010107161043-luqrlhtpfo53f74lh2n59ebg1ae2r8u8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.patrisiu.stockmeter"
+              }
             }
           ]
         }

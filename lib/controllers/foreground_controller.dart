@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -16,6 +17,7 @@ class ForegroundController {
       GetIt.instance<GoogleAuthService>();
   final DataController _dataController = GetIt.instance<DataController>();
 
+  late final FirebaseAnalytics _analytics;
   late final AppModel _appModel;
   late final SharedPreferences _sharedPreferences;
   late final BackgroundController _backgroundController;
@@ -31,6 +33,7 @@ class ForegroundController {
         _sharedPreferences.getString(StockConstants.sortBy) ?? 'Raw Data');
     _appModel.debugNotification =
         _sharedPreferences.getBool(StockConstants.debugNotification) ?? false;
+    _analytics = FirebaseAnalytics.instance;
   }
 
   Future<bool> signInSilentlyAndLoadHugs() async {
