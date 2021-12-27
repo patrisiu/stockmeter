@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -31,8 +32,9 @@ class DeviceNotificationConstrain extends StatelessWidget {
             'In order to minimize this effect, the "Don\'t kill my app!" site explains '
             'how to configure the App in your device. Press here to visit the website.')
       ]),
-      trailing: Icon(Icons.system_security_update_warning_rounded, size: 40),
-      onTap: () => _launchURL(_dontkillmyappURL));
+      trailing: Icon(Icons.app_settings_alt_rounded, size: 40),
+      onTap: () => _launchURL(_dontkillmyappURL),
+      onLongPress: AppSettings.openAppSettings);
 
   bool _isEnabled(String notificationCheck) =>
       StockConstants.notificationCheckDisabled != notificationCheck;

@@ -47,10 +47,10 @@ class _DebugWidgetState extends State<DebugWidget> {
               value: debugNotification,
               onChanged: (bool value) => _handleOnChanged(value),
               activeColor: StockConstants.activeColor),
-          onTap: () => _handleOnTap(context),
+          onTap: _handleOnTap,
           onLongPress: _foregroundController.debugBackgroundExecution);
 
-  void _handleOnTap(BuildContext context) {
+  void _handleOnTap() {
     List<String> debug = _foregroundController.debugLastBackgroundExecution();
     setState(() => _columnChildren = debug.map((e) => Text(e)).toList());
   }

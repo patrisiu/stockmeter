@@ -107,7 +107,7 @@ class BackgroundController {
       }
     } else {
       _debug(sharedPreferences, [
-        'sheetId: ${sheetId != null}',
+        'sheetId: $sheetId',
         'isValidRangePeriodTime: $isValidRangePeriodTime'
       ]);
     }
@@ -140,7 +140,9 @@ class BackgroundController {
       GoogleSignIn googleSignIn = GoogleSignIn(scopes: StockConstants.scopes);
       GoogleSignInAccount? googleSignInAccount =
           await googleSignIn.signInSilently(suppressErrors: false);
-      return await googleSignInAccount?.authHeaders;
+      Map<String, String>? authHeaders = await googleSignInAccount?.authHeaders;
+      _debug(sharedPreferences, ['getAuthHeadersWithRetry', 'retry: $retry']);
+      return authHeaders;
     } on Exception catch (e) {
       if (retry < _maxRetries) {
         await Future<void>.delayed(Duration(seconds: ++retry));
@@ -159,7 +161,11 @@ class BackgroundController {
       int retry,
       SharedPreferences sharedPreferences) async {
     try {
-      return await _fetchStocksToNotify(authHeaders, spreadsheetId);
+      List<Stock> stocks =
+          await _fetchStocksToNotify(authHeaders, spreadsheetId);
+      _debug(
+          sharedPreferences, ['getStocksToNotifyWithRetry', 'retry: $retry']);
+      return stocks;
     } on Exception catch (e) {
       if (retry < _maxRetries) {
         await Future<void>.delayed(Duration(seconds: ++retry));
@@ -209,14 +215,16 @@ class BackgroundController {
   }
 
   void _debug(SharedPreferences sharedPreferences, List<String> details) {
-    if (sharedPreferences.getBool(StockConstants.debugNotification) ?? false) {
-      List<String> messages = [DateTime.now().toString()];
-      messages.addAll(details);
-      sharedPreferences.setStringList(StockConstants.debug, messages);
-      if (details.first == 'getAuthHeadersWithRetry' ||
-          details.first == 'getStocksToNotifyWithRetry') {
-        BackgroundNotification().show(messages.first, details.last);
-      }
+    List<String> messages = [DateTime.now().toString()];
+    messages.addAll(details);
+    sharedPreferences.setStringList(StockConstants.debug, messages);
+    bool debugNotification =
+        sharedPreferences.getBool(StockConstants.debugNotification) ?? false;
+    if (debugNotification &&
+        details.length > 2 &&
+        (details.first == 'getAuthHeadersWithRetry' ||
+            details.first == 'getStocksToNotifyWithRetry')) {
+      BackgroundNotification().show(messages.first, details.last);
     }
   }
 }
