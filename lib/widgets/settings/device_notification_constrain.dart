@@ -12,23 +12,19 @@ class DeviceNotificationConstrain extends StatelessWidget {
   final String _dontkillmyappURL = 'https://dontkillmyapp.com?app=StockMeter';
 
   @override
-  Widget build(BuildContext context) => kIsWeb
-      ? Container()
-      : ScopedModelDescendant<AppModel>(
-          builder: (context, child, model) => _buildDeviceConstrain(
-              context, _isEnabled(model.notificationCheck)));
+  Widget build(BuildContext context) => ScopedModelDescendant<AppModel>(
+      builder: (context, child, model) =>
+          _buildDeviceConstrain(context, _isEnabled(model.notificationCheck)));
 
   _buildDeviceConstrain(BuildContext context, bool isEnabled) => ListTile(
-      enabled: isEnabled,
+      enabled: !kIsWeb && isEnabled,
       title: const Text('Device Notification Constrain'),
       subtitle: Column(children: [
         Text(
             'Unfortunately, vendors (e.g. Xiaomi, Huawei, OnePlus or even Samsung…) '
-            'have their own battery savers into the firmware with each new Android release.'),
-        Text(
+            'have their own battery savers into the firmware with each new Android release.\n'
             'This may produce StockMeter unable to check Stock Alerts in the background '
-            'unless you actively use your device at the time.'),
-        Text(
+            'unless you actively use your device at the time.\n'
             'In order to minimize this effect, the "Don\'t kill my app!" site explains '
             'how to configure the App in your device. Press here to visit the website.')
       ]),
