@@ -19,15 +19,13 @@ class DeviceNotificationConstrain extends StatelessWidget {
   _buildDeviceConstrain(BuildContext context, bool isEnabled) => ListTile(
       enabled: !kIsWeb && isEnabled,
       title: const Text('Device Notification Constrain'),
-      subtitle: Column(children: [
-        Text(
-            'Unfortunately, vendors (e.g. Xiaomi, Huawei, OnePlus or even Samsung…) '
-            'have their own battery savers into the firmware with each new Android release.\n'
-            'This may produce StockMeter unable to check Stock Alerts in the background '
-            'unless you actively use your device at the time.\n'
-            'In order to minimize this effect, the "Don\'t kill my app!" site explains '
-            'how to configure the App in your device. Press here to visit the website.')
-      ]),
+      subtitle: const Text(
+          'Unfortunately, vendors (e.g. Xiaomi, Huawei, OnePlus or even Samsung…) '
+          'have their own battery savers into the firmware with each new Android release.\n'
+          'This may produce StockMeter unable to check Stock Alerts in the background '
+          'unless you actively use your device at the time.\n'
+          'In order to minimize this effect, the "Don\'t kill my app!" site explains '
+          'how to configure the App in your device. Press here to visit the website.'),
       trailing: Icon(Icons.app_settings_alt_rounded, size: 40),
       onTap: () => _launchURL(_dontkillmyappURL),
       onLongPress: AppSettings.openAppSettings);
