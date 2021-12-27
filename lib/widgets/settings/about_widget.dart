@@ -19,7 +19,8 @@ class _AboutWidgetState extends State<AboutWidget> {
 
   void _handleOnTap() => setState(() => _onTap = !_onTap);
 
-  Widget _displayDisclaimer() => Column(children: [
+  Widget _displayDisclaimer() =>
+      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         const Text(''),
         const Text(
             'This is a Flutter project for learning purposes. The developed application '
