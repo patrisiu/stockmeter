@@ -3,9 +3,9 @@ import 'package:stockmeter/configurations/constants.dart';
 
 class ForegroundNotification {
   static const int _tip_seconds_duration = 2;
-  static const int _info_seconds_duration = 4;
-  static const int _info_with_action_seconds_duration = 8;
-  static const int _error_seconds_duration = 4;
+  static const int _info_seconds_duration = 3;
+  static const int _info_with_action_seconds_duration = 3;
+  static const int _error_seconds_duration = 3;
 
   void error(BuildContext context, String message) =>
       ScaffoldMessenger.of(context).showSnackBar(_errorSnackBar(
