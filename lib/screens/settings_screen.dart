@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stockmeter/widgets/settings/about_widget.dart';
 import 'package:stockmeter/widgets/settings/datasource_widget.dart';
@@ -13,17 +14,19 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListView(children: <Widget>[
         SignInOutWidget(),
-        Divider(thickness: 1),
+        Divider(),
         DataSourceWidget(),
-        Divider(thickness: 1),
+        Divider(),
         StockNotificationWidget(),
-        Divider(thickness: 1),
+        Divider(),
         HoursNotificationWidget(),
-        Divider(thickness: 1),
-        DeviceNotificationConstrain(),
-        Divider(thickness: 1),
+        Divider(),
+        buildIfNotWeb(DeviceNotificationConstrain()),
+        buildIfNotWeb(Divider()),
         AboutWidget(),
-        Divider(thickness: 1),
-        DebugWidget(),
+        buildIfNotWeb(Divider()),
+        buildIfNotWeb(DebugWidget()),
       ]);
+
+  Widget buildIfNotWeb(Widget widget) => kIsWeb ? Container() : widget;
 }

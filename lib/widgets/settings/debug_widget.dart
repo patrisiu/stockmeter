@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -26,11 +25,8 @@ class _DebugWidgetState extends State<DebugWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => kIsWeb
-      ? Container()
-      : ScopedModelDescendant<AppModel>(
-          builder: (context, child, model) =>
-              _displayIfValidUser(context, model));
+  Widget build(BuildContext context) => ScopedModelDescendant<AppModel>(
+      builder: (context, child, model) => _displayIfValidUser(context, model));
 
   Widget _displayIfValidUser(BuildContext context, AppModel model) =>
       model.isUserSigned && _validUserEmail(model.user)
