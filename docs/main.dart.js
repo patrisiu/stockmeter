@@ -78600,11 +78600,11 @@ m=J
 l=J
 k=B.al
 s=2
-return A.u(p.wt(a,b,"stocks!A3:U3:append",c.TB()),$async$os)
+return A.u(p.wt(a,b,"stocks!A3:J3:append",c.TB()),$async$os)
 case 2:o=m.Y(l.Y(k.DN(0,e,null),"updates"),"updatedRange")
 n=A.fs(A.jn(o,"stocks!A","").split(":")[0],null)
 s=3
-return A.u(p.ks(a,b,"stocks!K"+n+":T"+n,'{"values": [["=C'+n+"*D"+n+'", "=IFERROR(GOOGLEFINANCE(A'+n+');0)", "=C'+n+"*K"+n+'", "=IF(D'+n+",K"+n+"/D"+n+'-1,0)", "=L'+n+"-J"+n+'", "=IF(N'+n+">0,N"+n+"-N"+n+"*G"+n+"-F"+n+",N"+n+')", "=IF(C'+n+",TODAY()-B"+n+',0)", "=IF(P'+n+",N"+n+"/P"+n+',0)", "=IF(P'+n+",O"+n+"/P"+n+',0)", "=ROW()"]]}'),$async$os)
+return A.u(p.ks(a,b,"stocks!K"+n+":T"+n,'{"values": [["=C'+n+"*D"+n+'", "=IFERROR(GOOGLEFINANCE(A'+n+');0)", "=C'+n+"*L"+n+'", "=IF(D'+n+",L"+n+"/D"+n+'-1,0)", "=M'+n+"-K"+n+'", "=IF(O'+n+">0,O"+n+"-O"+n+"*G"+n+"-F"+n+",O"+n+')", "=IF(C'+n+",TODAY()-B"+n+',0)", "=IF(Q'+n+",O"+n+"/Q"+n+',0)", "=IF(Q'+n+",P"+n+"/Q"+n+',0)", "=ROW()"]]}'),$async$os)
 case 3:s=4
 return A.u(p.ks(a,b,"stocks!U"+n+":U"+n,'{"values": [["=T(\\"'+A.d(c.Q)+'\\")"]]}'),$async$os)
 case 4:return A.y(null,r)}})
@@ -79658,8 +79658,8 @@ A.a(c.d,"_appModel").x=d
 c.ib()}return A.y(null,r)}})
 return A.z($async$vG,r)}}
 A.afT.prototype={
-$3(a,b,c){var s=null
-return 1===c.rz$?this.a.aeu(a):A.c0(s,s,B.k,s,s,s,s,s,s,s,s,s,s)},
+$3(a,b,c){var s=null,r=c.rz$
+return 0===r||1===r?this.a.aeu(a):A.c0(s,s,B.k,s,s,s,s,s,s,s,s,s,s)},
 $C:"$3",
 $R:3,
 $S:29}
