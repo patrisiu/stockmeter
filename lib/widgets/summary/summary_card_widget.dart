@@ -12,10 +12,10 @@ class SummaryCard extends StatefulWidget {
 }
 
 class _SummaryCardState extends State<SummaryCard> {
-  final EdgeInsets _edgeInsets = EdgeInsets.fromLTRB(2, 0, 2, 2);
-  final EdgeInsets _edgeInsetsTitle = EdgeInsets.all(4);
-  final double _regularTextSize = 20;
-  final double _highlightTextSize = 26;
+  static const EdgeInsets _edgeInsets = EdgeInsets.fromLTRB(2, 0, 2, 2);
+  static const EdgeInsets _edgeInsetsTitle = EdgeInsets.all(4);
+  static const double _regularTextSize = 20;
+  static const double _highlightTextSize = 26;
 
   Color? _summaryStatusColor;
   Color? _summaryStatusColorLight;

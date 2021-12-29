@@ -8,8 +8,8 @@ const RESOURCES = {
 "assets/assets/google_logo.png": "b75aecaf9e70a9b1760497e33bcd6db1",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "6d342eb68f170c97609e9da345464e5e",
 "assets/fonts/MaterialIcons-Regular.otf": "4e6447691c9509f7acdbf8a931a85ca1",
-"assets/NOTICES": "7ab1f643457c47227c17870b4bdcaeae",
-"main.dart.js": "b9c387b338c49dbf6462b9c82fb9e70b",
+"assets/NOTICES": "f834cb0b208885dd1a7010d667b2e20b",
+"main.dart.js": "955660c7a5bf35a7da4fe80a8356ff90",
 "canvaskit/canvaskit.js": "43fa9e17039a625450b6aba93baf521e",
 "canvaskit/canvaskit.wasm": "04ed3c745ff1dee16504be01f9623498",
 "canvaskit/profiling/canvaskit.js": "f3bfccc993a1e0bfdd3440af60d99df4",
@@ -21,8 +21,8 @@ const RESOURCES = {
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "version.json": "d13e16ea369d9f0534b090f2b9e11970",
 "favicon.png": "f38abd5916ac4d52329472fb85397a78",
-"index.html": "0810b0eabab8b6bed630607b9771dffa",
-"/": "0810b0eabab8b6bed630607b9771dffa"
+"index.html": "62d97981bbbcd9c745047496943f5fac",
+"/": "62d97981bbbcd9c745047496943f5fac"
 };
 
 // The application shell files that are downloaded before a service worker can
