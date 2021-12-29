@@ -15,9 +15,13 @@ class SortWidget extends StatelessWidget {
       builder: (context, child, model) => _sortWidget(context, model));
 
   _sortWidget(BuildContext context, AppModel model) =>
-      StockConstants.stocksScreen == model.currentScreen
+      _validScreen(model.currentScreen)
           ? _sortButtonWidget(context)
           : Container();
+
+  bool _validScreen(int currentScreen) =>
+      StockConstants.summaryScreen == currentScreen ||
+      StockConstants.stocksScreen == currentScreen;
 
   IconButton _sortButtonWidget(BuildContext context) {
     final List<String> _sortOptions = [
