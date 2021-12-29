@@ -9,7 +9,7 @@ import 'package:stockmeter/services/google_sheets_service.dart';
 
 class DataController {
   static const String _stocksRange = 'stocks!A3:U999';
-  static const String _stockAppendRange = 'stocks!A3:U3:append';
+  static const String _stockAppendRange = 'stocks!A3:J3:append';
   static const String _spreadsheetName = 'stocks!J1';
 
   final GoogleDriveService _googleDriveService =
