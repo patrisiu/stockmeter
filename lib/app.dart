@@ -48,7 +48,7 @@ class _StockMeterAppState extends State<StockMeterApp>
         await _foregroundController.fetchStocks();
       }
       yield 'Starting StockMeter...';
-      Timer.periodic(Duration(seconds: 35),
+      Timer.periodic(Duration(seconds: 54),
           (timer) async => await _fetchStocksWhenAppLifecycleStateResumed());
       yield 'Loaded';
     })();

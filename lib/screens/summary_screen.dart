@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:stockmeter/builders/summary_builder.dart';
+import 'package:stockmeter/configurations/constants.dart';
 import 'package:stockmeter/models/app_model.dart';
 import 'package:stockmeter/models/gain_chart_model.dart';
 import 'package:stockmeter/models/stock.dart';
@@ -27,13 +28,15 @@ class SummaryScreen extends StatelessWidget {
         .map((summaryCard) => Container(child: summaryCard))
         .toList();
     _children.add(Container(
-        child: SummaryGainChartCard(data: _gainChartData(tradingStocks))));
+        child: SummaryGainChartCard(
+            data: _gainChartData(tradingStocks),
+            title: StockConstants.netGain)));
     return ListView(children: _children);
   }
 
   List<GainChartModel> _gainChartData(List<Stock> stocks) => stocks
       .map((e) => new GainChartModel(e.symbol + '\n' + e.purchaseDate!,
-          e.grossCapitalGain, e.latentProfit, e.currency))
+          e.netCapitalGain, e.latentProfit, e.currency))
       .toList();
 
   Summary createCurrencySummary(String currency, List<Stock> stocks) {

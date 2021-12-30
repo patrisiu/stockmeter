@@ -22656,8 +22656,9 @@ VF:function VF(a){var _=this
 _.a=_.e=_.d=null
 _.b=a
 _.c=null},
-OT:function OT(a,b){this.c=a
-this.a=b},
+OT:function OT(a,b,c){this.c=a
+this.d=b
+this.a=c},
 OP:function OP(a,b,c){this.c=a
 this.a=b
 this.b=c},
@@ -78464,7 +78465,7 @@ return A.ei(A.a(l.e,"_foregroundController").ib(),$async$$0,r)
 case 13:case 10:s=14
 q=[1]
 return A.ei(A.vw("Starting StockMeter..."),$async$$0,r)
-case 14:A.Ph(A.bM(0,0,0,0,35),new A.ap0(l))
+case 14:A.Ph(A.bM(0,0,0,0,54),new A.ap0(l))
 s=15
 q=[1]
 return A.ei(A.vw("Loaded"),$async$$0,r)
@@ -79379,7 +79380,7 @@ s=A.ag(new A.kV(m,new A.agA(this,n),o),!0,o.h("q.E"))
 o=A.a4(s).h("U<1,k9>")
 r=o.h("U<aR.E,og>")
 q=A.ag(new A.U(new A.U(s,new A.agB(),o),new A.agC(),r),!0,r.h("aR.E"))
-B.b.D(q,A.c0(p,new A.OT(this.a6s(n),p),B.k,p,p,p,p,p,p,p,p,p,p))
+B.b.D(q,A.c0(p,new A.OT("Net Gain",this.a6s(n),p),B.k,p,p,p,p,p,p,p,p,p,p))
 return A.z3(q,p)},
 a6s(a){var s=A.a4(a).h("U<1,fb>")
 return A.ag(new A.U(a,new A.agD(),s),!0,s.h("aR.E"))},
@@ -79422,7 +79423,7 @@ $S:518}
 A.agD.prototype={
 $1(a){var s=A.a(a.a,"symbol")+"\n",r=a.b
 r.toString
-return new A.fb(s+r,A.a(a.db,"grossCapitalGain"),A.a(a.cy,"latentProfit"),A.a(a.e,"currency"))},
+return new A.fb(s+r,A.a(a.dx,"netCapitalGain"),A.a(a.cy,"latentProfit"),A.a(a.e,"currency"))},
 $S:519}
 A.agF.prototype={
 $1(a){return A.a(a.e,"currency")===this.a},
@@ -80483,10 +80484,10 @@ return new A.b4(new A.aE(2,2,2,0),A.cL(A.aM(a.toUpperCase(),s,s,s,A.cq(s,s,B.A,s
 w4(a,b,c){var s=null
 return new A.b4(B.hl,A.cL(A.aM(B.d.a1(a,2),s,s,s,A.cq(s,s,c,s,s,s,s,s,s,s,s,b,s,s,s,s,!0,s,s,s,s,s,s,s,s),s,s,s),s,s),s)}}
 A.OT.prototype={
-F(a,b){var s,r=null,q=this.c
+F(a,b){var s,r=null,q=this.d
 if(q.length===0)q=A.c0(r,r,B.k,r,r,r,r,r,r,r,r,r,r)
 else{s=t.p
-s=A.x2(A.z0(A.b([A.ev(A.b([new A.b4(B.E3,A.aM("Net Gain".toUpperCase(),r,r,r,r,r,r,r),r)],s),B.R,B.F,B.J),A.c0(r,new A.yc(q,r),B.k,r,new A.aA(0,b.J(t.w).f.a.a,0,(q.length+0.8)*45),r,r,r,r,new A.aE(4,0,4,0),r,r,r)],s)),r)
+s=A.x2(A.z0(A.b([A.ev(A.b([new A.b4(B.E3,A.aM(this.c.toUpperCase(),r,r,r,r,r,r,r),r)],s),B.R,B.F,B.J),A.c0(r,new A.yc(q,r),B.k,r,new A.aA(0,b.J(t.w).f.a.a,0,(q.length+0.8)*45),r,r,r,r,new A.aE(4,0,4,0),r,r,r)],s)),r)
 q=s}return q}}
 A.OP.prototype={
 gzl(a){return A.bR(this.c)}}
