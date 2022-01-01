@@ -6,7 +6,7 @@ import 'package:stockmeter/models/app_model.dart';
 import 'package:stockmeter/models/stock_file.dart';
 import 'package:stockmeter/widgets/StockElevatedButton.dart';
 import 'package:stockmeter/widgets/confirm_alert_dialog_widget.dart';
-import 'package:stockmeter/widgets/create_file_button_widget.dart';
+import 'package:stockmeter/widgets/settings/create_file_button_widget.dart';
 import 'package:stockmeter/widgets/settings/stock_file_name_widget.dart';
 
 class DataSourceWidget extends StatelessWidget {

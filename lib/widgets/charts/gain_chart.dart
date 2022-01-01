@@ -1,5 +1,6 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:stockmeter/configurations/constants.dart';
 import 'package:stockmeter/models/gain_chart_model.dart';
 
 class GainChart extends StatelessWidget {
@@ -14,6 +15,7 @@ class GainChart extends StatelessWidget {
     List<Series<dynamic, String>> seriesList = [
       new Series<GainChartModel, String>(
         id: 'GainChart',
+        seriesColor: _getColor(),
         domainFn: (GainChartModel stock, _) => stock.label,
         measureFn: (GainChartModel stock, _) => stock.gain,
         data: data,
@@ -48,4 +50,9 @@ class GainChart extends StatelessWidget {
           color: (stock.gain < 0)
               ? MaterialPalette.red.shadeDefault
               : MaterialPalette.white);
+
+  Color _getColor() => Color(
+      r: StockConstants.activeColor.red,
+      g: StockConstants.activeColor.green,
+      b: StockConstants.activeColor.blue);
 }

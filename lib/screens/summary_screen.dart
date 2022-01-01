@@ -6,32 +6,34 @@ import 'package:stockmeter/models/app_model.dart';
 import 'package:stockmeter/models/gain_chart_model.dart';
 import 'package:stockmeter/models/stock.dart';
 import 'package:stockmeter/models/summary.dart';
+import 'package:stockmeter/widgets/functionalities/functionality_widget_list.dart';
 import 'package:stockmeter/widgets/summary/summary_card_widget.dart';
 import 'package:stockmeter/widgets/summary/summary_gain_chart_card.dart';
 
 class SummaryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ScopedModelDescendant<AppModel>(
-      builder: (context, child, model) => _buildSummaryScreen(context, model));
+      builder: (context, child, model) => model.isUserSigned
+          ? ListView(children: _buildSummaryScreen(model.stocks))
+          : ListView(children: FunctionalityWidgetList.get()));
 
-  Widget _buildSummaryScreen(BuildContext context, AppModel model) {
+  List<Widget> _buildSummaryScreen(List<Stock> stocks) {
     final List<Stock> tradingStocks =
-        model.stocks.where((stock) => stock.stocks! > 0).toList();
+        stocks.where((stock) => stock.stocks! > 0).toList();
     final Set<String> currencies =
         tradingStocks.map((stock) => stock.currency).toSet();
-    List<Summary> summaries = currencies
+    final List<Summary> summaries = currencies
         .map((currency) => createCurrencySummary(currency, tradingStocks))
         .toList();
-
-    List<Widget> _children = summaries
+    final List<Widget> result = summaries
         .map((summary) => SummaryCard(summary))
         .map((summaryCard) => Container(child: summaryCard))
         .toList();
-    _children.add(Container(
+    result.add(Container(
         child: SummaryGainChartCard(
             data: _gainChartData(tradingStocks),
             title: StockConstants.netGain)));
-    return ListView(children: _children);
+    return result;
   }
 
   List<GainChartModel> _gainChartData(List<Stock> stocks) => stocks

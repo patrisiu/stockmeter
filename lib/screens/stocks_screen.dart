@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:stockmeter/controllers/foreground_controller.dart';
 import 'package:stockmeter/models/app_model.dart';
-import 'package:stockmeter/widgets/lastupdate.dart';
+import 'package:stockmeter/widgets/last_update.dart';
 import 'package:stockmeter/widgets/stock/google_finance_disclaimer_widget.dart';
 import 'package:stockmeter/widgets/stock/stock_card_widget.dart';
 

@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 class StockConstants {
   static const String appTitle = 'StockMeter';
   static const String mimeType = 'application/vnd.google-apps.spreadsheet';
@@ -13,21 +15,33 @@ class StockConstants {
   static const int summaryScreen = 0;
   static const int stocksScreen = 1;
   static const int trendsScreen = 2;
-
   static const int settingsScreen = 3;
-  static const String uniqueNameTask = 'StockMeterPeriodicTask';
 
+  static const String uniqueNameTask = 'StockMeterPeriodicTask';
   static const String taskName = 'StockMeterPositionUpdate';
 
   static const String sheetId = 'spreadsheetId';
+
+  static const String navigationBarSummaryLabel = 'Summary';
+  static const IconData navigationBarSummaryIcon = Icons.dashboard_rounded;
+  static const String navigationBarStocksLabel = 'Stocks';
+  static const IconData navigationBarStocksIcon = Icons.card_travel_rounded;
+  static const String navigationBarTrendsLabel = 'Trends';
+  static const IconData navigationBarTrendsIcon = Icons.trending_up_rounded;
+  static const String navigationBarSettingsLabel = 'Settings';
+  static const IconData navigationBarSettingsIcon = Icons.settings;
+
+  static const IconData functionalityStockPriceNotification =
+      Icons.notifications_on_rounded;
+  static const IconData functionalityStockFile = Icons.file_copy_rounded;
+
   static const String notificationCheck = 'notificationCheck';
   static const String notificationCheckDisabled = 'Disabled';
   static const String notificationCheck2m = '2m';
   static const String notificationCheck15m = '15m';
-
   static const String notificationCheck1h = '1h';
-  static const String startNotification = 'startNotification';
 
+  static const String startNotification = 'startNotification';
   static const String endNotification = 'endNotification';
 
   static const String sortBy = 'sortBy';
@@ -59,5 +73,5 @@ class StockConstants {
   static const String debug = 'debug';
   static const String debugNotification = 'debugNotification';
 
-  static const Color activeColor = Color(0xFF2196F3);
+  static const Color activeColor = Color(0xFF0097A7);
 }
