@@ -51,7 +51,7 @@ class _StockMeterAppState extends State<StockMeterApp>
       Timer.periodic(Duration(seconds: 54),
           (timer) async => await _fetchStocksWhenAppLifecycleStateResumed());
       yield 'Loaded';
-    })();
+    })().asBroadcastStream();
   }
 
   @override

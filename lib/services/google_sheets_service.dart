@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import "package:http/http.dart" as http;
 import 'package:stockmeter/configurations/constants.dart';
 import 'package:stockmeter/utils/sheet_data.dart';
@@ -73,7 +75,28 @@ class GoogleSheetsService {
       throw Exception(response.reasonPhrase);
     }
   }
+
+  Future<SheetStatus> addSheet(
+      Map<String, String> authHeaders, String sheetId, String body) async {
+    authHeaders.addAll(_applicationJsonHeaders);
+    final http.Response response = await http.post(
+      GoogleSheetsApiUriRequestAddSheetBuilder(sheetId, _apiKey).build(),
+      headers: authHeaders,
+      body: body,
+    );
+    if (response.statusCode != 200) {
+      if (response.statusCode == 400 &&
+          jsonDecode(response.body)['error']['message']
+              .contains('already exists')) {
+        return SheetStatus.exists;
+      }
+      throw Exception(response.reasonPhrase);
+    }
+    return SheetStatus.created;
+  }
 }
+
+enum SheetStatus { created, exists }
 
 class GoogleSheetsApiUriRequestCreateFileBuilder {
   final String _baseApiUrl = 'sheets.googleapis.com';
@@ -130,4 +153,17 @@ class GoogleSheetsApiUriRequestClearDataBuilder {
 
   Uri build() => Uri.https(_baseApiUrl,
       _unencodedPath + _sheetId + _values + _range + _clear, {'key': _apiKey});
+}
+
+class GoogleSheetsApiUriRequestAddSheetBuilder {
+  final String _baseApiUrl = 'sheets.googleapis.com';
+  final String _unencodedPath = '/v4/spreadsheets/';
+  final String _batchUpdate = ':batchUpdate';
+  final String _sheetId;
+  final String _apiKey;
+
+  GoogleSheetsApiUriRequestAddSheetBuilder(this._sheetId, this._apiKey);
+
+  Uri build() => Uri.https(
+      _baseApiUrl, _unencodedPath + _sheetId + _batchUpdate, {'key': _apiKey});
 }

@@ -142,7 +142,7 @@ class DataSourceWidget extends StatelessWidget {
     if (await ConfirmAlertDialogWidget().show(context,
         'The Stock File with id $sheetId will be permanently deleted')) {
       Navigator.of(context).pop();
-      await _foregroundController.deletePositionFile();
+      await _foregroundController.deleteStockFile();
     }
   }
 }

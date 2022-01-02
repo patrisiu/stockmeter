@@ -4,7 +4,7 @@ import 'package:stockmeter/configurations/constants.dart';
 import 'package:stockmeter/models/gain_chart_model.dart';
 
 class GainChart extends StatelessWidget {
-  const GainChart({Key? key, this.animate, required this.data})
+  const GainChart({Key? key, required this.data, this.animate})
       : super(key: key);
 
   final bool? animate;

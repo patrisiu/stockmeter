@@ -66,6 +66,34 @@ class DataController {
       await _googleSheetsService.clearDataRows(
           authHeaders, spreadsheetId, _stockDeleteRange(rowIndex));
 
+  Future<List> addSheet(
+      Map<String, String> authHeaders, String sheetId, String symbol) async {
+    final SheetStatus response = await _googleSheetsService.addSheet(
+        authHeaders,
+        sheetId,
+        '{"requests":[{"addSheet":{"properties":{"gridProperties":{"columnCount":3,"rowCount":999},"title":"$symbol"}}}]}');
+    if (SheetStatus.exists == response) {
+      // clear data
+    }
+    var body = '{"values": [['
+        '"=GOOGLEFINANCE(\\"$symbol\\",\\"price\\";TODAY()-100;TODAY())", '
+        '"", '
+        '"${_today()}"'
+        ']]}';
+    await _googleSheetsService.setDataRows(
+        authHeaders, sheetId, _trendSetRange(symbol), body);
+
+    final String responseAfter = await _googleSheetsService.getDataRows(
+        authHeaders, sheetId, _trendGetRange(symbol));
+    final List rowsValues = _getRowValues(json.decode(responseAfter));
+    return rowsValues;
+  }
+
+  String _today() => _parseDateToString(DateTime.now());
+
+  String _parseDateToString(DateTime date) =>
+      '${date.day}/${date.month}/${date.year}';
+
   String _mapSheetId(String response) => jsonDecode(response)['spreadsheetId'];
 
   String _mapUpdatedRange(String response) =>
@@ -87,6 +115,10 @@ class DataController {
 
   String _stockNotesRange(int rowIndex) => 'stocks!U$rowIndex:U$rowIndex';
 
+  String _trendSetRange(String symbol) => '$symbol!A1:C1';
+
+  String _trendGetRange(String symbol) => '$symbol!A2:B999';
+
   Future<String?> fetchStockFileName(
       Map<String, String> authHeaders, String spreadsheetId) async {
     final String response = await _googleSheetsService.getDataRows(
@@ -98,7 +130,7 @@ class DataController {
         : result.map((rowValue) => rowValue.toString()).toList().first;
   }
 
-  Future<void> deleteSpreadsheetFile(
+  Future<void> deleteSheetFile(
           Map<String, String> authHeaders, String spreadsheetId) async =>
       await _googleDriveService.deleteDriveFile(authHeaders, spreadsheetId);
 

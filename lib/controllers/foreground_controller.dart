@@ -9,6 +9,7 @@ import 'package:stockmeter/controllers/data_controller.dart';
 import 'package:stockmeter/daos/stock_dao.dart';
 import 'package:stockmeter/models/app_model.dart';
 import 'package:stockmeter/models/stock_file.dart';
+import 'package:stockmeter/models/trend_chart_model.dart';
 import 'package:stockmeter/notifications/foreground_notification.dart';
 import 'package:stockmeter/services/google_auth_service.dart';
 
@@ -91,14 +92,12 @@ class ForegroundController {
         stockFiles.any((stockFile) => stockFile.id == spreadsheetId)) {
       _appModel.stockFile =
           stockFiles.firstWhere((stockFile) => stockFile.id == spreadsheetId);
-      _appModel.stockFile!.name =
-          await _getSpreadsheetName(_appModel.stockFile!.id);
+      _appModel.stockFile!.name = await _getSheetName(_appModel.stockFile!.id);
     } else if (stockFiles.isNotEmpty) {
       _appModel.stockFile = stockFiles.first;
       _sharedPreferences.setString(
           StockConstants.sheetId, _appModel.stockFile!.id);
-      _appModel.stockFile!.name =
-          await _getSpreadsheetName(_appModel.stockFile!.id);
+      _appModel.stockFile!.name = await _getSheetName(_appModel.stockFile!.id);
     } else {
       _appModel.createFileOption = true;
     }
@@ -111,7 +110,7 @@ class ForegroundController {
     List<StockFile> stockFilesWithName = [];
     try {
       await Future.wait(sheetIds.map((sheetId) async {
-        String? spreadsheetName = await _getSpreadsheetName(sheetId);
+        String? spreadsheetName = await _getSheetName(sheetId);
         StockFile stockFile = new StockFile(sheetId);
         stockFile.name = spreadsheetName;
         stockFilesWithName.add(stockFile);
@@ -122,7 +121,7 @@ class ForegroundController {
     }
   }
 
-  Future<String?> _getSpreadsheetName(String spreadsheetId) async {
+  Future<String?> _getSheetName(String spreadsheetId) async {
     try {
       return await _dataController.fetchStockFileName(
           await _getAuthHeaders(), spreadsheetId);
@@ -171,6 +170,35 @@ class ForegroundController {
     } on Exception catch (e) {
       ForegroundNotification().error(context, e.toString());
     }
+  }
+
+  Future<List<TrendChartModel>> generateTrend(String name) async {
+    try {
+      List result = await _dataController.addSheet(
+          await _getAuthHeaders(), _appModel.stockFile!.id, name);
+
+      List<TrendChartModel> trend = result
+          .map((e) =>
+              new TrendChartModel(_parseStringToDateTime(e[0]), _hem(e[1])))
+          .toList();
+      return trend;
+    } on Exception catch (e) {
+      ForegroundNotification().error(context, e.toString());
+      return [];
+    }
+  }
+
+  double _hem(e) => double.parse(e);
+
+  DateTime _parseStringToDateTime(String date) {
+    List<String> splitDate = date.split('/');
+    String yearCorrupted = splitDate[2];
+    List<String> yearQuasi = yearCorrupted.split(' ');
+    int? year = int.tryParse(yearQuasi[0]);
+    int? month = int.tryParse(splitDate[1]);
+    int? day = int.tryParse(splitDate[0]);
+    DateTime dateTime = DateTime(year!, month!, day!);
+    return dateTime;
   }
 
   Future<List<String>> _getSpreadsheetIds(
@@ -271,10 +299,10 @@ class ForegroundController {
     }
   }
 
-  Future<void> deletePositionFile() async {
+  Future<void> deleteStockFile() async {
     try {
       String spreadsheetId = _appModel.stockFile!.id;
-      await _dataController.deleteSpreadsheetFile(
+      await _dataController.deleteSheetFile(
           await _getAuthHeaders(), spreadsheetId);
       List<StockFile> stockFiles = _appModel.stockFiles
           .where((stockFile) => stockFile.id != spreadsheetId)
@@ -292,7 +320,7 @@ class ForegroundController {
     }
   }
 
-  Future<void> setPositionFileName(String positionFileName) async {
+  Future<void> setStockFileName(String positionFileName) async {
     try {
       await _dataController.setStockFileName(
           await _getAuthHeaders(), _appModel.stockFile!.id, positionFileName);
