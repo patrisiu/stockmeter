@@ -66,33 +66,25 @@ class DataController {
       await _googleSheetsService.clearDataRows(
           authHeaders, spreadsheetId, _stockDeleteRange(rowIndex));
 
-  Future<List> addSheet(
+  Future<List> getTrendFromGoogle(
       Map<String, String> authHeaders, String sheetId, String symbol) async {
     final SheetStatus response = await _googleSheetsService.addSheet(
         authHeaders,
         sheetId,
-        '{"requests":[{"addSheet":{"properties":{"gridProperties":{"columnCount":3,"rowCount":999},"title":"$symbol"}}}]}');
+        '{"requests":[{"addSheet":{"properties":{"gridProperties":{"columnCount":2,"rowCount":999},"title":"$symbol"}}}]}');
     if (SheetStatus.exists == response) {
       // clear data
     }
-    var body = '{"values": [['
-        '"=GOOGLEFINANCE(\\"$symbol\\",\\"price\\";TODAY()-100;TODAY())", '
-        '"", '
-        '"${_today()}"'
-        ']]}';
+    var body =
+        '{"values": [["=GOOGLEFINANCE(\\"$symbol\\";\\"price\\";TODAY()-100;TODAY())"]]}';
     await _googleSheetsService.setDataRows(
         authHeaders, sheetId, _trendSetRange(symbol), body);
 
     final String responseAfter = await _googleSheetsService.getDataRows(
         authHeaders, sheetId, _trendGetRange(symbol));
-    final List rowsValues = _getRowValues(json.decode(responseAfter));
+    final List rowsValues = _getRowValues(jsonDecode(responseAfter));
     return rowsValues;
   }
-
-  String _today() => _parseDateToString(DateTime.now());
-
-  String _parseDateToString(DateTime date) =>
-      '${date.day}/${date.month}/${date.year}';
 
   String _mapSheetId(String response) => jsonDecode(response)['spreadsheetId'];
 
@@ -115,7 +107,7 @@ class DataController {
 
   String _stockNotesRange(int rowIndex) => 'stocks!U$rowIndex:U$rowIndex';
 
-  String _trendSetRange(String symbol) => '$symbol!A1:C1';
+  String _trendSetRange(String symbol) => '$symbol!A1:A1';
 
   String _trendGetRange(String symbol) => '$symbol!A2:B999';
 

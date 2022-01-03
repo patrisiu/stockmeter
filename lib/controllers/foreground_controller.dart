@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stockmeter/configurations/constants.dart';
 import 'package:stockmeter/controllers/background_controller.dart';
@@ -72,6 +73,7 @@ class ForegroundController {
     _appModel.createFileOption = false;
     _appModel.summary = null;
     _appModel.stocks = [];
+    _appModel.trends = new Map();
     _appModel.notificationCheck = StockConstants.notificationCheckDisabled;
     _appModel.debugNotification = false;
     _sharedPreferences.clear();
@@ -172,34 +174,56 @@ class ForegroundController {
     }
   }
 
-  Future<List<TrendChartModel>> generateTrend(String name) async {
-    try {
-      List result = await _dataController.addSheet(
-          await _getAuthHeaders(), _appModel.stockFile!.id, name);
+  Future<List<TrendChartModel>> _getTrendFromLocal(String symbol) async {
+    String? symbolUpdatedDate =
+        _sharedPreferences.getString(symbol + '->updatedDate');
+    List<String> symbolTrendValues =
+        _sharedPreferences.getStringList(symbol + '->trendValues') ?? [];
 
-      List<TrendChartModel> trend = result
-          .map((e) =>
-              new TrendChartModel(_parseStringToDateTime(e[0]), _hem(e[1])))
-          .toList();
-      return trend;
+    if (symbolUpdatedDate == null ||
+        _isOutdated(symbolUpdatedDate) ||
+        symbolTrendValues.isEmpty) {
+      symbolTrendValues = await _getTrendFromGoogle(symbol);
+      _sharedPreferences.setString(
+          symbol + '->updatedDate', _parseDateToString(DateTime.now()));
+      _sharedPreferences.setStringList(
+          symbol + '->trendValues', symbolTrendValues);
+    }
+    return symbolTrendValues.map((e) => _parseToTrendChartModel(e)).toList();
+  }
+
+  TrendChartModel _parseToTrendChartModel(String e) {
+    List<String> splitData = e.split(',');
+    String date = splitData[0].substring(1, splitData[0].length);
+    String value = splitData[1].substring(0, splitData[1].length - 1).trim();
+    DateFormat format = new DateFormat('dd/MM/yyyy hh:mm:ss');
+    return new TrendChartModel(format.parse(date), double.parse(value));
+  }
+
+  bool _isOutdated(String date) =>
+      _parseStringToDateTime(date).isBefore(_dateTimeNowRoundedToDay());
+
+  DateTime _dateTimeNowRoundedToDay() {
+    DateTime now = DateTime.now();
+    return DateTime(now.year, now.month, now.day);
+  }
+
+  Future<List<String>> _getTrendFromGoogle(String symbol) async {
+    try {
+      List result = await _dataController.getTrendFromGoogle(
+          await _getAuthHeaders(), _appModel.stockFile!.id, symbol);
+      return result.map((e) => e.toString()).toList();
     } on Exception catch (e) {
       ForegroundNotification().error(context, e.toString());
       return [];
     }
   }
 
-  double _hem(e) => double.parse(e);
+  String _parseDateToString(DateTime date) =>
+      '${date.year}-${date.month}-${date.day}';
 
-  DateTime _parseStringToDateTime(String date) {
-    List<String> splitDate = date.split('/');
-    String yearCorrupted = splitDate[2];
-    List<String> yearQuasi = yearCorrupted.split(' ');
-    int? year = int.tryParse(yearQuasi[0]);
-    int? month = int.tryParse(splitDate[1]);
-    int? day = int.tryParse(splitDate[0]);
-    DateTime dateTime = DateTime(year!, month!, day!);
-    return dateTime;
-  }
+  DateTime _parseStringToDateTime(String date) =>
+      new DateFormat('yyyy-MM-dd').parse(date);
 
   Future<List<String>> _getSpreadsheetIds(
       Map<String, String> authHeaders) async {
@@ -341,4 +365,19 @@ class ForegroundController {
 
   void debugBackgroundExecution() =>
       _backgroundController.notify(_sharedPreferences);
+
+  void sortTrick() => _appModel.sortTrick();
+
+  Future<void> loadTrendsLazy() async {
+    // TODO TRENDS_CONTROLLER
+
+    Set<String> symbols = _appModel.stocks.map((stock) => stock.symbol).toSet();
+
+    Map<String, List<TrendChartModel>> trends = new Map.fromIterable(symbols,
+        key: (symbol) => symbol, value: (symbol) => []);
+    trends.forEach(
+        (key, value) async => value.addAll(await _getTrendFromLocal(key)));
+
+    _appModel.trends = trends;
+  }
 }

@@ -6,12 +6,14 @@ import 'package:stockmeter/models/screen.dart';
 import 'package:stockmeter/models/stock.dart';
 import 'package:stockmeter/models/stock_file.dart';
 import 'package:stockmeter/models/summary.dart';
+import 'package:stockmeter/models/trend_chart_model.dart';
 
 class AppModel extends Model with ScreenModel, AuthModel {
   BuildContext? context;
 
   Summary? _summary;
   List<Stock> _stocks = [];
+  Map<String, List<TrendChartModel>> _trends = new Map();
   DateTime? _lastUpdate;
   late String _sortBy;
 
@@ -20,13 +22,13 @@ class AppModel extends Model with ScreenModel, AuthModel {
 
   bool _debugNotification = false;
 
+  bool _createFileOption = false;
+
   StockFile? get stockFile => _stockFile;
 
   set stockFile(StockFile? value) {
     _stockFile = value;
   }
-
-  bool _createFileOption = false;
 
   String _notificationCheck = StockConstants.notificationCheckDisabled;
 
@@ -66,6 +68,17 @@ class AppModel extends Model with ScreenModel, AuthModel {
   set stocks(List<Stock> value) {
     _stocks = value;
     _lastUpdate = DateTime.now();
+    sortTrick();
+  }
+
+  Map<String, List<TrendChartModel>> get trends => _trends;
+
+  set trends(Map<String, List<TrendChartModel>> value) {
+    _trends = value;
+    notifyListeners();
+  }
+
+  void sortTrick() {
     if (_stocks.isNotEmpty && _sortBy != 'Raw Data') {
       _sortStocks();
     }
