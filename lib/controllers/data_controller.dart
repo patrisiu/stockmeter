@@ -66,7 +66,7 @@ class DataController {
       await _googleSheetsService.clearDataRows(
           authHeaders, spreadsheetId, _stockDeleteRange(rowIndex));
 
-  Future<List> getTrendFromGoogle(
+  Future<List> getTrendGoogleFinance(
       Map<String, String> authHeaders, String sheetId, String symbol) async {
     final SheetStatus response = await _googleSheetsService.addSheet(
         authHeaders,
@@ -75,7 +75,7 @@ class DataController {
     if (SheetStatus.exists == response) {
       // clear data
     }
-    var body =
+    final String body =
         '{"values": [["=GOOGLEFINANCE(\\"$symbol\\";\\"price\\";TODAY()-100;TODAY())"]]}';
     await _googleSheetsService.setDataRows(
         authHeaders, sheetId, _trendSetRange(symbol), body);

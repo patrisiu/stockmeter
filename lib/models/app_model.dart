@@ -68,20 +68,16 @@ class AppModel extends Model with ScreenModel, AuthModel {
   set stocks(List<Stock> value) {
     _stocks = value;
     _lastUpdate = DateTime.now();
-    sortTrick();
+    if (_stocks.isNotEmpty && _sortBy != 'Raw Data') {
+      _sortStocks();
+    }
+    notifyListeners();
   }
 
   Map<String, List<TrendChartModel>> get trends => _trends;
 
   set trends(Map<String, List<TrendChartModel>> value) {
     _trends = value;
-    notifyListeners();
-  }
-
-  void sortTrick() {
-    if (_stocks.isNotEmpty && _sortBy != 'Raw Data') {
-      _sortStocks();
-    }
     notifyListeners();
   }
 

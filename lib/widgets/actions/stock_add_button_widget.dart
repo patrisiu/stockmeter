@@ -13,7 +13,7 @@ class StockAddButtonWidget extends StatelessWidget {
       builder: (context, child, model) => _addStockWidget(context, model));
 
   Widget _addStockWidget(BuildContext context, AppModel model) =>
-      StockConstants.stocksScreen == model.currentScreen
+      model.isUserSigned && StockConstants.stocksScreen == model.currentScreen
           ? _addStockButtonWidget(context)
           : Container();
 

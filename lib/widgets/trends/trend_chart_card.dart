@@ -1,58 +1,96 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:stockmeter/models/app_model.dart';
+import 'package:stockmeter/models/stock.dart';
 import 'package:stockmeter/models/trend_chart_model.dart';
 import 'package:stockmeter/widgets/charts/trend_chart.dart';
+import 'package:url_launcher/url_launcher.dart' as launcher;
 
-class TrendChartCard extends StatefulWidget {
+class TrendChartCard extends StatelessWidget {
   const TrendChartCard({Key? key, required this.title, required this.data})
       : super(key: key);
 
   static const EdgeInsets _edgeInsetsTitle = EdgeInsets.fromLTRB(4, 4, 4, 0);
-  static const double _height = 100;
+  static const String _googleFinanceQuote =
+      'https://www.google.com/finance/quote/';
 
   final String title;
   final List<TrendChartModel> data;
 
   @override
-  State<TrendChartCard> createState() => _TrendChartCardState();
-}
+  Widget build(BuildContext context) => ScopedModelDescendant<AppModel>(
+      builder: (context, child, model) => _buildTrendChartCard(model.stocks));
 
-class _TrendChartCardState extends State<TrendChartCard> {
-  late String _selectedValue;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedValue = widget.data.last.value.toString();
-  }
-
-  @override
-  Widget build(BuildContext context) => Card(
+  Widget _buildTrendChartCard(List<Stock> stocks) => GestureDetector(
+      onLongPress: () => _launchURL(_googleFinanceSymbol(title.toUpperCase())),
+      child: Card(
           child: ListBody(children: <Widget>[
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [_cardHeader(widget.title), _cardHeader(_selectedValue)]),
-        Container(
-            padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
-            constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width,
-                maxHeight: TrendChartCard._height,
-                minHeight: TrendChartCard._height * 0.4),
-            child: widget.data.isEmpty
-                ? const Text('Loading...')
-                : TrendChart(
-                    data: widget.data,
-                    animate: true,
-                    onSelected: (date, value) => onValueSelected))
-      ]));
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          _cardHeader(Text(title.toUpperCase())),
+          _cardHeader(_lastPriceCompared(
+              data, stocks.firstWhere((stock) => stock.symbol == title)))
+        ]),
+        TrendChart(data: data, animate: true)
+      ])));
 
-  Padding _cardHeader(String header) => Padding(
-      padding: TrendChartCard._edgeInsetsTitle,
-      child: Text(header.toUpperCase()));
+  Padding _cardHeader(Widget header) =>
+      Padding(padding: TrendChartCard._edgeInsetsTitle, child: header);
 
-  onValueSelected(DateTime date, double value) {
-    print('i am hereee');
-    setState(() {
-      _selectedValue = 'date: $date; value: $value';
-    });
+  Widget _lastPriceCompared(List<TrendChartModel> data, Stock stock) {
+    List<Widget> _children = [Text('${stock.price} ${stock.currency}')];
+    if (data.isNotEmpty) {
+      _children.addAll(_todayVariation(data.last.value, stock.price));
+    }
+    return Row(children: _children);
   }
+
+  List<Widget> _todayVariation(double last, double today) {
+    Color? color;
+    Color? colorLight;
+    double percentage = (today / last - 1) * 100;
+    double absolute = today - last;
+
+    if (percentage > 0) {
+      color = Colors.green[600];
+      colorLight = Colors.green[400];
+    } else if (percentage < 0) {
+      color = Colors.red[600];
+      colorLight = Colors.red[400];
+    }
+    return [
+      _textSeparator(),
+      _textPercentage(percentage, color),
+      _textSeparator(),
+      _textAbsolute(absolute, colorLight),
+      _textSeparator(),
+      _textToday(color)
+    ];
+  }
+
+  Text _textToday(Color? negativeColor) =>
+      Text('Today', style: new TextStyle(color: negativeColor));
+
+  Text _textAbsolute(double absolute, Color? negativeColorLight) {
+    String sign = '+';
+    if (absolute < 0) {
+      sign = '';
+    }
+    return Text(sign + '${absolute.toStringAsFixed(3)}',
+        style: new TextStyle(color: negativeColorLight));
+  }
+
+  Text _textPercentage(double percentage, Color? negativeColor) =>
+      Text('${percentage.toStringAsFixed(2)}%',
+          style: new TextStyle(color: negativeColor));
+
+  Text _textSeparator() => Text(' ');
+
+  String _googleFinanceSymbol(String title) {
+    List<String> quote = title.split(':');
+    return _googleFinanceQuote + quote[1] + ':' + quote[0];
+  }
+
+  void _launchURL(String url) async => await launcher.canLaunch(url)
+      ? await launcher.launch(url)
+      : throw 'Could not launch $url';
 }
