@@ -176,52 +176,51 @@ class ForegroundController {
 
   Future<void> lazyLoadTrends() async {
     Set<String> symbols = _appModel.stocks.map((stock) => stock.symbol).toSet();
-    Map<String, List<TrendChartModel>> trends = new Map.fromIterable(symbols,
-        key: (symbol) => symbol, value: (symbol) => []);
-    trends.forEach((key, value) async =>
-        value.addAll(await _getTrendFromLocalOrService(key)));
-    _appModel.trends = trends;
+    _appModel.removeUnneededTrends(symbols);
+    symbols.forEach((symbol) async => await _getTrendFromLocalOrService(symbol)
+        .then((trend) => _appModel.updateTrend(symbol, trend)));
   }
 
-  Future<List<TrendChartModel>> _getTrendFromLocalOrService(
-      String symbol) async {
-    String? symbolUpdatedDate =
-        _sharedPreferences.getString(symbol + '->updatedDate');
-    List<String> symbolTrendValues =
-        _sharedPreferences.getStringList(symbol + '->trendValues') ?? [];
-
-    if (symbolUpdatedDate == null ||
-        _isOutdated(symbolUpdatedDate) ||
-        symbolTrendValues.isEmpty) {
-      symbolTrendValues = await _getTrendFromService(symbol);
-      _sharedPreferences.setString(
-          symbol + '->updatedDate', _parseDateToString(DateTime.now()));
-      _sharedPreferences.setStringList(
-          symbol + '->trendValues', symbolTrendValues);
+  Future<List<TrendModel>> _getTrendFromLocalOrService(String symbol) async {
+    List<String> trendsFromLocal =
+        _sharedPreferences.getStringList(symbol) ?? [];
+    List<TrendModel> trends =
+        trendsFromLocal.map((e) => _parseToTrendChartModel(e)).toList();
+    if (trends.isEmpty || _isOutdatedAndTodayWorkDay(trends.last.date)) {
+      List<String> trendsFromService = [];
+      try {
+        trendsFromService = await _getTrendFromService(symbol);
+        _sharedPreferences.setStringList(symbol, trendsFromService);
+      } on Exception catch (e) {
+        ForegroundNotification().error(context, e.toString());
+      }
+      trends =
+          trendsFromService.map((e) => _parseToTrendChartModel(e)).toList();
     }
-    return symbolTrendValues.map((e) => _parseToTrendChartModel(e)).toList();
+    return trends;
   }
 
-  bool _isOutdated(String date) =>
-      _parseStringToDateTime(date).isBefore(_dateTimeNowRoundedToDay());
-
-  DateTime _parseStringToDateTime(String date) =>
-      new DateFormat('yyyy-MM-dd').parse(date);
-
-  DateTime _dateTimeNowRoundedToDay() {
-    DateTime now = DateTime.now();
-    return DateTime(now.year, now.month, now.day);
+  bool _isOutdatedAndTodayWorkDay(DateTime lastTrendDate) {
+    DateTime today = DateTime.now();
+    int daysBackToCompare = 1;
+    if (today.weekday == DateTime.monday) {
+      daysBackToCompare = 3;
+    } else if (today.weekday == DateTime.sunday) {
+      daysBackToCompare = 2;
+    }
+    return _dateRoundedToDay(lastTrendDate).isBefore(_dateRoundedToDay(today)
+        .subtract(new Duration(days: daysBackToCompare)));
   }
 
-  String _parseDateToString(DateTime date) =>
-      '${date.year}-${date.month}-${date.day}';
+  DateTime _dateRoundedToDay(DateTime today) =>
+      DateTime(today.year, today.month, today.day);
 
-  TrendChartModel _parseToTrendChartModel(String e) {
+  TrendModel _parseToTrendChartModel(String e) {
     List<String> splitData = e.split(',');
     String date = splitData[0].substring(1, splitData[0].length);
     String value = splitData[1].substring(0, splitData[1].length - 1).trim();
     DateFormat dateFormat = new DateFormat('dd/MM/yyyy hh:mm:ss');
-    return new TrendChartModel(dateFormat.parse(date), double.parse(value));
+    return new TrendModel(dateFormat.parse(date), double.parse(value));
   }
 
   Future<List<String>> _getTrendFromService(String symbol) async {

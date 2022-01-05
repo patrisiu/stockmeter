@@ -13,7 +13,7 @@ class AppModel extends Model with ScreenModel, AuthModel {
 
   Summary? _summary;
   List<Stock> _stocks = [];
-  Map<String, List<TrendChartModel>> _trends = new Map();
+  Map<String, List<TrendModel>> _trends = new Map();
   DateTime? _lastUpdate;
   late String _sortBy;
 
@@ -68,16 +68,26 @@ class AppModel extends Model with ScreenModel, AuthModel {
   set stocks(List<Stock> value) {
     _stocks = value;
     _lastUpdate = DateTime.now();
-    if (_stocks.isNotEmpty && _sortBy != 'Raw Data') {
+    if (_stocks.isNotEmpty) {
       _sortStocks();
     }
     notifyListeners();
   }
 
-  Map<String, List<TrendChartModel>> get trends => _trends;
+  Map<String, List<TrendModel>> get trends => _trends;
 
-  set trends(Map<String, List<TrendChartModel>> value) {
+  set trends(Map<String, List<TrendModel>> value) {
     _trends = value;
+    notifyListeners();
+  }
+
+  void removeUnneededTrends(Set<String> symbols) {
+    _trends.removeWhere((key, value) => symbols.any((symbol) => symbol == key));
+    notifyListeners();
+  }
+
+  void updateTrend(String symbol, List<TrendModel> trend) {
+    _trends.update(symbol, (value) => trend, ifAbsent: () => trend);
     notifyListeners();
   }
 
@@ -107,6 +117,8 @@ class AppModel extends Model with ScreenModel, AuthModel {
         break;
       case StockConstants.profit:
         _stocks.sort((a, b) => b.latentProfit.compareTo(a.latentProfit));
+        break;
+      default:
         break;
     }
   }

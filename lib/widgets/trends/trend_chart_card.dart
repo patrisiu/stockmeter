@@ -15,7 +15,7 @@ class TrendChartCard extends StatelessWidget {
       'https://www.google.com/finance/quote/';
 
   final String title;
-  final List<TrendChartModel> data;
+  final List<TrendModel> data;
 
   @override
   Widget build(BuildContext context) => ScopedModelDescendant<AppModel>(
@@ -36,7 +36,7 @@ class TrendChartCard extends StatelessWidget {
   Padding _cardHeader(Widget header) =>
       Padding(padding: TrendChartCard._edgeInsetsTitle, child: header);
 
-  Widget _lastPriceCompared(List<TrendChartModel> data, Stock stock) {
+  Widget _lastPriceCompared(List<TrendModel> data, Stock stock) {
     List<Widget> _children = [Text('${stock.price} ${stock.currency}')];
     if (data.isNotEmpty) {
       _children.addAll(_todayVariation(data.last.value, stock.price));

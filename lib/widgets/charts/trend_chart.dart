@@ -9,7 +9,7 @@ class TrendChart extends StatefulWidget {
       : super(key: key);
 
   final bool? animate;
-  final List<TrendChartModel> data;
+  final List<TrendModel> data;
 
   @override
   State<TrendChart> createState() => _TrendChartState();
@@ -28,11 +28,11 @@ class _TrendChartState extends State<TrendChart> {
   void initState() {
     super.initState();
     seriesList = [
-      new Series<TrendChartModel, DateTime>(
+      new Series<TrendModel, DateTime>(
           id: 'Trend',
           colorFn: (_, __) => _getColor(),
-          domainFn: (TrendChartModel trend, _) => trend.date,
-          measureFn: (TrendChartModel trend, _) => trend.value,
+          domainFn: (TrendModel trend, _) => trend.date,
+          measureFn: (TrendModel trend, _) => trend.value,
           data: widget.data)
     ];
   }

@@ -1,6 +1,6 @@
-class TrendChartModel {
+class TrendModel {
   final DateTime date;
   final double value;
 
-  TrendChartModel(this.date, this.value);
+  TrendModel(this.date, this.value);
 }
