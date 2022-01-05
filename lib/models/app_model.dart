@@ -61,7 +61,7 @@ class AppModel extends Model with ScreenModel, AuthModel {
     notifyListeners();
   }
 
-  String get lastUpdate => _lastUpdate?.toString() ?? 'None';
+  DateTime? get lastUpdate => _lastUpdate;
 
   List<Stock> get stocks => _stocks;
 

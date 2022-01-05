@@ -83,15 +83,6 @@ class _StockFormWidgetState extends State<StockFormWidget> {
               _stockDAO.purchasePrice = _setValueOrDefault(value),
           validator: (String? value) => _numberValidator(value)),
       TextFormField(
-          initialValue: _stockDAO.currency,
-          keyboardType: TextInputType.name,
-          decoration: InputDecoration(
-              enabled: !_onlyAlert,
-              icon: Icon(Icons.stars_rounded),
-              labelText: StockConstants.currency),
-          onSaved: (String? value) => _stockDAO.currency =
-              value == null || value.isEmpty ? '-' : value.toUpperCase()),
-      TextFormField(
           initialValue: _stockDAO.fees,
           keyboardType: TextInputType.number,
           decoration: InputDecoration(

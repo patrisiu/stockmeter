@@ -1,13 +1,16 @@
+import 'package:intl/intl.dart';
 import 'package:stockmeter/models/stock.dart';
 
 class StockDAO {
   static const String _neutralValue = '0';
+  static const String _errorValue = '404';
 
   late String symbol;
   String? purchaseDate;
   String? stocks;
   String? purchasePrice;
-  String? currency;
+
+  // String? currency;
   String? fees;
   String? tax;
   String? alertAbove;
@@ -21,7 +24,6 @@ class StockDAO {
     stocks = stock.stocks?.toString();
     purchaseDate = stock.purchaseDate;
     purchasePrice = stock.purchasePrice?.toString();
-    currency = stock.currency;
     fees = stock.fees?.toString();
     tax = stock.tax?.toString();
     alertAbove = stock.alertAbove?.toString();
@@ -35,7 +37,6 @@ class StockDAO {
     stocks = _neutralValue;
     purchaseDate = _todayDate();
     purchasePrice ??= _neutralValue;
-    currency ??= _neutralValue;
     fees ??= _neutralValue;
     tax ??= _neutralValue;
   }
@@ -45,7 +46,7 @@ class StockDAO {
       '"$purchaseDate", '
       '"$stocks", '
       '"$purchasePrice", '
-      '"$currency", '
+      '"${_currency(symbol)}", '
       '"$fees", '
       '"$tax", '
       '"$alertAbove", '
@@ -68,13 +69,13 @@ class StockDAO {
 
   String rowNotesValue() => '{"values": [["=T(\\\"$notes\\\")"]]}';
 
-  String _todayDate() {
-    DateTime today = DateTime.now();
-    return today.day.toString() +
-        '/' +
-        today.month.toString() +
-        '/' +
-        today.year.toString();
+  String _todayDate() => DateFormat('dd/MM/yyyy').format(DateTime.now());
+
+  String _currency(String symbol) {
+    List<String> symbolParts = symbol.split(':');
+    return symbolParts[0] == 'CURRENCY' || symbolParts[0] == 'INDEXEURO'
+        ? symbolParts[1]
+        : '=IFERROR(GOOGLEFINANCE(\\"$symbol\\";\\"currency\\");\\"$_errorValue\\")';
   }
 
   int get rowIndex => _rowIndex;
