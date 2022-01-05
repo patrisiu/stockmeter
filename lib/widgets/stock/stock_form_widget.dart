@@ -43,8 +43,9 @@ class _StockFormWidgetState extends State<StockFormWidget> {
       child: Container(
           // width: MediaQuery.of(context).size.width - 10,
           // height: MediaQuery.of(context).size.height -  80,
-          // padding: EdgeInsets.all(20),
-          color: Colors.black45,
+          padding: EdgeInsets.all(8),
+          decoration: ShapeDecoration(shape: RoundedRectangleBorder()),
+          // color: Colors.black45,
           child: _buildForm(context)));
 
   Widget _buildForm(BuildContext context) {
@@ -145,10 +146,12 @@ class _StockFormWidgetState extends State<StockFormWidget> {
       TextFormField(
           initialValue: _stockDAO.notes,
           keyboardType: TextInputType.text,
+          maxLines: 3,
           decoration: InputDecoration(
-              icon: Icon(Icons.note_alt_rounded),
+              // icon: Icon(Icons.note_alt_rounded),
               hintText: 'Free text space for self annotations',
-              labelText: StockConstants.notes),
+              labelText: StockConstants.notes,
+              border: const OutlineInputBorder()),
           onSaved: (String? value) => _stockDAO.notes = value ?? ''),
       StockElevatedButton(
           onPressed: !_onPressedButton ? _onPressedSave : null,
