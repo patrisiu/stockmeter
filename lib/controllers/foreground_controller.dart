@@ -191,11 +191,11 @@ class ForegroundController {
       try {
         trendsFromService = await _getTrendFromService(symbol);
         _sharedPreferences.setStringList(symbol, trendsFromService);
+        trends =
+            trendsFromService.map((e) => _parseToTrendChartModel(e)).toList();
       } on Exception catch (e) {
         ForegroundNotification().error(context, e.toString());
       }
-      trends =
-          trendsFromService.map((e) => _parseToTrendChartModel(e)).toList();
     }
     return trends;
   }
@@ -225,7 +225,7 @@ class ForegroundController {
 
   Future<List<String>> _getTrendFromService(String symbol) async {
     try {
-      List result = await _dataController.getTrendGoogleFinance(
+      List result = await _dataController.getTrends(
           await _getAuthHeaders(), _appModel.stockFile!.id, symbol);
       return result.map((e) => e.toString()).toList();
     } on Exception catch (e) {

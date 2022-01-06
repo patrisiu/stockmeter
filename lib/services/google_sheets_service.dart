@@ -76,7 +76,7 @@ class GoogleSheetsService {
     }
   }
 
-  Future<SheetStatus> addSheet(
+  Future<void> addSheet(
       Map<String, String> authHeaders, String sheetId, String body) async {
     authHeaders.addAll(_applicationJsonHeaders);
     final http.Response response = await http.post(
@@ -84,19 +84,14 @@ class GoogleSheetsService {
       headers: authHeaders,
       body: body,
     );
-    if (response.statusCode != 200) {
-      if (response.statusCode == 400 &&
-          jsonDecode(response.body)['error']['message']
-              .contains('already exists')) {
-        return SheetStatus.exists;
-      }
+    if (response.statusCode != 200 &&
+        (response.statusCode != 400 ||
+            jsonDecode(response.body)['error']['message']
+                .contains('already exists'))) {
       throw Exception(response.reasonPhrase);
     }
-    return SheetStatus.created;
   }
 }
-
-enum SheetStatus { created, exists }
 
 class GoogleSheetsApiUriRequestCreateFileBuilder {
   final String _baseApiUrl = 'sheets.googleapis.com';

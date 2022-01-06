@@ -7,33 +7,36 @@ class FunctionalityWidgetList {
         FunctionalityCardWidget(
             navigationBarIcon: StockConstants.navigationBarSummaryIcon,
             navigationBarLabel: StockConstants.navigationBarSummaryLabel,
-            title: 'Quick view to the Stocks position',
-            subtitle: 'Summery of the investments and values'),
+            title: 'Overall Position',
+            subtitle: 'Overview of the total investments tracked.'),
         FunctionalityCardWidget(
             navigationBarIcon: StockConstants.navigationBarStocksIcon,
             navigationBarLabel: StockConstants.navigationBarStocksLabel,
-            title:
-                'Add Stocks investments or monitoring alarms to your portfolio',
+            title: 'Stocks and Alerts',
             subtitle:
-                'Track the current investments or just alerts points on market options'),
+                'Add Stocks investments or just price Alerts in your portfolio to monitor them.'),
         FunctionalityCardWidget(
             navigationBarIcon: StockConstants.navigationBarTrendsIcon,
             navigationBarLabel: StockConstants.navigationBarTrendsLabel,
-            title: 'Check positions historic track',
-            subtitle: 'Work In Progress'),
+            title: 'Latest Trends',
+            subtitle:
+                'Trends of the last few days in the Stocks and Alerts of the Portfolio.'),
         FunctionalityCardWidget(
             navigationBarIcon: StockConstants.navigationBarSettingsIcon,
             navigationBarLabel: StockConstants.navigationBarSettingsLabel,
-            title: 'Configure receive stock price notifications',
+            title: 'Stock Configuration',
             subtitle:
-                'Every 15min or hourly, during the schedule hours configured.',
+                'Schedule the frequency to check Stock Alerts in your portfolio. '
+                'It can be every 15min or every hour within the range of defined hours.',
             trailingIcon:
                 Icon(StockConstants.functionalityStockPriceNotification)),
         FunctionalityCardWidget(
             navigationBarIcon: StockConstants.navigationBarSettingsIcon,
             navigationBarLabel: StockConstants.navigationBarSettingsLabel,
-            title: 'Handle different stock position files',
-            subtitle: 'Manage different files',
+            title: 'Manage different Portfolio files',
+            subtitle:
+                'More than one file can be handled to monitor different portfolio simulations. '
+                'Only the selected Portfolio will trigger the configured alerts in your device.',
             trailingIcon: Icon(StockConstants.functionalityStockFile)),
       ];
 }

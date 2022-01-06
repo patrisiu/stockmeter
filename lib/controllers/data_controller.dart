@@ -66,24 +66,19 @@ class DataController {
       await _googleSheetsService.clearDataRows(
           authHeaders, spreadsheetId, _stockDeleteRange(rowIndex));
 
-  Future<List> getTrendGoogleFinance(
+  Future<List> getTrends(
       Map<String, String> authHeaders, String sheetId, String symbol) async {
-    final SheetStatus response = await _googleSheetsService.addSheet(
-        authHeaders,
-        sheetId,
-        '{"requests":[{"addSheet":{"properties":{"gridProperties":{"columnCount":2,"rowCount":999},"title":"$symbol"}}}]}');
-    if (SheetStatus.exists == response) {
-      // clear data
-    }
-    final String body =
-        '{"values": [["=GOOGLEFINANCE(\\"$symbol\\";\\"price\\";TODAY()-100;TODAY())"]]}';
-    await _googleSheetsService.setDataRows(
-        authHeaders, sheetId, _trendSetRange(symbol), body);
-
-    final String responseAfter = await _googleSheetsService.getDataRows(
-        authHeaders, sheetId, _trendGetRange(symbol));
-    final List rowsValues = _getRowValues(jsonDecode(responseAfter));
-    return rowsValues;
+    final String response = await _googleSheetsService
+        .addSheet(authHeaders, sheetId,
+            '{"requests":[{"addSheet":{"properties":{"gridProperties":{"columnCount":6,"rowCount":999},"title":"$symbol"}}}]}')
+        .then((value) async => await _googleSheetsService.setDataRows(
+            authHeaders,
+            sheetId,
+            _trendSetRange(symbol),
+            '{"values": [["=GOOGLEFINANCE(\\"$symbol\\";\\"price\\";TODAY()-100;TODAY())"]]}'))
+        .then((value) async => await _googleSheetsService.getDataRows(
+            authHeaders, sheetId, _trendGetRange(symbol)));
+    return _getRowValues(jsonDecode(response));
   }
 
   String _mapSheetId(String response) => jsonDecode(response)['spreadsheetId'];
