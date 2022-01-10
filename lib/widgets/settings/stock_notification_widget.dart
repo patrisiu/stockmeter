@@ -8,7 +8,7 @@ import 'package:stockmeter/controllers/background_controller.dart';
 import 'package:stockmeter/controllers/foreground_controller.dart';
 import 'package:stockmeter/models/app_model.dart';
 import 'package:stockmeter/notifications/foreground_notification.dart';
-import 'package:stockmeter/widgets/StockElevatedButton.dart';
+import 'package:stockmeter/widgets/stock_elevated_button.dart';
 
 class StockNotificationWidget extends StatelessWidget {
   final ForegroundController _foregroundController =

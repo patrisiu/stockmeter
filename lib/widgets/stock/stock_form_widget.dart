@@ -4,7 +4,7 @@ import 'package:stockmeter/configurations/constants.dart';
 import 'package:stockmeter/controllers/foreground_controller.dart';
 import 'package:stockmeter/daos/stock_dao.dart';
 import 'package:stockmeter/models/stock.dart';
-import 'package:stockmeter/widgets/StockElevatedButton.dart';
+import 'package:stockmeter/widgets/stock_elevated_button.dart';
 
 class StockFormWidget extends StatefulWidget {
   final Stock stock;

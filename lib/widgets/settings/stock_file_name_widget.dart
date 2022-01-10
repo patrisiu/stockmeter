@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stockmeter/controllers/foreground_controller.dart';
-import 'package:stockmeter/widgets/StockElevatedButton.dart';
+import 'package:stockmeter/widgets/stock_elevated_button.dart';
 
 class StockFileNameWidget extends StatefulWidget {
   const StockFileNameWidget({Key? key, required this.stockFileName})

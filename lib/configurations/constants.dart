@@ -74,4 +74,5 @@ class StockConstants {
   static const String debugNotification = 'debugNotification';
 
   static const Color activeColor = Color(0xFF0097A7);
+  final Color colors = Colors.white70;
 }

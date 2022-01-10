@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:stockmeter/controllers/foreground_controller.dart';
 import 'package:stockmeter/models/app_model.dart';
-import 'package:stockmeter/widgets/StockElevatedButton.dart';
+import 'package:stockmeter/widgets/stock_elevated_button.dart';
 
 class SignInOutWidget extends StatelessWidget {
   final ForegroundController foregroundController =
