@@ -85,7 +85,9 @@ class GoogleSheetsService {
       body: body,
     );
     if (response.statusCode != 200 &&
-        (response.statusCode != 400 ||
+        (response.statusCode != 400 &&
+            jsonDecode(response.body)['error']['message']
+                .contains('A sheet with the name') &&
             jsonDecode(response.body)['error']['message']
                 .contains('already exists'))) {
       throw Exception(response.reasonPhrase);

@@ -186,7 +186,7 @@ class ForegroundController {
         _sharedPreferences.getStringList(symbol) ?? [];
     List<TrendModel> trends =
         trendsFromLocal.map((e) => _parseToTrendChartModel(e)).toList();
-    if (trends.isEmpty || _isOutdatedAndTodayWorkDay(trends.last.date)) {
+    if (trends.isEmpty || _trendIsOutdated(trends.last.date)) {
       List<String> trendsFromService = [];
       try {
         trendsFromService = await _getTrendFromService(symbol);
@@ -200,7 +200,7 @@ class ForegroundController {
     return trends;
   }
 
-  bool _isOutdatedAndTodayWorkDay(DateTime lastTrendDate) {
+  bool _trendIsOutdated(DateTime lastTrendDate) {
     DateTime today = DateTime.now();
     int daysBackToCompare = 1;
     if (today.weekday == DateTime.monday) {
