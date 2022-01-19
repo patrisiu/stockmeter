@@ -6,6 +6,8 @@ import 'package:stockmeter/utils/sheet_data.dart';
 
 class GoogleSheetsService {
   static const String _apiKey = StockConstants.apiKey;
+  static const String _mimeType = StockConstants.mimeType;
+  static const String _fileName = StockConstants.fileName;
   static const Map<String, String> _applicationJsonHeaders = {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
@@ -17,6 +19,21 @@ class GoogleSheetsService {
       GoogleSheetsApiUriRequestCreateFileBuilder(_apiKey).build(),
       headers: authHeaders,
       body: SheetData().create(),
+    );
+    if (response.statusCode != 200) {
+      throw Exception(response.reasonPhrase);
+    }
+    return response.body;
+  }
+
+  Future<String> copyDriveFile(
+      Map<String, String> authHeaders, String sheetId) async {
+    String data = '{"mimeType": "$_mimeType", "name": "$_fileName"}';
+    authHeaders.addAll(_applicationJsonHeaders);
+    final http.Response response = await http.post(
+      GoogleDriveApiUriRequestCopyFileBuilder(_apiKey, sheetId).build(),
+      headers: authHeaders,
+      body: data,
     );
     if (response.statusCode != 200) {
       throw Exception(response.reasonPhrase);
@@ -103,6 +120,19 @@ class GoogleSheetsApiUriRequestCreateFileBuilder {
   GoogleSheetsApiUriRequestCreateFileBuilder(this._apiKey);
 
   Uri build() => Uri.https(_baseApiUrl, _unencodedPath, {'key': _apiKey});
+}
+
+class GoogleDriveApiUriRequestCopyFileBuilder {
+  final String _authority = 'www.googleapis.com';
+  final String _unencodedPath = '/drive/v3/files/';
+  final String _copy = 'copy';
+  final String _apiKey;
+  final String _templateId;
+
+  GoogleDriveApiUriRequestCopyFileBuilder(this._apiKey, this._templateId);
+
+  Uri build() => Uri.https(
+      _authority, _unencodedPath + _templateId + _copy, {'key': _apiKey});
 }
 
 class GoogleSheetsApiUriRequestGetDataBuilder {

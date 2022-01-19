@@ -23,11 +23,13 @@ class _TrendsScreenState extends State<TrendsScreen> {
   @override
   Widget build(BuildContext context) => ScopedModelDescendant<AppModel>(
       builder: (context, child, model) => RefreshIndicator(
-          onRefresh: () async => await _foregroundController.fetchStocks(),
+          onRefresh: () async => await _foregroundController
+              .fetchStocks()
+              .whenComplete(() => load()),
           child: ListView(
               children: model.trends.entries
-                  .map((trend) =>
-                      TrendChartCard(title: trend.key, data: trend.value))
+                  .map((trend) => TrendChartCard(
+                      key: UniqueKey(), title: trend.key, data: trend.value))
                   .toList(),
               physics: const AlwaysScrollableScrollPhysics())));
 

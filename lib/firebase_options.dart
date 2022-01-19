@@ -44,10 +44,11 @@ class DefaultFirebaseOptions {
     projectId: 'stockmeter-1bee0',
     authDomain: 'stockmeter-1bee0.firebaseapp.com',
     storageBucket: 'stockmeter-1bee0.appspot.com',
+    measurementId: 'G-JSKGTEKVFF',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCglma1HiRgyoM3uDrXFArXuaNUJzRwnV8',
+    apiKey: 'AIzaSyDTC3ECXA292jpib0XU51RXrK-rSz_uhx0',
     appId: '1:1010107161043:android:7d21a09d0595dce86eb726',
     messagingSenderId: '1010107161043',
     projectId: 'stockmeter-1bee0',

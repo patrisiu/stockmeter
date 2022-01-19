@@ -17,18 +17,12 @@ class AppModel extends Model with ScreenModel, AuthModel {
   DateTime? _lastUpdate;
   late String _sortBy;
 
-  StockFile? _stockFile;
-  List<StockFile> _stockFiles = [];
+  StockFile? stockFile;
+  List<StockFile> stockFiles = [];
 
   bool _debugNotification = false;
 
   bool _createFileOption = false;
-
-  StockFile? get stockFile => _stockFile;
-
-  set stockFile(StockFile? value) {
-    _stockFile = value;
-  }
 
   String _notificationCheck = StockConstants.notificationCheckDisabled;
 
@@ -70,6 +64,8 @@ class AppModel extends Model with ScreenModel, AuthModel {
     _lastUpdate = DateTime.now();
     if (_stocks.isNotEmpty) {
       _sortStocks();
+    } else {
+      _trends = new Map();
     }
     notifyListeners();
   }
@@ -89,12 +85,6 @@ class AppModel extends Model with ScreenModel, AuthModel {
   void updateTrend(String symbol, List<TrendModel> trend) {
     _trends.update(symbol, (value) => trend, ifAbsent: () => trend);
     notifyListeners();
-  }
-
-  List<StockFile> get stockFiles => _stockFiles;
-
-  set stockFiles(List<StockFile> value) {
-    _stockFiles = value;
   }
 
   void setSortBy(String value) {

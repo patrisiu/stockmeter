@@ -73,7 +73,6 @@ class ForegroundController {
     _appModel.createFileOption = false;
     _appModel.summary = null;
     _appModel.stocks = [];
-    _appModel.trends = new Map();
     _appModel.notificationCheck = StockConstants.notificationCheckDisabled;
     _appModel.debugNotification = false;
     _sharedPreferences.clear();
@@ -102,10 +101,10 @@ class ForegroundController {
     } else {
       _appModel.createFileOption = true;
     }
-    await updateStockFileWithName();
+    await _updateStockFileWithName();
   }
 
-  Future<void> updateStockFileWithName() async {
+  Future<void> _updateStockFileWithName() async {
     List<String> sheetIds =
         _appModel.stockFiles.map((stockFile) => stockFile.id).toList();
     List<StockFile> stockFilesWithName = [];
@@ -146,6 +145,23 @@ class ForegroundController {
     }
   }
 
+  Future<void> copyStockFile() async {
+    _appModel.createFileOption = false;
+    try {
+      String sheetId = await _dataController
+          .copySheetFile(await _getAuthHeaders(), _appModel.stockFile!.id)
+          .whenComplete(() =>
+              setStockFileName('Copy of ${_appModel.stockFile?.name ?? ''}'));
+      StockFile stockFile = new StockFile(sheetId);
+      _appModel.stockFiles.add(stockFile);
+      updateSelectedSpreadsheetId = stockFile;
+      await _refreshAuthHeaders();
+    } on Exception catch (e) {
+      _appModel.createFileOption = _appModel.stockFile == null;
+      ForegroundNotification().error(context, e.toString());
+    }
+  }
+
   Future<void> createStock(StockDAO stockDAO) async {
     try {
       await _dataController.createStock(
@@ -173,8 +189,14 @@ class ForegroundController {
     }
   }
 
+  Future<void> deleteTrendFromLocal(String symbol) async =>
+      await _sharedPreferences.remove(symbol);
+
   Future<void> lazyLoadTrends() async {
-    Set<String> symbols = _appModel.stocks.map((stock) => stock.symbol).toSet();
+    Set<String> symbols = _appModel.stocks
+        .where((stock) => stock.price != 0)
+        .map((stock) => stock.symbol)
+        .toSet();
     _appModel.removeUnneededTrends(symbols);
     symbols.forEach((symbol) async => await _getTrendFromLocalOrService(symbol)
         .then((trend) => _appModel.updateTrend(symbol, trend),
@@ -273,11 +295,12 @@ class ForegroundController {
   }
 
   set updateSelectedSpreadsheetId(StockFile? stockFile) {
-    _updateSpreadsheetIdOnSharedPreferences(stockFile);
+    _updateSheetIdOnSharedPreferences(stockFile);
+    _appModel.stocks = [];
     _appModel.stockFile = stockFile;
   }
 
-  void _updateSpreadsheetIdOnSharedPreferences(StockFile? stockFile) {
+  void _updateSheetIdOnSharedPreferences(StockFile? stockFile) {
     if (stockFile == null) {
       _sharedPreferences.remove(StockConstants.sheetId);
     } else {
@@ -355,8 +378,10 @@ class ForegroundController {
 
   Future<void> setStockFileName(String fileName) async {
     try {
-      await _dataController.setStockFileName(
-          await _getAuthHeaders(), _appModel.stockFile!.id, fileName);
+      await _dataController
+          .setStockFileName(
+              await _getAuthHeaders(), _appModel.stockFile!.id, fileName)
+          .whenComplete(() async => await _updateStockFileWithName());
       _appModel.stockFile!.name = fileName;
     } on Exception catch (e) {
       ForegroundNotification().error(context, e.toString());

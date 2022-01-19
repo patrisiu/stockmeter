@@ -60,10 +60,7 @@ class _StockFileNameWidgetState extends State<StockFileNameWidget> {
       });
       _formKey.currentState!.save();
       Navigator.of(context).pop();
-      await _foregroundController
-          .setStockFileName(_stockFileName!)
-          .whenComplete(() async =>
-              await _foregroundController.updateStockFileWithName());
+      await _foregroundController.setStockFileName(_stockFileName!);
     }
   }
 }

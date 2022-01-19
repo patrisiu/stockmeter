@@ -17,10 +17,13 @@ class DataController {
   final GoogleSheetsService _googleSheetsService =
       GetIt.instance<GoogleSheetsService>();
 
-  Future<String> createSheetFile(Map<String, String> authHeaders) async {
-    String response = await _googleSheetsService.createSheetFile(authHeaders);
-    return _mapSheetId(response);
-  }
+  Future<String> createSheetFile(Map<String, String> authHeaders) async =>
+      _mapSheetId(await _googleSheetsService.createSheetFile(authHeaders));
+
+  Future<String> copySheetFile(
+          Map<String, String> authHeaders, String sheetId) async =>
+      _mapSheetId(
+          await _googleSheetsService.copyDriveFile(authHeaders, sheetId));
 
   Future<List<String>> getSheetIds(Map<String, String> authHeaders) async {
     String response = await _googleDriveService.getDriveFiles(authHeaders);

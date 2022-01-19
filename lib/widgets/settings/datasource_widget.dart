@@ -94,11 +94,13 @@ class DataSourceWidget extends StatelessWidget {
               child: Icon(Icons.find_in_page_rounded))),
       Divider(thickness: 1),
       ListTile(
+          enabled: model.createFileOption,
           title: const Text('Copy the current Stock File'),
           subtitle: const Text('Clone the current Stock File into a new one.'),
-          trailing: _copyCurrentStockFileButton(context)),
+          trailing: _copyStockFileButton(context)),
       Divider(thickness: 1),
       ListTile(
+          enabled: model.createFileOption,
           title: const Text('Create a new Stock File'),
           subtitle: const Text('Generate an empty new Stock File.'),
           trailing: _createNewStockFileButton(context)),
@@ -131,15 +133,18 @@ class DataSourceWidget extends StatelessWidget {
       onPressed: () => _createStockFile(context),
       child: Icon(Icons.upload_file_rounded));
 
-  Widget _copyCurrentStockFileButton(BuildContext context) {
-    // TODO name file as Copy of ... named or sheetId
-    return StockElevatedButton(
-        onPressed: () => null, child: Icon(Icons.file_copy_rounded));
-  }
-
   Future<void> _createStockFile(BuildContext context) async {
     Navigator.of(context).pop();
     await _foregroundController.createStockFile();
+  }
+
+  Widget _copyStockFileButton(BuildContext context) => StockElevatedButton(
+      onPressed: () => _copyStockFile(context),
+      child: Icon(Icons.file_copy_rounded));
+
+  Future<void> _copyStockFile(BuildContext context) async {
+    Navigator.of(context).pop();
+    await _foregroundController.copyStockFile();
   }
 
   Widget _deleteStockFileButton(BuildContext context, String spreadsheetId) =>

@@ -1,12 +1,13 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:stockmeter/secrets/secrets.dart';
 
 class StockConstants {
   static const String appTitle = 'StockMeter';
   static const String mimeType = 'application/vnd.google-apps.spreadsheet';
   static const String fileName = 'com.patrisiu.stockmeter';
-  static const String apiKey = 'AIzaSyCglma1HiRgyoM3uDrXFArXuaNUJzRwnV8';
+  static const String apiKey = Secrets.apiKey;
 
   static const List<String> scopes = [
     'email',
