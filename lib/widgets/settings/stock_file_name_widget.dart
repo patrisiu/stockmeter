@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:stockmeter/configurations/constants.dart';
 import 'package:stockmeter/controllers/foreground_controller.dart';
 import 'package:stockmeter/widgets/stock_elevated_button.dart';
 
@@ -32,15 +33,18 @@ class _StockFileNameWidgetState extends State<StockFileNameWidget> {
       title: Form(
         key: _formKey,
         child: TextFormField(
+            cursorColor: StockConstants.activeColor,
             keyboardType: TextInputType.text,
             initialValue: widget.stockFileName,
             decoration: InputDecoration(
-              labelText: 'Position File Name',
-            ),
+                labelText: 'Stock File Name',
+                labelStyle: TextStyle(color: StockConstants.activeColor)),
             onSaved: (String? value) => _stockFileName = value ?? '',
             validator: (String? value) => _stockFileNameValidator(value)),
       ),
-      subtitle: const Text('Name to identify it easier.'),
+      subtitle: Padding(
+          padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
+          child: const Text('Set a name to identify it easier.')),
       trailing: _onPressedButton
           ? null
           : StockElevatedButton(

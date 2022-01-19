@@ -83,17 +83,16 @@ class ForegroundController {
     List<String> sheetIds = await _getSpreadsheetIds(await _getAuthHeaders());
 
     _appModel.createFileOption = false;
-    String? spreadsheetId =
-        _sharedPreferences.getString(StockConstants.sheetId);
+    String? sheetId = _sharedPreferences.getString(StockConstants.sheetId);
 
     List<StockFile> stockFiles =
         sheetIds.map((sheetId) => new StockFile(sheetId)).toList();
     _appModel.stockFiles = stockFiles;
 
-    if (spreadsheetId != null &&
-        stockFiles.any((stockFile) => stockFile.id == spreadsheetId)) {
+    if (sheetId != null &&
+        stockFiles.any((stockFile) => stockFile.id == sheetId)) {
       _appModel.stockFile =
-          stockFiles.firstWhere((stockFile) => stockFile.id == spreadsheetId);
+          stockFiles.firstWhere((stockFile) => stockFile.id == sheetId);
       _appModel.stockFile!.name = await _getSheetName(_appModel.stockFile!.id);
     } else if (stockFiles.isNotEmpty) {
       _appModel.stockFile = stockFiles.first;
@@ -112,9 +111,9 @@ class ForegroundController {
     List<StockFile> stockFilesWithName = [];
     try {
       await Future.wait(sheetIds.map((sheetId) async {
-        String? spreadsheetName = await _getSheetName(sheetId);
+        String? fileName = await _getSheetName(sheetId);
         StockFile stockFile = new StockFile(sheetId);
-        stockFile.name = spreadsheetName;
+        stockFile.name = fileName;
         stockFilesWithName.add(stockFile);
       }).toList());
       _appModel.stockFiles = stockFilesWithName;
@@ -178,7 +177,9 @@ class ForegroundController {
     Set<String> symbols = _appModel.stocks.map((stock) => stock.symbol).toSet();
     _appModel.removeUnneededTrends(symbols);
     symbols.forEach((symbol) async => await _getTrendFromLocalOrService(symbol)
-        .then((trend) => _appModel.updateTrend(symbol, trend)));
+        .then((trend) => _appModel.updateTrend(symbol, trend),
+            onError: (error) =>
+                ForegroundNotification().error(context, error.toString())));
   }
 
   Future<List<TrendModel>> _getTrendFromLocalOrService(String symbol) async {
@@ -251,10 +252,10 @@ class ForegroundController {
   }
 
   Future<void> _fetchStocks(
-      Map<String, String> authHeaders, String spreadsheetId) async {
+      Map<String, String> authHeaders, String sheetId) async {
     try {
       _appModel.stocks =
-          await _dataController.fetchStocks(authHeaders, spreadsheetId);
+          await _dataController.fetchStocks(authHeaders, sheetId);
     } on Exception catch (e) {
       ForegroundNotification().error(context, e.toString());
     }
@@ -317,10 +318,10 @@ class ForegroundController {
 
   Future<void> refreshFileContent(StockFile stockFile) async {
     updateSelectedSpreadsheetId = stockFile;
-    await _refreshAuthHeadersAndFechStocks();
+    await _refreshAuthHeadersAndFetchStocks();
   }
 
-  Future<void> _refreshAuthHeadersAndFechStocks() async =>
+  Future<void> _refreshAuthHeadersAndFetchStocks() async =>
       await _refreshAuthHeaders()
           .whenComplete(() async => {await fetchStocks()});
 
@@ -334,11 +335,10 @@ class ForegroundController {
 
   Future<void> deleteStockFile() async {
     try {
-      String spreadsheetId = _appModel.stockFile!.id;
-      await _dataController.deleteSheetFile(
-          await _getAuthHeaders(), spreadsheetId);
+      String sheetId = _appModel.stockFile!.id;
+      await _dataController.deleteSheetFile(await _getAuthHeaders(), sheetId);
       List<StockFile> stockFiles = _appModel.stockFiles
-          .where((stockFile) => stockFile.id != spreadsheetId)
+          .where((stockFile) => stockFile.id != sheetId)
           .toList();
       _appModel.stockFiles = stockFiles;
       if (stockFiles.isEmpty) {
@@ -353,11 +353,11 @@ class ForegroundController {
     }
   }
 
-  Future<void> setStockFileName(String positionFileName) async {
+  Future<void> setStockFileName(String fileName) async {
     try {
       await _dataController.setStockFileName(
-          await _getAuthHeaders(), _appModel.stockFile!.id, positionFileName);
-      _appModel.stockFile!.name = positionFileName;
+          await _getAuthHeaders(), _appModel.stockFile!.id, fileName);
+      _appModel.stockFile!.name = fileName;
     } on Exception catch (e) {
       ForegroundNotification().error(context, e.toString());
     }

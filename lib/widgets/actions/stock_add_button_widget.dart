@@ -3,7 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:stockmeter/builders/stock_builder.dart';
 import 'package:stockmeter/configurations/constants.dart';
 import 'package:stockmeter/models/app_model.dart';
-import 'package:stockmeter/widgets/stock/stock_form_widget.dart';
+import 'package:stockmeter/widgets/stock/stock_form_dialog.dart';
 
 class StockAddButtonWidget extends StatelessWidget {
   final String _tooltip = 'Add Stock';
@@ -24,8 +24,6 @@ class StockAddButtonWidget extends StatelessWidget {
 
   _showMaterialDialog(BuildContext context) => showDialog(
       context: context,
-      builder: (BuildContext context) => Dialog(
-          // shape: RoundedRectangleBorder(
-          // borderRadius: BorderRadius.circular(20.0)), //this right here
-          child: StockFormWidget(StockBuilder().buildBlank())));
+      builder: (BuildContext context) =>
+          StockFormDialog(stock: StockBuilder().buildBlank()));
 }

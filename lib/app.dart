@@ -57,7 +57,7 @@ class _StockMeterAppState extends State<StockMeterApp>
             yield 'Loading Stored Preferences...';
             _sharedPreferences = await SharedPreferences.getInstance();
             yield 'Init Background Controller...';
-            _backgroundController.initialize(_sharedPreferences);
+            await _backgroundController.initialize(_sharedPreferences);
             yield 'Init Foreground Controller...';
             await _foregroundController.initialize(
                 _appModel, _sharedPreferences, _backgroundController);

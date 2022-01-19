@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stockmeter/models/stock.dart';
+import 'package:stockmeter/widgets/stock/stock_form_dialog.dart';
 import 'package:stockmeter/widgets/stock/stock_alert_card_widget.dart';
-import 'package:stockmeter/widgets/stock/stock_form_widget.dart';
 import 'package:stockmeter/widgets/stock/stock_trade_card_widget.dart';
 import 'package:stockmeter/widgets/stock/stock_warning_widget.dart';
 
@@ -22,8 +22,5 @@ class StockCardWidget extends StatelessWidget {
 
   void _onLongPress(BuildContext context, Stock stock) => showDialog(
       context: context,
-      builder: (BuildContext context) => Dialog(
-          // shape: RoundedRectangleBorder(
-          // borderRadius: BorderRadius.circular(20.0)), //this right here
-          child: StockFormWidget(stock)));
+      builder: (BuildContext context) => StockFormDialog(stock: stock));
 }

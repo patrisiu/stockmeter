@@ -8,13 +8,13 @@ class StockBuilder {
     stock.purchaseDate = row.elementAt(index++);
     stock.stocks = int.tryParse(row.elementAt(index++));
     stock.purchasePrice = double.tryParse(row.elementAt(index++));
-    stock.currency = row.elementAt(index++);
     stock.fees = double.tryParse(row.elementAt(index++));
     stock.tax = double.tryParse(row.elementAt(index++));
     stock.alertAbove = double.tryParse(row.elementAt(index++));
     stock.alertBelow = double.tryParse(row.elementAt(index++));
     stock.hasToNotify =
         row.elementAt(index++).toString().toUpperCase() == 'TRUE';
+    stock.currency = row.elementAt(index++);
     stock.purchaseCapital = double.tryParse(row.elementAt(index++))!;
     stock.price = double.tryParse(row.elementAt(index++))!;
     stock.capitalValue = double.tryParse(row.elementAt(index++))!;
@@ -39,8 +39,6 @@ class StockBuilder {
       '',
       // purchasePrice
       '',
-      // currency
-      '',
       // commissions
       '',
       // fees
@@ -51,6 +49,8 @@ class StockBuilder {
       '',
       // hasToNotify
       'TRUE',
+      // currency
+      '',
       // purchaseCapital
       '0',
       // price

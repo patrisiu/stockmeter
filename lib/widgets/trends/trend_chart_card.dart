@@ -37,7 +37,9 @@ class TrendChartCard extends StatelessWidget {
       Padding(padding: TrendChartCard._edgeInsetsTitle, child: header);
 
   Widget _lastPriceCompared(List<TrendModel> data, Stock stock) {
-    List<Widget> _children = [Text('${stock.price} ${stock.currency}')];
+    List<Widget> _children = [
+      Text('${stock.price.toStringAsFixed(3)} ${stock.currency}')
+    ];
     if (data.isNotEmpty) {
       _children.addAll(_todayVariation(data.last.value, stock.price));
     }

@@ -4,16 +4,16 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:stockmeter/controllers/foreground_controller.dart';
 import 'package:stockmeter/models/app_model.dart';
 import 'package:stockmeter/models/stock_file.dart';
-import 'package:stockmeter/widgets/stock_elevated_button.dart';
 import 'package:stockmeter/widgets/confirm_alert_dialog_widget.dart';
 import 'package:stockmeter/widgets/settings/create_file_button_widget.dart';
 import 'package:stockmeter/widgets/settings/stock_file_name_widget.dart';
+import 'package:stockmeter/widgets/stock_elevated_button.dart';
 
 class DataSourceWidget extends StatelessWidget {
   final ForegroundController _foregroundController =
       GetIt.instance<ForegroundController>();
   final String _stockNotificationOnlyOnSelectedFile =
-      'Stock Notification will check only on the selected Stock File.';
+      'Updates and notifications will apply only on the selected Stock File.';
 
   @override
   Widget build(BuildContext context) => ScopedModelDescendant<AppModel>(
@@ -82,18 +82,8 @@ class DataSourceWidget extends StatelessWidget {
     List<Widget> _children = [
       ListTile(
           leading: Icon(Icons.settings, size: 40),
-          title: const Text('Edit the current Stock File')),
-      StockFileNameWidget(stockFileName: model.stockFile!.name ?? ''),
-      Divider(thickness: 1),
-      ListTile(
-          title: const Text('Delete the actual Stock File'),
-          subtitle: const Text('The file will be permanently erased.'),
-          trailing: _deleteStockFileButton(context, model.stockFile!.id)),
-      Divider(thickness: 1),
-      ListTile(
-          title: const Text('Create another Stock File'),
-          subtitle: Text(_stockNotificationOnlyOnSelectedFile),
-          trailing: _createAnotherStockFileButton(context)),
+          title: const Text('Edit the selected Stock File')),
+      StockFileNameWidget(stockFileName: model.stockFile?.name ?? ''),
       Divider(thickness: 1),
       ListTile(
           enabled: model.stockFiles.length > 1,
@@ -103,6 +93,20 @@ class DataSourceWidget extends StatelessWidget {
               onPressed: () => _selectStockFileMenu(context, model.stockFiles),
               child: Icon(Icons.find_in_page_rounded))),
       Divider(thickness: 1),
+      ListTile(
+          title: const Text('Copy the current Stock File'),
+          subtitle: const Text('Clone the current Stock File into a new one.'),
+          trailing: _copyCurrentStockFileButton(context)),
+      Divider(thickness: 1),
+      ListTile(
+          title: const Text('Create a new Stock File'),
+          subtitle: const Text('Generate an empty new Stock File.'),
+          trailing: _createNewStockFileButton(context)),
+      Divider(thickness: 1),
+      ListTile(
+          title: const Text('Delete the current Stock File'),
+          subtitle: const Text('The file will be permanently erased.'),
+          trailing: _deleteStockFileButton(context, model.stockFile!.id))
     ];
     return await showModalBottomSheet(
         context: context,
@@ -123,10 +127,15 @@ class DataSourceWidget extends StatelessWidget {
     return await _showSheetIdsAvailable(context, stockFiles);
   }
 
-  Widget _createAnotherStockFileButton(BuildContext context) =>
-      StockElevatedButton(
-          onPressed: () => _createStockFile(context),
-          child: Icon(Icons.file_copy_rounded));
+  Widget _createNewStockFileButton(BuildContext context) => StockElevatedButton(
+      onPressed: () => _createStockFile(context),
+      child: Icon(Icons.upload_file_rounded));
+
+  Widget _copyCurrentStockFileButton(BuildContext context) {
+    // TODO name file as Copy of ... named or sheetId
+    return StockElevatedButton(
+        onPressed: () => null, child: Icon(Icons.file_copy_rounded));
+  }
 
   Future<void> _createStockFile(BuildContext context) async {
     Navigator.of(context).pop();

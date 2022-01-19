@@ -10,7 +10,7 @@ import 'package:stockmeter/services/google_sheets_service.dart';
 class DataController {
   static const String _stocksRange = 'stocks!A3:U999';
   static const String _stockAppendRange = 'stocks!A3:J3:append';
-  static const String _spreadsheetName = 'stocks!J1';
+  static const String _spreadsheetName = 'stocks!I1';
 
   final GoogleDriveService _googleDriveService =
       GetIt.instance<GoogleDriveService>();
@@ -38,26 +38,28 @@ class DataController {
     return rowsValues.map((row) => StockBuilder().build(row)).toList();
   }
 
-  Future<void> createStock(Map<String, String> authHeaders,
-      String spreadsheetId, StockDAO stockDAO) async {
-    final String response = await _googleSheetsService.appendDataRows(
-        authHeaders,
-        spreadsheetId,
-        _stockAppendRange,
-        stockDAO.rowInputtedValues());
-    final String updatedRange = _mapUpdatedRange(response);
-    final int row = _mapUpdatedRow(updatedRange);
-    await _googleSheetsService.setDataRows(authHeaders, spreadsheetId,
-        _stockCreateRange(row), stockDAO.rowCalculatedValues(row));
-    await _googleSheetsService.setDataRows(authHeaders, spreadsheetId,
-        _stockNotesRange(row), stockDAO.rowNotesValue());
+  Future<void> createStock(Map<String, String> authHeaders, String sheetId,
+      StockDAO stockDAO) async {
+    await _googleSheetsService
+        .appendDataRows(authHeaders, sheetId, _stockAppendRange,
+            stockDAO.rowInputtedValues())
+        .then((response) => _createStockWithCalculatedValues(
+            authHeaders, sheetId, stockDAO, _getUpdatedRowIndex(response)));
   }
 
-  Future<void> updateStock(Map<String, String> authHeaders,
-      String spreadsheetId, StockDAO stockDAO) async {
-    await _googleSheetsService.setDataRows(authHeaders, spreadsheetId,
+  Future<void> _createStockWithCalculatedValues(Map<String, String> authHeaders,
+      String sheetId, StockDAO stockDAO, int rowIndex) async {
+    await _googleSheetsService.setDataRows(authHeaders, sheetId,
+        _stockCreateRange(rowIndex), stockDAO.rowCalculatedValues(rowIndex));
+    await _googleSheetsService.setDataRows(authHeaders, sheetId,
+        _stockNotesRange(rowIndex), stockDAO.rowNotesValue());
+  }
+
+  Future<void> updateStock(Map<String, String> authHeaders, String sheetId,
+      StockDAO stockDAO) async {
+    await _googleSheetsService.setDataRows(authHeaders, sheetId,
         _stockUpdateRange(stockDAO.rowIndex), stockDAO.rowInputtedValues());
-    await _googleSheetsService.setDataRows(authHeaders, spreadsheetId,
+    await _googleSheetsService.setDataRows(authHeaders, sheetId,
         _stockNotesRange(stockDAO.rowIndex), stockDAO.rowNotesValue());
   }
 
@@ -83,6 +85,9 @@ class DataController {
 
   String _mapSheetId(String response) => jsonDecode(response)['spreadsheetId'];
 
+  int _getUpdatedRowIndex(String response) =>
+      _mapUpdatedRow(_mapUpdatedRange(response));
+
   String _mapUpdatedRange(String response) =>
       jsonDecode(response)['updates']['updatedRange'];
 
@@ -92,13 +97,13 @@ class DataController {
     return int.parse(split[0]);
   }
 
-  String _stockCreateRange(int rowIndex) => 'stocks!K$rowIndex:T$rowIndex';
+  String _stockCreateRange(int rowIndex) => 'stocks!J$rowIndex:T$rowIndex';
 
-  String _stockUpdateRange(int rowIndex) => 'stocks!A$rowIndex:J$rowIndex';
+  String _stockUpdateRange(int rowIndex) => 'stocks!A$rowIndex:I$rowIndex';
 
   String _stockDeleteRange(int rowIndex) => 'stocks!A$rowIndex:X$rowIndex';
 
-  String _stockFileNameRange() => 'stocks!J1:J1';
+  String _stockFileNameRange() => 'stocks!I1:I1';
 
   String _stockNotesRange(int rowIndex) => 'stocks!U$rowIndex:U$rowIndex';
 
@@ -107,9 +112,9 @@ class DataController {
   String _trendGetRange(String symbol) => '$symbol!A2:B999';
 
   Future<String?> fetchStockFileName(
-      Map<String, String> authHeaders, String spreadsheetId) async {
+      Map<String, String> authHeaders, String sheetId) async {
     final String response = await _googleSheetsService.getDataRows(
-        authHeaders, spreadsheetId, _spreadsheetName);
+        authHeaders, sheetId, _spreadsheetName);
     final List rowsValues = _getRowValues(json.decode(response));
     final List result = rowsValues.expand((rowValue) => rowValue).toList();
     return result.isEmpty
@@ -118,12 +123,12 @@ class DataController {
   }
 
   Future<void> deleteSheetFile(
-          Map<String, String> authHeaders, String spreadsheetId) async =>
-      await _googleDriveService.deleteDriveFile(authHeaders, spreadsheetId);
+          Map<String, String> authHeaders, String sheetId) async =>
+      await _googleDriveService.deleteDriveFile(authHeaders, sheetId);
 
-  Future<void> setStockFileName(Map<String, String> authHeaders,
-          String spreadsheetId, String stockFileName) async =>
-      await _googleSheetsService.setDataRows(authHeaders, spreadsheetId,
+  Future<void> setStockFileName(Map<String, String> authHeaders, String sheetId,
+          String stockFileName) async =>
+      await _googleSheetsService.setDataRows(authHeaders, sheetId,
           _stockFileNameRange(), '{"values": [["$stockFileName"]]}');
 
   List<dynamic> _getRowValues(Map<String, dynamic> dataRows) =>
