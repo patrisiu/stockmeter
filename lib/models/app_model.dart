@@ -6,14 +6,14 @@ import 'package:stockmeter/models/screen.dart';
 import 'package:stockmeter/models/stock.dart';
 import 'package:stockmeter/models/stock_file.dart';
 import 'package:stockmeter/models/summary.dart';
-import 'package:stockmeter/models/trend_chart_model.dart';
+import 'package:stockmeter/models/trend.dart';
 
 class AppModel extends Model with ScreenModel, AuthModel {
   BuildContext? context;
 
   Summary? _summary;
   List<Stock> _stocks = [];
-  Map<String, List<TrendModel>> _trends = new Map();
+  Map<String, List<Trend>> _trends = new Map();
   DateTime? _lastUpdate;
   late String _sortBy;
 
@@ -70,9 +70,9 @@ class AppModel extends Model with ScreenModel, AuthModel {
     notifyListeners();
   }
 
-  Map<String, List<TrendModel>> get trends => _trends;
+  Map<String, List<Trend>> get trends => _trends;
 
-  set trends(Map<String, List<TrendModel>> value) {
+  set trends(Map<String, List<Trend>> value) {
     _trends = value;
     notifyListeners();
   }
@@ -82,7 +82,7 @@ class AppModel extends Model with ScreenModel, AuthModel {
     notifyListeners();
   }
 
-  void updateTrend(String symbol, List<TrendModel> trend) {
+  void updateTrend(String symbol, List<Trend> trend) {
     _trends.update(symbol, (value) => trend, ifAbsent: () => trend);
     notifyListeners();
   }

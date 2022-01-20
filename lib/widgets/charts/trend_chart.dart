@@ -2,14 +2,14 @@ import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stockmeter/configurations/constants.dart';
-import 'package:stockmeter/models/trend_chart_model.dart';
+import 'package:stockmeter/models/trend.dart';
 
 class TrendChart extends StatefulWidget {
   const TrendChart({Key? key, required this.data, this.animate})
       : super(key: key);
 
   final bool? animate;
-  final List<TrendModel> data;
+  final List<Trend> data;
 
   @override
   State<TrendChart> createState() => _TrendChartState();
@@ -28,11 +28,11 @@ class _TrendChartState extends State<TrendChart> {
   void initState() {
     super.initState();
     seriesList = [
-      new Series<TrendModel, DateTime>(
+      new Series<Trend, DateTime>(
           id: 'Trend',
           colorFn: (_, __) => _getColor(),
-          domainFn: (TrendModel trend, _) => trend.date,
-          measureFn: (TrendModel trend, _) => trend.value,
+          domainFn: (Trend trend, _) => trend.date,
+          measureFn: (Trend trend, _) => trend.value,
           data: widget.data)
     ];
   }

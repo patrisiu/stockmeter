@@ -10,7 +10,7 @@ import 'package:stockmeter/controllers/data_controller.dart';
 import 'package:stockmeter/daos/stock_dao.dart';
 import 'package:stockmeter/models/app_model.dart';
 import 'package:stockmeter/models/stock_file.dart';
-import 'package:stockmeter/models/trend_chart_model.dart';
+import 'package:stockmeter/models/trend.dart';
 import 'package:stockmeter/notifications/foreground_notification.dart';
 import 'package:stockmeter/services/google_auth_service.dart';
 
@@ -191,8 +191,15 @@ class ForegroundController {
     }
   }
 
-  Future<void> deleteTrendFromLocal(String symbol) async =>
+  Future<void> deleteTrend(String symbol) async {
+    try {
       await _sharedPreferences.remove(symbol);
+      await _dataController.deleteTrend(
+          await _getAuthHeaders(), _appModel.stockFile!.id, symbol);
+    } on Exception catch (e) {
+      ForegroundNotification().error(context, e.toString());
+    }
+  }
 
   Future<void> lazyLoadTrends() async {
     Set<String> symbols = _appModel.stocks
@@ -206,10 +213,10 @@ class ForegroundController {
                 ForegroundNotification().error(context, error.toString())));
   }
 
-  Future<List<TrendModel>> _getTrendFromLocalOrService(String symbol) async {
+  Future<List<Trend>> _getTrendFromLocalOrService(String symbol) async {
     List<String> trendsFromLocal =
         _sharedPreferences.getStringList(symbol) ?? [];
-    List<TrendModel> trends =
+    List<Trend> trends =
         trendsFromLocal.map((e) => _parseToTrendChartModel(e)).toList();
     if (trends.isEmpty || _trendIsOutdated(trends.last.date)) {
       List<String> trendsFromService = [];
@@ -240,12 +247,12 @@ class ForegroundController {
   DateTime _dateRoundedToDay(DateTime today) =>
       DateTime(today.year, today.month, today.day);
 
-  TrendModel _parseToTrendChartModel(String e) {
+  Trend _parseToTrendChartModel(String e) {
     List<String> splitData = e.split(',');
     String date = splitData[0].substring(1, splitData[0].length);
     String value = splitData[1].substring(0, splitData[1].length - 1).trim();
     DateFormat dateFormat = new DateFormat('dd/MM/yyyy hh:mm:ss');
-    return new TrendModel(dateFormat.parse(date), double.parse(value));
+    return new Trend(dateFormat.parse(date), double.parse(value));
   }
 
   Future<List<String>> _getTrendFromService(String symbol) async {

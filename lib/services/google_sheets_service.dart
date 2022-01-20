@@ -97,7 +97,7 @@ class GoogleSheetsService {
       Map<String, String> authHeaders, String sheetId, String body) async {
     authHeaders.addAll(_applicationJsonHeaders);
     final http.Response response = await http.post(
-      GoogleSheetsApiUriRequestAddSheetBuilder(sheetId, _apiKey).build(),
+      GoogleSheetsApiUriRequestBatchUpdateBuilder(sheetId, _apiKey).build(),
       headers: authHeaders,
       body: body,
     );
@@ -107,6 +107,30 @@ class GoogleSheetsService {
                 .contains('A sheet with the name') &&
             jsonDecode(response.body)['error']['message']
                 .contains('already exists'))) {
+      throw Exception(response.reasonPhrase);
+    }
+  }
+
+  Future<String> getSheetProperties(
+      Map<String, String> authHeaders, String sheetId) async {
+    final http.Response response = await http.get(
+        new GoogleSheetsApiUriRequestGetSheetPropertiesBuilder(sheetId, _apiKey)
+            .build(),
+        headers: authHeaders);
+    if (response.statusCode != 200) {
+      throw Exception(response.reasonPhrase);
+    }
+    return response.body;
+  }
+
+  Future<void> deleteSheet(
+      Map<String, String> authHeaders, String sheetId, String body) async {
+    final http.Response response = await http.post(
+      GoogleSheetsApiUriRequestBatchUpdateBuilder(sheetId, _apiKey).build(),
+      headers: authHeaders,
+      body: body,
+    );
+    if (response.statusCode != 200) {
       throw Exception(response.reasonPhrase);
     }
   }
@@ -182,15 +206,28 @@ class GoogleSheetsApiUriRequestClearDataBuilder {
       _unencodedPath + _sheetId + _values + _range + _clear, {'key': _apiKey});
 }
 
-class GoogleSheetsApiUriRequestAddSheetBuilder {
+class GoogleSheetsApiUriRequestBatchUpdateBuilder {
   final String _baseApiUrl = 'sheets.googleapis.com';
   final String _unencodedPath = '/v4/spreadsheets/';
   final String _batchUpdate = ':batchUpdate';
   final String _sheetId;
   final String _apiKey;
 
-  GoogleSheetsApiUriRequestAddSheetBuilder(this._sheetId, this._apiKey);
+  GoogleSheetsApiUriRequestBatchUpdateBuilder(this._sheetId, this._apiKey);
 
   Uri build() => Uri.https(
       _baseApiUrl, _unencodedPath + _sheetId + _batchUpdate, {'key': _apiKey});
+}
+
+class GoogleSheetsApiUriRequestGetSheetPropertiesBuilder {
+  final String _baseApiUrl = 'sheets.googleapis.com';
+  final String _unencodedPath = '/v4/spreadsheets/';
+  final String _sheetId;
+  final String _apiKey;
+
+  GoogleSheetsApiUriRequestGetSheetPropertiesBuilder(
+      this._sheetId, this._apiKey);
+
+  Uri build() => Uri.https(_baseApiUrl, _unencodedPath + _sheetId,
+      {'fields': 'sheets.properties', 'key': _apiKey});
 }

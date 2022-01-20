@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:stockmeter/models/app_model.dart';
 import 'package:stockmeter/models/stock.dart';
-import 'package:stockmeter/models/trend_chart_model.dart';
+import 'package:stockmeter/models/trend.dart';
 import 'package:stockmeter/widgets/charts/trend_chart.dart';
 import 'package:url_launcher/url_launcher.dart' as launcher;
 
@@ -15,7 +15,7 @@ class TrendChartCard extends StatelessWidget {
       'https://www.google.com/finance/quote/';
 
   final String title;
-  final List<TrendModel> data;
+  final List<Trend> data;
 
   @override
   Widget build(BuildContext context) => ScopedModelDescendant<AppModel>(
@@ -36,7 +36,7 @@ class TrendChartCard extends StatelessWidget {
   Padding _cardHeader(Widget header) =>
       Padding(padding: TrendChartCard._edgeInsetsTitle, child: header);
 
-  Widget _lastPriceCompared(List<TrendModel> data, Stock stock) {
+  Widget _lastPriceCompared(List<Trend> data, Stock stock) {
     List<Widget> _children = [
       Text('${stock.price.toStringAsFixed(3)} ${stock.currency}')
     ];

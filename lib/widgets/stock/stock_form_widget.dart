@@ -319,7 +319,7 @@ class _StockFormWidgetState extends State<StockFormWidget> {
                 ]));
     if (_pressedDeleteButton) {
       await foregroundController.deleteStock(_stockDAO.rowIndex);
-      await foregroundController.deleteTrendFromLocal(_stockDAO.symbol);
+      await foregroundController.deleteTrend(_stockDAO.symbol);
       await foregroundController.fetchStocks();
       Navigator.of(context).pop();
       setState(() {});

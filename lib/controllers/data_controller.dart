@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get_it/get_it.dart';
 import 'package:stockmeter/builders/stock_builder.dart';
 import 'package:stockmeter/daos/stock_dao.dart';
+import 'package:stockmeter/models/sheet_properties.dart';
 import 'package:stockmeter/models/stock.dart';
 import 'package:stockmeter/services/google_drive_service.dart';
 import 'package:stockmeter/services/google_sheets_service.dart';
@@ -33,9 +34,9 @@ class DataController {
   }
 
   Future<List<Stock>> fetchStocks(
-      Map<String, String> authHeaders, String spreadsheetId) async {
+      Map<String, String> authHeaders, String sheetId) async {
     final String response = await _googleSheetsService.getDataRows(
-        authHeaders, spreadsheetId, _stocksRange);
+        authHeaders, sheetId, _stocksRange);
     final List rowsValues = _getRowValues(json.decode(response));
     rowsValues.removeWhere((element) => element.length == 0);
     return rowsValues.map((row) => StockBuilder().build(row)).toList();
@@ -90,6 +91,31 @@ class DataController {
             authHeaders, sheetId, _trendGetRange(symbol)));
     return _getRowValues(jsonDecode(response));
   }
+
+  Future<void> deleteTrend(
+      Map<String, String> authHeaders, String sheetId, String symbol) async {
+    await _googleSheetsService.getSheetProperties(authHeaders, sheetId).then(
+        (response) => _searchSheetTrendsAndDelete(
+            authHeaders, sheetId, symbol, response));
+  }
+
+  Future<void> _searchSheetTrendsAndDelete(Map<String, String> authHeaders,
+      String sheetId, String symbol, String response) async {
+    List<SheetProperties> sheetProperties = _mapSheetProperties(response)
+        .map((sheet) => sheet['properties'])
+        .map((properties) =>
+            new SheetProperties(properties['sheetId'], properties['title']))
+        .toList();
+    sheetProperties
+        .where((properties) => properties.title == symbol)
+        .map((properties) => properties.sheetId)
+        .forEach((propertiesSheetId) async {
+      await _googleSheetsService.deleteSheet(authHeaders, sheetId,
+          '{"requests": [{"deleteSheet": {"sheetId": $propertiesSheetId}}]}');
+    });
+  }
+
+  List _mapSheetProperties(String response) => jsonDecode(response)['sheets'];
 
   String _mapSheetId(String response) => jsonDecode(response)['spreadsheetId'];
 
