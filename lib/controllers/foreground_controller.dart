@@ -148,14 +148,16 @@ class ForegroundController {
   Future<void> copyStockFile() async {
     _appModel.createFileOption = false;
     try {
-      String sheetId = await _dataController
+      String currentStockFileName = _appModel.stockFile?.name ?? '';
+      await _dataController
           .copySheetFile(await _getAuthHeaders(), _appModel.stockFile!.id)
-          .whenComplete(() =>
-              setStockFileName('Copy of ${_appModel.stockFile?.name ?? ''}'));
-      StockFile stockFile = new StockFile(sheetId);
-      _appModel.stockFiles.add(stockFile);
-      updateSelectedSpreadsheetId = stockFile;
-      await _refreshAuthHeaders();
+          .then((sheetId) async {
+        StockFile stockFile = new StockFile(sheetId);
+        _appModel.stockFiles.add(stockFile);
+        updateSelectedSpreadsheetId = stockFile;
+        setStockFileName('Copy of $currentStockFileName');
+        await _refreshAuthHeaders();
+      });
     } on Exception catch (e) {
       _appModel.createFileOption = _appModel.stockFile == null;
       ForegroundNotification().error(context, e.toString());

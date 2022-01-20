@@ -36,9 +36,7 @@ class _StockFileNameWidgetState extends State<StockFileNameWidget> {
             cursorColor: StockConstants.activeColor,
             keyboardType: TextInputType.text,
             initialValue: widget.stockFileName,
-            decoration: InputDecoration(
-                labelText: 'Stock File Name',
-                labelStyle: TextStyle(color: StockConstants.activeColor)),
+            decoration: InputDecoration(labelText: 'Stock File Name'),
             onSaved: (String? value) => _stockFileName = value ?? '',
             validator: (String? value) => _stockFileNameValidator(value)),
       ),

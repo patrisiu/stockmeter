@@ -125,14 +125,14 @@ class GoogleSheetsApiUriRequestCreateFileBuilder {
 class GoogleDriveApiUriRequestCopyFileBuilder {
   final String _authority = 'www.googleapis.com';
   final String _unencodedPath = '/drive/v3/files/';
-  final String _copy = 'copy';
+  final String _copy = '/copy';
   final String _apiKey;
-  final String _templateId;
+  final String _sheetId;
 
-  GoogleDriveApiUriRequestCopyFileBuilder(this._apiKey, this._templateId);
+  GoogleDriveApiUriRequestCopyFileBuilder(this._apiKey, this._sheetId);
 
   Uri build() => Uri.https(
-      _authority, _unencodedPath + _templateId + _copy, {'key': _apiKey});
+      _authority, _unencodedPath + _sheetId + _copy, {'key': _apiKey});
 }
 
 class GoogleSheetsApiUriRequestGetDataBuilder {

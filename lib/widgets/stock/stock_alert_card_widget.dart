@@ -3,9 +3,9 @@ import 'package:stockmeter/configurations/constants.dart';
 import 'package:stockmeter/models/stock.dart';
 
 class StockAlertCard extends StatefulWidget {
-  final Stock _stock;
+  const StockAlertCard({Key? key, required this.stock}) : super(key: key);
 
-  StockAlertCard(this._stock);
+  final Stock stock;
 
   @override
   _StockAlertCardState createState() => _StockAlertCardState();
@@ -35,19 +35,19 @@ class _StockAlertCardState extends State<StockAlertCard> {
           Padding(
               padding: _edgeInsets,
               child: Center(
-                  child: Text(widget._stock.price.toStringAsFixed(3),
+                  child: Text(widget.stock.price.toStringAsFixed(3),
                       style: TextStyle(fontSize: 20)))),
           _tableRowAlertConfigured(
-              widget._stock.alertAbove!, _alertAboveFontWeight),
+              widget.stock.alertAbove!, _alertAboveFontWeight),
           _tableRowAlertConfigured(
-              widget._stock.alertBelow!, _alertBelowFontWeight)
+              widget.stock.alertBelow!, _alertBelowFontWeight)
         ])
       ])
     ];
-    if (details && widget._stock.notes.isNotEmpty) {
+    if (details && widget.stock.notes.isNotEmpty) {
       _children.add(ListTile(
         title: Text(StockConstants.notes),
-        subtitle: Text(widget._stock.notes),
+        subtitle: Text(widget.stock.notes),
       ));
     }
     return GestureDetector(
@@ -61,13 +61,13 @@ class _StockAlertCardState extends State<StockAlertCard> {
       Padding(padding: _edgeInsetsTitle, child: header);
 
   Widget _cardHeaderWidgetSymbolAndAlert() =>
-      widget._stock.alertAbove == 0 && widget._stock.alertBelow == 0
-          ? Text(widget._stock.symbol)
-          : widget._stock.hasToNotify
+      widget.stock.alertAbove == 0 && widget.stock.alertBelow == 0
+          ? Text(widget.stock.symbol)
+          : widget.stock.hasToNotify
               ? _cardHeaderRowSymbolAndAlert(
-                  widget._stock.symbol, Icons.notifications_on_rounded)
+                  widget.stock.symbol, Icons.notifications_on_rounded)
               : _cardHeaderRowSymbolAndAlert(
-                  widget._stock.symbol, Icons.notifications_off_rounded);
+                  widget.stock.symbol, Icons.notifications_off_rounded);
 
   Row _cardHeaderRowSymbolAndAlert(String symbol, IconData iconData) =>
       Row(children: [Icon(iconData, size: 14), Text(' ' + symbol)]);
@@ -95,14 +95,14 @@ class _StockAlertCardState extends State<StockAlertCard> {
   }
 
   Color? _selectAlertColor() {
-    if (widget._stock.price == 0) {
+    if (widget.stock.price == 0) {
       return Colors.indigo.shade300;
-    } else if (widget._stock.alertBelow != 0 &&
-        widget._stock.price <= widget._stock.alertBelow!) {
+    } else if (widget.stock.alertBelow != 0 &&
+        widget.stock.price <= widget.stock.alertBelow!) {
       _alertBelowFontWeight = FontWeight.bold;
       return Colors.red.shade300;
-    } else if (widget._stock.alertAbove != 0 &&
-        widget._stock.price >= widget._stock.alertAbove!) {
+    } else if (widget.stock.alertAbove != 0 &&
+        widget.stock.price >= widget.stock.alertAbove!) {
       _alertAboveFontWeight = FontWeight.bold;
       return Colors.green.shade300;
     } else {

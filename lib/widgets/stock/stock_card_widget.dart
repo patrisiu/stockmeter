@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stockmeter/models/stock.dart';
-import 'package:stockmeter/widgets/stock/stock_form_dialog.dart';
 import 'package:stockmeter/widgets/stock/stock_alert_card_widget.dart';
+import 'package:stockmeter/widgets/stock/stock_form_dialog.dart';
 import 'package:stockmeter/widgets/stock/stock_trade_card_widget.dart';
 import 'package:stockmeter/widgets/stock/stock_warning_widget.dart';
 
@@ -17,8 +17,8 @@ class StockCardWidget extends StatelessWidget {
   Widget _child(Stock stock) => stock.price == 0
       ? StockWarningWidget(stock: stock)
       : stock.stocks == 0
-          ? StockAlertCard(stock)
-          : StockTradeCard(stock);
+          ? StockAlertCard(key: UniqueKey(), stock: stock)
+          : StockTradeCard(key: UniqueKey(), stock: stock);
 
   void _onLongPress(BuildContext context, Stock stock) => showDialog(
       context: context,

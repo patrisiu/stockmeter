@@ -94,13 +94,11 @@ class DataSourceWidget extends StatelessWidget {
               child: Icon(Icons.find_in_page_rounded))),
       Divider(thickness: 1),
       ListTile(
-          enabled: model.createFileOption,
-          title: const Text('Copy the current Stock File'),
+          title: const Text('Copy the Stock File'),
           subtitle: const Text('Clone the current Stock File into a new one.'),
           trailing: _copyStockFileButton(context)),
       Divider(thickness: 1),
       ListTile(
-          enabled: model.createFileOption,
           title: const Text('Create a new Stock File'),
           subtitle: const Text('Generate an empty new Stock File.'),
           trailing: _createNewStockFileButton(context)),

@@ -3,9 +3,9 @@ import 'package:stockmeter/configurations/constants.dart';
 import 'package:stockmeter/models/stock.dart';
 
 class StockTradeCard extends StatefulWidget {
-  final Stock _stock;
+  const StockTradeCard({Key? key, required this.stock}) : super(key: key);
 
-  StockTradeCard(this._stock);
+  final Stock stock;
 
   @override
   _StockTradeCardState createState() => _StockTradeCardState();
@@ -37,7 +37,7 @@ class _StockTradeCardState extends State<StockTradeCard> {
     List<Widget> _cardMainElements = <Widget>[
       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         _cardHeaderPadding(_cardHeaderWidgetSymbolAndAlert()),
-        _cardHeaderPadding(Text(widget._stock.purchaseDate!))
+        _cardHeaderPadding(Text(widget.stock.purchaseDate!))
       ]),
       Table(children: <TableRow>[
         TableRow(children: <Widget>[
@@ -47,10 +47,10 @@ class _StockTradeCardState extends State<StockTradeCard> {
         ]),
         TableRow(children: <Widget>[
           _profitabilityPercentage(
-              widget._stock.latentProfit, _highlightTextSize),
-          _tableRowElementAsFixed(widget._stock.grossCapitalGain,
+              widget.stock.latentProfit, _highlightTextSize),
+          _tableRowElementAsFixed(widget.stock.grossCapitalGain,
               _highlightTextSize, _stockStatusColor),
-          _tableRowElementAsFixed(widget._stock.netCapitalGain,
+          _tableRowElementAsFixed(widget.stock.netCapitalGain,
               _highlightTextSize, _stockStatusColorLight),
         ]),
         TableRow(children: <Widget>[
@@ -62,12 +62,12 @@ class _StockTradeCardState extends State<StockTradeCard> {
           Padding(
               padding: _edgeInsets,
               child: Center(
-                  child: Text(widget._stock.price.toStringAsFixed(3),
+                  child: Text(widget.stock.price.toStringAsFixed(3),
                       style: TextStyle(fontSize: _regularTextSize)))),
           _tableRowElementAsFixed(
-              widget._stock.capitalValue, _regularTextSize, null),
+              widget.stock.capitalValue, _regularTextSize, null),
           _tableRowElementAsFixed(
-              widget._stock.netProfitDay, _regularTextSize, null),
+              widget.stock.netProfitDay, _regularTextSize, null),
         ]),
       ])
     ];
@@ -83,14 +83,14 @@ class _StockTradeCardState extends State<StockTradeCard> {
           Padding(
               padding: _edgeInsets,
               child: Center(
-                  child: Text(widget._stock.purchasePrice!.toStringAsFixed(3),
+                  child: Text(widget.stock.purchasePrice!.toStringAsFixed(3),
                       style: TextStyle(fontSize: _regularTextSize)))),
           _tableRowElementAsFixed(
-              widget._stock.purchaseCapital, _regularTextSize, null),
+              widget.stock.purchaseCapital, _regularTextSize, null),
           Padding(
               padding: _edgeInsets,
               child: Center(
-                  child: Text(widget._stock.daysOld.toString(),
+                  child: Text(widget.stock.daysOld.toString(),
                       style: TextStyle(fontSize: _regularTextSize)))),
         ]),
         TableRow(children: <Widget>[
@@ -102,14 +102,14 @@ class _StockTradeCardState extends State<StockTradeCard> {
           Padding(
               padding: _edgeInsets,
               child: Center(
-                  child: Text(widget._stock.stocks.toString(),
+                  child: Text(widget.stock.stocks.toString(),
                       style: TextStyle(fontSize: _regularTextSize)))),
-          _tableRowElementAsFixed(widget._stock.fees!, _regularTextSize, null),
+          _tableRowElementAsFixed(widget.stock.fees!, _regularTextSize, null),
           Padding(
               padding: _edgeInsets,
               child: Center(
                   child: Text(
-                      '${(widget._stock.tax! * 100).toStringAsPrecision(3)}%',
+                      '${(widget.stock.tax! * 100).toStringAsPrecision(3)}%',
                       style: TextStyle(fontSize: _regularTextSize))))
         ]),
         TableRow(children: <Widget>[
@@ -121,19 +121,19 @@ class _StockTradeCardState extends State<StockTradeCard> {
           Padding(
               padding: _edgeInsets,
               child: Center(
-                  child: Text(widget._stock.currency,
+                  child: Text(widget.stock.currency,
                       style: TextStyle(fontSize: _highlightTextSize)))),
           _tableRowAlertConfigured(
-              widget._stock.alertAbove!, _alertAboveFontWeight),
+              widget.stock.alertAbove!, _alertAboveFontWeight),
           _tableRowAlertConfigured(
-              widget._stock.alertBelow!, _alertBelowFontWeight),
+              widget.stock.alertBelow!, _alertBelowFontWeight),
         ]),
       ];
       _cardMainElements.add(Table(children: _tableRow));
-      if (details && widget._stock.notes.isNotEmpty) {
+      if (details && widget.stock.notes.isNotEmpty) {
         _cardMainElements.add(ListTile(
           title: Text(StockConstants.notes),
-          subtitle: Text(widget._stock.notes),
+          subtitle: Text(widget.stock.notes),
         ));
       }
     }
@@ -155,13 +155,13 @@ class _StockTradeCardState extends State<StockTradeCard> {
       Padding(padding: _edgeInsetsTitle, child: header);
 
   Widget _cardHeaderWidgetSymbolAndAlert() =>
-      widget._stock.alertAbove == 0 && widget._stock.alertBelow == 0
-          ? Text(widget._stock.symbol)
-          : widget._stock.hasToNotify
+      widget.stock.alertAbove == 0 && widget.stock.alertBelow == 0
+          ? Text(widget.stock.symbol)
+          : widget.stock.hasToNotify
               ? _cardHeaderRowSymbolAndAlert(
-                  widget._stock.symbol, Icons.notifications_on_rounded)
+                  widget.stock.symbol, Icons.notifications_on_rounded)
               : _cardHeaderRowSymbolAndAlert(
-                  widget._stock.symbol, Icons.notifications_off_rounded);
+                  widget.stock.symbol, Icons.notifications_off_rounded);
 
   Row _cardHeaderRowSymbolAndAlert(String symbol, IconData iconData) => Row(
       children: [Icon(iconData, size: _regularTextSize), Text(' ' + symbol)]);
@@ -193,31 +193,31 @@ class _StockTradeCardState extends State<StockTradeCard> {
                   style: TextStyle(fontSize: 20, fontWeight: fontWeight))));
 
   void _setProfitColors() {
-    if (widget._stock.price < widget._stock.purchasePrice!) {
+    if (widget.stock.price < widget.stock.purchasePrice!) {
       _stockStatusColor = Colors.red[600];
       _stockStatusColorLight = Colors.red[400];
     }
-    if (widget._stock.price > widget._stock.purchasePrice!) {
+    if (widget.stock.price > widget.stock.purchasePrice!) {
       _stockStatusColor = Colors.green[600];
       _stockStatusColorLight = Colors.green[400];
     }
   }
 
   void _setAlertColors() {
-    if (widget._stock.alertBelow != 0 &&
-        widget._stock.price <= widget._stock.alertBelow!) {
+    if (widget.stock.alertBelow != 0 &&
+        widget.stock.price <= widget.stock.alertBelow!) {
       _alertCardColor = Colors.red.shade300;
       _alertBelowFontWeight = FontWeight.bold;
     }
-    if (widget._stock.alertAbove != 0 &&
-        widget._stock.price >= widget._stock.alertAbove!) {
+    if (widget.stock.alertAbove != 0 &&
+        widget.stock.price >= widget.stock.alertAbove!) {
       _alertCardColor = Colors.green.shade300;
       _alertAboveFontWeight = FontWeight.bold;
     }
   }
 
   void _setErrorColors() {
-    if (widget._stock.price == 0) {
+    if (widget.stock.price == 0) {
       _alertCardColor = Colors.deepOrange[800];
     }
   }

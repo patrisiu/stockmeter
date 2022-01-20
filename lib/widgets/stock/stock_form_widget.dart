@@ -54,7 +54,7 @@ class _StockFormWidgetState extends State<StockFormWidget> {
               labelText: StockConstants.stocks),
           validator: (String? value) => _stocksValidator(value)),
       GestureDetector(
-          onTap: () => _tradeInfo ? null : _handleOnTapSelectDate(context),
+          onTap: () => _tradeInfo ? _handleOnTapSelectDate(context) : null,
           child: AbsorbPointer(
               child: TextFormField(
                   key: UniqueKey(),
