@@ -7,14 +7,14 @@ import 'package:stockmeter/widgets/charts/trend_chart.dart';
 import 'package:url_launcher/url_launcher.dart' as launcher;
 
 class TrendChartCard extends StatelessWidget {
-  const TrendChartCard({Key? key, required this.title, required this.data})
+  const TrendChartCard({Key? key, required this.symbol, required this.data})
       : super(key: key);
 
   static const EdgeInsets _edgeInsetsTitle = EdgeInsets.fromLTRB(4, 4, 4, 0);
   static const String _googleFinanceQuote =
       'https://www.google.com/finance/quote/';
 
-  final String title;
+  final String symbol;
   final List<Trend> data;
 
   @override
@@ -22,16 +22,23 @@ class TrendChartCard extends StatelessWidget {
       builder: (context, child, model) => _buildTrendChartCard(model.stocks));
 
   Widget _buildTrendChartCard(List<Stock> stocks) => GestureDetector(
-      onLongPress: () => _launchURL(_googleFinanceSymbol(title.toUpperCase())),
+      onLongPress: () => _launchURL(_googleFinanceSymbol(symbol)),
       child: Card(
           child: ListBody(children: <Widget>[
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          _cardHeader(Text(title.toUpperCase())),
+          _cardHeader(_cardTitle(symbol)),
           _cardHeader(_lastPriceCompared(
-              data, stocks.firstWhere((stock) => stock.symbol == title)))
+              data, stocks.firstWhere((stock) => stock.symbol == symbol)))
         ]),
         TrendChart(data: data, animate: true)
       ])));
+
+  Text _cardTitle(String symbol) {
+    List<String> symbolParts = symbol.split(':');
+    return symbolParts[0] == 'CURRENCY' || symbolParts[0].contains('INDEX')
+        ? Text(symbolParts[0])
+        : Text(symbol);
+  }
 
   Padding _cardHeader(Widget header) =>
       Padding(padding: TrendChartCard._edgeInsetsTitle, child: header);
@@ -87,9 +94,14 @@ class TrendChartCard extends StatelessWidget {
 
   Text _textSeparator() => Text(' ');
 
-  String _googleFinanceSymbol(String title) {
-    List<String> quote = title.split(':');
-    return _googleFinanceQuote + quote[1] + ':' + quote[0];
+  String _googleFinanceSymbol(String symbol) {
+    List<String> quote = symbol.split(':');
+    return quote[0] == 'CURRENCY'
+        ? _googleFinanceQuote +
+            quote[1].substring(0, 3) +
+            '-' +
+            quote[1].substring(3)
+        : _googleFinanceQuote + quote[1] + ':' + quote[0];
   }
 
   void _launchURL(String url) async => await launcher.canLaunch(url)

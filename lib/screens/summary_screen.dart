@@ -23,10 +23,9 @@ class SummaryScreen extends StatelessWidget {
           isStockFileMissing: model.stockFile == null && model.createFileOption,
           isStocksEmpty: model.stocks.isEmpty,
           foregroundController: _foregroundController,
-          widgetToDisplay:
-              ListView(children: _buildSummaryScreen(model.stocks))));
+          widgetToDisplay: _buildSummaryScreen(model.stocks)));
 
-  List<Widget> _buildSummaryScreen(List<Stock> stocks) {
+  Widget _buildSummaryScreen(List<Stock> stocks) {
     final List<Stock> tradingStocks =
         stocks.where((stock) => stock.stocks! > 0).toList();
     final Set<String> currencies =
@@ -34,15 +33,11 @@ class SummaryScreen extends StatelessWidget {
     final List<Summary> summaries = currencies
         .map((currency) => createCurrencySummary(currency, tradingStocks))
         .toList();
-    final List<Widget> result = summaries
-        .map((summary) => SummaryCard(summary))
-        .map((summaryCard) => Container(child: summaryCard))
-        .toList();
-    result.add(Container(
-        child: SummaryGainChartCard(
-            data: _gainChartData(tradingStocks),
-            title: StockConstants.netGain)));
-    return result;
+    List<Widget> result = [];
+    result.addAll(summaries.map((summary) => SummaryCard(summary)).toList());
+    result.add(SummaryGainChartCard(
+        data: _gainChartData(tradingStocks), title: StockConstants.netGain));
+    return ListView(children: result);
   }
 
   List<GainChartModel> _gainChartData(List<Stock> stocks) => stocks

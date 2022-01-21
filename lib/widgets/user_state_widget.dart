@@ -94,10 +94,12 @@ class UserStateWidget extends StatelessWidget {
   void _generateExamples() async {
     await foregroundController
         .createStock(_generateNasdaqGoog())
+        .whenComplete(() async => await foregroundController
+            .createStock(_generateIndexEuroBelTwenty()))
         .whenComplete(() async =>
             await foregroundController.createStock(_generateCurrencyBtcEur()))
-        .whenComplete(() async => await foregroundController
-            .createStock(_generateCurrencyBelTwenty()))
+        .whenComplete(() async =>
+            await foregroundController.createStock(_generateCurrencyEurYen()))
         .whenComplete(() => foregroundController.fetchStocks());
   }
 
@@ -127,6 +129,19 @@ class UserStateWidget extends StatelessWidget {
       'Bitcoin to Euro',
       0);
 
-  StockDAO _generateCurrencyBelTwenty() => StockDAO('INDEXEURO:BEL20',
+  StockDAO _generateIndexEuroBelTwenty() => StockDAO('INDEXEURO:BEL20',
       '03/01/2020', '0', '0', '0', '0', '0', '4202.13', false, 'BEL 20', 0);
+
+  StockDAO _generateCurrencyEurYen() => StockDAO(
+      'CURRENCY:EURJPY',
+      '01/01/2022',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      '0',
+      false,
+      'Euro to Japanese yen',
+      0);
 }

@@ -91,7 +91,7 @@ class StockDAO {
 
   String _currency(String symbol, int rowIndex) {
     List<String> symbolParts = symbol.split(':');
-    return symbolParts[0] == 'CURRENCY' || symbolParts[0] == 'INDEXEURO'
+    return symbolParts[0] == 'CURRENCY' || symbolParts[0].contains('INDEX')
         ? symbolParts[1]
         : '=IFERROR(GOOGLEFINANCE(A$rowIndex;\\"currency\\");\\"$_errorValue\\")';
   }

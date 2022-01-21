@@ -16,6 +16,9 @@ class _TrendsScreenState extends State<TrendsScreen> {
   final ForegroundController _foregroundController =
       GetIt.instance<ForegroundController>();
 
+  static const _chartLongPressTipDisclaimer =
+      'Press and hold on any chart to navigate to full-time evolution.';
+
   @override
   void initState() {
     super.initState();
@@ -31,17 +34,25 @@ class _TrendsScreenState extends State<TrendsScreen> {
           foregroundController: _foregroundController,
           widgetToDisplay: _buildTrendsScreen(model.trends)));
 
-  Widget _buildTrendsScreen(Map<String, List<Trend>> trends) =>
-      RefreshIndicator(
-          onRefresh: () async => await _foregroundController
-              .fetchStocks()
-              .whenComplete(() => load()),
-          child: ListView(
-              children: trends.entries
-                  .map((trend) => TrendChartCard(
-                      key: UniqueKey(), title: trend.key, data: trend.value))
-                  .toList(),
-              physics: const AlwaysScrollableScrollPhysics()));
+  Widget _buildTrendsScreen(Map<String, List<Trend>> trends) {
+    List<Widget> _children = [];
+    _children.addAll(trends.entries
+        .map((trend) => TrendChartCard(
+            key: UniqueKey(), symbol: trend.key, data: trend.value))
+        .toList());
+    _children.add(_chartLongPressTip(_chartLongPressTipDisclaimer));
+    return RefreshIndicator(
+        onRefresh: () async => await _foregroundController
+            .fetchStocks()
+            .whenComplete(() => load()),
+        child: ListView(
+            children: _children,
+            physics: const AlwaysScrollableScrollPhysics()));
+  }
+
+  Widget _chartLongPressTip(String text) => Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(text, textAlign: TextAlign.center, textScaleFactor: 0.8));
 
   Future<void> load() async => await _foregroundController.lazyLoadTrends();
 }

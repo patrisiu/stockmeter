@@ -152,12 +152,13 @@ class ForegroundController {
       await _dataController
           .copySheetFile(await _getAuthHeaders(), _appModel.stockFile!.id)
           .then((sheetId) async {
-        StockFile stockFile = new StockFile(sheetId);
-        _appModel.stockFiles.add(stockFile);
-        updateSelectedSpreadsheetId = stockFile;
-        setStockFileName('Copy of $currentStockFileName');
-        await _refreshAuthHeaders();
-      });
+            StockFile stockFile = new StockFile(sheetId);
+            _appModel.stockFiles.add(stockFile);
+            updateSelectedSpreadsheetId = stockFile;
+            setStockFileName('Copy of $currentStockFileName');
+          })
+          .whenComplete(() async => await _refreshAuthHeaders())
+          .whenComplete(() async => await fetchStocks());
     } on Exception catch (e) {
       _appModel.createFileOption = _appModel.stockFile == null;
       ForegroundNotification().error(context, e.toString());
