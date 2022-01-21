@@ -62,7 +62,7 @@ class _StockMeterAppState extends State<StockMeterApp>
             await _foregroundController.initialize(
                 _appModel, _sharedPreferences, _backgroundController);
             yield 'Signing in to Google...';
-            if (await _foregroundController.signInSilentlyAndLoadHugs()) {
+            if (await _foregroundController.signInSilently()) {
               yield 'Fetching Stocks...';
               await _foregroundController.fetchStocks();
             }

@@ -6,6 +6,8 @@ class SheetData {
   static final String _sheetStocks = 'stocks';
 
   String create() => '{"properties":{'
+      '"locale":"en_GB",'
+      '"autoRecalc":"ON_CHANGE",'
       '"title":"$_fileTitle"},'
       '"sheets":[${_data()}]}';
 

@@ -38,26 +38,29 @@ class ForegroundController {
     _analytics = FirebaseAnalytics.instance;
   }
 
-  Future<bool> signInSilentlyAndLoadHugs() async {
-    _appModel.user = await _googleAuthService.signInSilently();
-    if (_appModel.isUserSigned) {
-      _appModel.notificationCheck =
-          _sharedPreferences.getString(StockConstants.notificationCheck) ??
-              StockConstants.notificationCheckDisabled;
-      await _initSignedUser();
-      return true;
-    } else {
-      return false;
-    }
-  }
+  Future<bool> signInSilently() async =>
+      await _googleAuthService.signInSilently().then((user) async {
+        if (user != null) {
+          _appModel.notificationCheck =
+              _sharedPreferences.getString(StockConstants.notificationCheck) ??
+                  StockConstants.notificationCheckDisabled;
+          await _initSignedUser().whenComplete(() => _appModel.user = user);
+          return true;
+        } else {
+          return false;
+        }
+      });
 
   Future<void> signIn() async {
     try {
-      _appModel.user = await _googleAuthService.signIn();
-      if (_appModel.isUserSigned) {
-        await _initSignedUser();
-        fetchStocks();
-      }
+      await _googleAuthService.signIn().then((user) async {
+        if (user != null) {
+          await _initSignedUser().whenComplete(() {
+            _appModel.user = user;
+            fetchStocks();
+          });
+        }
+      });
     } on FirebaseAuthException catch (e) {
       ForegroundNotification().error(context, e.toString());
     }

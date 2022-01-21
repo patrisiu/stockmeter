@@ -20,7 +20,8 @@ class SummaryScreen extends StatelessWidget {
   Widget build(BuildContext context) => ScopedModelDescendant<AppModel>(
       builder: (context, child, model) => UserStateWidget(
           isUserSigned: model.isUserSigned,
-          isStockFileMissing: model.stockFile == null && model.createFileOption,
+          isStockFileMissing: model.stockFile == null,
+          isCreateFileOptionReady: model.createFileOption,
           isStocksEmpty: model.stocks.isEmpty,
           foregroundController: _foregroundController,
           widgetToDisplay: _buildSummaryScreen(model.stocks)));
