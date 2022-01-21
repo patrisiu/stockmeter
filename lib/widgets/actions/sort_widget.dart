@@ -15,7 +15,7 @@ class SortWidget extends StatelessWidget {
       builder: (context, child, model) => _sortWidget(context, model));
 
   _sortWidget(BuildContext context, AppModel model) =>
-      _validScreen(model.currentScreen)
+      model.stockFile != null && _validScreen(model.currentScreen)
           ? _sortButtonWidget(context)
           : Container();
 

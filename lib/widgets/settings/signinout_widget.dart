@@ -6,7 +6,7 @@ import 'package:stockmeter/models/app_model.dart';
 import 'package:stockmeter/widgets/stock_elevated_button.dart';
 
 class SignInOutWidget extends StatelessWidget {
-  final ForegroundController foregroundController =
+  final ForegroundController _foregroundController =
       GetIt.instance<ForegroundController>();
 
   @override
@@ -20,12 +20,12 @@ class SignInOutWidget extends StatelessWidget {
       subtitle: const Text('Required a Google Account'),
       trailing: StockElevatedButton(
           child: const Text('SIGN IN'),
-          onPressed: foregroundController.signIn));
+          onPressed: _foregroundController.signIn));
 
   Widget _buildSignOutWidget(String email) => ListTile(
       title: const Text("Sign Out"),
       subtitle: Text('Signed as $email'),
       trailing: StockElevatedButton(
           child: const Text('SIGN OUT'),
-          onPressed: foregroundController.signOut));
+          onPressed: _foregroundController.signOut));
 }

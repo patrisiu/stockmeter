@@ -78,7 +78,7 @@ class StockDAO {
       '"=C$rowIndex*L$rowIndex", '
       '"=IF(D$rowIndex,L$rowIndex/D$rowIndex-1,0)", '
       '"=M$rowIndex-K$rowIndex", '
-      '"=IF(O$rowIndex>0,O$rowIndex-O$rowIndex*G$rowIndex-F$rowIndex,O$rowIndex)", '
+      '"=IF(O$rowIndex>0,O$rowIndex-O$rowIndex*F$rowIndex-E$rowIndex,O$rowIndex)", '
       '"=IF(C$rowIndex,TODAY()-B$rowIndex,0)", '
       '"=IF(Q$rowIndex,O$rowIndex/Q$rowIndex,0)", '
       '"=IF(Q$rowIndex,P$rowIndex/Q$rowIndex,0)", '
