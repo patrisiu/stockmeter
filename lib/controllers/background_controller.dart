@@ -157,12 +157,11 @@ class BackgroundController {
 
   Future<List<Stock>> _getStocksToNotifyWithRetry(
       Map<String, String> authHeaders,
-      String spreadsheetId,
+      String sheetId,
       int retry,
       SharedPreferences sharedPreferences) async {
     try {
-      List<Stock> stocks =
-          await _fetchStocksToNotify(authHeaders, spreadsheetId);
+      List<Stock> stocks = await _fetchStocksToNotify(authHeaders, sheetId);
       _debug(
           sharedPreferences, ['getStocksToNotifyWithRetry', 'retry: $retry']);
       return stocks;
@@ -170,7 +169,7 @@ class BackgroundController {
       if (retry < _maxRetries) {
         await Future<void>.delayed(Duration(seconds: ++retry));
         return _getStocksToNotifyWithRetry(
-            authHeaders, spreadsheetId, retry, sharedPreferences);
+            authHeaders, sheetId, retry, sharedPreferences);
       } else {
         _debug(sharedPreferences,
             ['getStocksToNotifyWithRetry', 'retry: $retry', e.toString()]);

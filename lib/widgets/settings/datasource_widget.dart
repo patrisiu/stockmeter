@@ -89,9 +89,7 @@ class DataSourceWidget extends StatelessWidget {
           enabled: model.stockFiles.length > 1,
           title: const Text('Select another Stock File'),
           subtitle: Text(_stockNotificationOnlyOnSelectedFile),
-          trailing: StockElevatedButton(
-              onPressed: () => _selectStockFileMenu(context, model.stockFiles),
-              child: Icon(Icons.find_in_page_rounded))),
+          trailing: _selectStockFileMenuButton(context, model)),
       Divider(thickness: 1),
       ListTile(
           title: const Text('Copy the Stock File'),
@@ -113,8 +111,14 @@ class DataSourceWidget extends StatelessWidget {
         builder: (BuildContext context) => ListView(children: _children));
   }
 
-  Text? _stockFileName(String? positionFileName) =>
-      positionFileName == null ? null : Text(positionFileName);
+  Text? _stockFileName(String? stocksFileName) =>
+      stocksFileName == null ? null : Text(stocksFileName);
+
+  StockElevatedButton _selectStockFileMenuButton(
+          BuildContext context, AppModel model) =>
+      StockElevatedButton(
+          onPressed: () => _selectStockFileMenu(context, model.stockFiles),
+          child: Icon(Icons.find_in_page_rounded));
 
   Future<void> _selectStockFile(
       BuildContext context, StockFile stockFile) async {

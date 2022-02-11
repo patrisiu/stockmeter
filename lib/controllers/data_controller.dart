@@ -24,7 +24,7 @@ class DataController {
   Future<String> copySheetFile(
           Map<String, String> authHeaders, String sheetId) async =>
       _mapDriveId(
-          await _googleSheetsService.copyDriveFile(authHeaders, sheetId));
+          await _googleSheetsService.copySheetFile(authHeaders, sheetId));
 
   Future<List<String>> getSheetIds(Map<String, String> authHeaders) async {
     String response = await _googleDriveService.getDriveFiles(authHeaders);

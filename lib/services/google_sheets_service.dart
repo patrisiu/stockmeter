@@ -26,7 +26,7 @@ class GoogleSheetsService {
     return response.body;
   }
 
-  Future<String> copyDriveFile(
+  Future<String> copySheetFile(
       Map<String, String> authHeaders, String sheetId) async {
     String data = '{"mimeType": "$_mimeType", "name": "$_fileName"}';
     authHeaders.addAll(_applicationJsonHeaders);

@@ -11,31 +11,31 @@ class UserStateWidget extends StatelessWidget {
   const UserStateWidget(
       {Key? key,
       required this.isUserSigned,
-      required this.isStockFileMissing,
+      required this.hasDatasource,
+      required this.hasData,
       required this.isCreateFileOptionReady,
-      required this.isStocksEmpty,
-      required this.widgetToDisplay,
-      required this.foregroundController})
+      required this.widget,
+      required this.controller})
       : super(key: key);
 
   final bool isUserSigned;
-  final bool isStockFileMissing;
+  final bool hasDatasource;
+  final bool hasData;
   final bool isCreateFileOptionReady;
-  final bool isStocksEmpty;
-  final Widget widgetToDisplay;
+  final Widget widget;
 
-  final ForegroundController foregroundController;
+  final ForegroundController controller;
 
   @override
   Widget build(BuildContext context) => isUserSigned
-      ? isStockFileMissing && isCreateFileOptionReady
+      ? !hasDatasource && isCreateFileOptionReady
           ? _createPortfolioFile()
-          : isStockFileMissing
-              ? _loadingFile()
-              : isStocksEmpty
-                  ? ListView(
+          : hasDatasource
+              ? hasData
+                  ? widget
+                  : ListView(
                       children: [_introToStocks(), _generateStockExamples()])
-                  : widgetToDisplay
+              : _loadingFile()
       : ListView(children: _elementsWhenSignOut());
 
   List<Widget> _elementsWhenSignOut() {
@@ -47,7 +47,7 @@ class UserStateWidget extends StatelessWidget {
   Widget _loginWithAccount() => Card(
       child: ListTile(
           enabled: !isUserSigned,
-          title: const Text('Required a Google Account'),
+          title: const Text('Google Account required'),
           subtitle: const Text(
               'StockMeter uses Google Sheets to store and calculate the financial data. '
               'Because of this, it is required a Google Account and granted access to Google Drive. '
@@ -56,17 +56,16 @@ class UserStateWidget extends StatelessWidget {
           trailing: isUserSigned
               ? null
               : StockElevatedButton(
-                  child: const Text('SIGN IN'),
-                  onPressed: foregroundController.signIn)));
+                  child: const Text('SIGN IN'), onPressed: controller.signIn)));
 
   Widget _createPortfolioFile() => Card(
       child: ListTile(
-          enabled: isStockFileMissing,
+          enabled: hasDatasource,
           title: const Text('Create a Portfolio!'),
           subtitle: const Text(
               'Create the first Stock File to start adding your financial data '
               'or configure price alerts.'),
-          trailing: isStockFileMissing ? CreateFileButtonWidget() : null));
+          trailing: hasDatasource ? CreateFileButtonWidget() : null));
 
   Widget _introToStocks() => Card(
       child: ListTile(
@@ -87,8 +86,8 @@ class UserStateWidget extends StatelessWidget {
               'with different Exchange Codes to see how it works.'),
           trailing: Container(
               height: double.infinity,
-              child: GenerateExamplesButton(
-                  foregroundController: foregroundController))));
+              child:
+                  GenerateExamplesButton(foregroundController: controller))));
 
   Widget _loadingFile() => Padding(
       padding: const EdgeInsets.all(8.0),

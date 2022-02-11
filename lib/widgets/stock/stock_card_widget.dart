@@ -12,9 +12,10 @@ class StockCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-      onLongPress: () => _onLongPress(context, stock), child: _child(stock));
+      onLongPress: () => _onLongPress(context, stock),
+      child: _stockCard(stock));
 
-  Widget _child(Stock stock) => stock.price == 0
+  Widget _stockCard(Stock stock) => stock.price == 0
       ? StockWarningWidget(stock: stock)
       : stock.stocks == 0
           ? StockAlertCard(key: UniqueKey(), stock: stock)

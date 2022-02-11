@@ -17,7 +17,7 @@ class SignInOutWidget extends StatelessWidget {
 
   Widget _buildSignInWidget() => ListTile(
       title: const Text("Sign In"),
-      subtitle: const Text('Required a Google Account'),
+      subtitle: const Text('Google Account required'),
       trailing: StockElevatedButton(
           child: const Text('SIGN IN'),
           onPressed: _foregroundController.signIn));

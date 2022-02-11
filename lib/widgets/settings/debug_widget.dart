@@ -5,6 +5,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:stockmeter/configurations/constants.dart';
 import 'package:stockmeter/controllers/foreground_controller.dart';
 import 'package:stockmeter/models/app_model.dart';
+import 'package:stockmeter/secrets/secrets.dart';
 
 class DebugWidget extends StatefulWidget {
   @override
@@ -29,7 +30,7 @@ class _DebugWidgetState extends State<DebugWidget> {
       builder: (context, child, model) => _displayIfValidUser(context, model));
 
   Widget _displayIfValidUser(BuildContext context, AppModel model) =>
-      model.isUserSigned && _validUserEmail(model.user)
+      model.isUserSigned && _isTestUser(model.user)
           ? _buildDebugWidget(context, model.debugNotification)
           : Container();
 
@@ -54,7 +55,5 @@ class _DebugWidgetState extends State<DebugWidget> {
   void _handleOnChanged(bool value) =>
       _foregroundController.debugHugNotification = value;
 
-  bool _validUserEmail(User? user) =>
-      user?.email == 'patrisiu@gmail.com' ||
-      user?.email == 'jonathanpro20@gmail.com';
+  bool _isTestUser(User? user) => Secrets.testUsers.contains(user?.email);
 }

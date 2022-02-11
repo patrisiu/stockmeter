@@ -55,10 +55,8 @@ class ForegroundController {
     try {
       await _googleAuthService.signIn().then((user) async {
         if (user != null) {
-          await _initSignedUser().whenComplete(() {
-            _appModel.user = user;
-            fetchStocks();
-          });
+          _appModel.user = user;
+          await _initSignedUser().whenComplete(() async => await fetchStocks());
         }
       });
     } on FirebaseAuthException catch (e) {

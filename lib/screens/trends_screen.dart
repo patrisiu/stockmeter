@@ -29,11 +29,11 @@ class _TrendsScreenState extends State<TrendsScreen> {
   Widget build(BuildContext context) => ScopedModelDescendant<AppModel>(
       builder: (context, child, model) => UserStateWidget(
           isUserSigned: model.isUserSigned,
-          isStockFileMissing: model.stockFile == null,
+          hasDatasource: model.stockFile != null,
+          hasData: model.stocks.isNotEmpty,
           isCreateFileOptionReady: model.createFileOption,
-          isStocksEmpty: model.stocks.isEmpty,
-          foregroundController: _foregroundController,
-          widgetToDisplay: _buildTrendsScreen(model.trends)));
+          controller: _foregroundController,
+          widget: _buildTrendsScreen(model.trends)));
 
   Widget _buildTrendsScreen(Map<String, List<Trend>> trends) {
     List<Widget> _children = [];
