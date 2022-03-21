@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:stockmeter/configurations/constants.dart';
 import 'package:stockmeter/models/app_model.dart';
+import 'package:stockmeter/notifications/foreground_notification.dart';
 import 'package:url_launcher/url_launcher.dart' as launcher;
 
 class DeviceNotificationConstrain extends StatelessWidget {
@@ -26,11 +29,11 @@ class DeviceNotificationConstrain extends StatelessWidget {
           _buildDeviceConstrain(context, _isEnabled(model.notificationCheck)));
 
   _buildDeviceConstrain(BuildContext context, bool isEnabled) => ListTile(
-      enabled: !kIsWeb && isEnabled,
+      enabled: !kIsWeb && Platform.isAndroid && isEnabled,
       title: const Text('Device Notification Constrain'),
       subtitle: Text(_deviceNotificationConstrain(isEnabled)),
       trailing: Icon(Icons.app_settings_alt_rounded, size: 40),
-      onTap: () => _launchURL(_dontKillMyAppURL),
+      onTap: () => _launchURL(context, _dontKillMyAppURL),
       onLongPress: AppSettings.openAppSettings);
 
   bool _isEnabled(String notificationCheck) =>
@@ -40,7 +43,8 @@ class DeviceNotificationConstrain extends StatelessWidget {
       ? _deviceNotificationDisclaimer + _pressHere
       : _deviceNotificationDisclaimer;
 
-  void _launchURL(String url) async => await launcher.canLaunch(url)
-      ? await launcher.launch(url)
-      : throw 'Could not launch $url';
+  void _launchURL(BuildContext context, String url) async =>
+      await launcher.canLaunch(url)
+          ? await launcher.launch(url)
+          : ForegroundNotification().error(context, 'Could not launch $url');
 }

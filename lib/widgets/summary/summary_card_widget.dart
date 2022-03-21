@@ -87,11 +87,10 @@ class _SummaryCardState extends State<SummaryCard> {
                   TextStyle(color: _summaryStatusColor, fontSize: fontSize))));
 
   void _selectSummaryValueTextColor() {
-    if (widget._summary.latentProfit! < 0) {
+    if (widget._summary.netCapitalGain! < 0) {
       _summaryStatusColor = Colors.red[600];
       _summaryStatusColorLight = Colors.red[400];
-    }
-    if (widget._summary.latentProfit! > 0) {
+    } else if (widget._summary.netCapitalGain! > 0) {
       _summaryStatusColor = Colors.green[600];
       _summaryStatusColorLight = Colors.green[400];
     }

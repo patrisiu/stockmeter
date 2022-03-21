@@ -193,11 +193,10 @@ class _StockTradeCardState extends State<StockTradeCard> {
                   style: TextStyle(fontSize: 20, fontWeight: fontWeight))));
 
   void _setProfitColors() {
-    if (widget.stock.price < widget.stock.purchasePrice!) {
+    if (widget.stock.netCapitalGain < 0) {
       _stockStatusColor = Colors.red[600];
       _stockStatusColorLight = Colors.red[400];
-    }
-    if (widget.stock.price > widget.stock.purchasePrice!) {
+    } else if (widget.stock.netCapitalGain > 0) {
       _stockStatusColor = Colors.green[600];
       _stockStatusColorLight = Colors.green[400];
     }

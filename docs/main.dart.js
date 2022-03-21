@@ -84540,7 +84540,7 @@ $S:0}
 A.CZ.prototype={
 am(){return new A.Gx(new A.ax(2,0,2,2),new A.ax(4,4,4,4),B.j)}}
 A.Gx.prototype={
-aV(){var s,r,q=this,p="price"
+aV(){var s,r,q=this,p="price",o="netCapitalGain"
 q.bf()
 s=q.a.c
 if(s.y!==0){s=A.a(s.ch,p)
@@ -84560,14 +84560,8 @@ s=r}else s=!1
 if(s){s=B.bE.i(0,300)
 s.toString
 q.z=s
-q.Q=B.be}s=A.a(q.a.c.ch,p)
-r=q.a.c.d
-r.toString
-if(s<r){q.x=B.b6.i(0,600)
-q.y=B.b6.i(0,400)}s=A.a(q.a.c.ch,p)
-r=q.a.c.d
-r.toString
-if(s>r){q.x=B.bE.i(0,600)
+q.Q=B.be}if(A.a(q.a.c.dx,o)<0){q.x=B.b6.i(0,600)
+q.y=B.b6.i(0,400)}else if(A.a(q.a.c.dx,o)>0){q.x=B.bE.i(0,600)
 q.y=B.bE.i(0,400)}if(A.a(q.a.c.ch,p)===0)q.z=B.IW.i(0,800)},
 E(a,b){var s,r,q,p,o,n,m,l,k,j,i,h=this,g=null,f="symbol",e=h.a.c
 if(e.x===0&&e.y===0)e=A.aB(A.a(e.a,f),g,g,g,g,g,g,g)
@@ -84629,12 +84623,10 @@ return new A.Cb(new A.xN(q,p,new A.VN(r,r,1/0,56),r),s.d,s.f,new A.Pk(r),r)}}
 A.o_.prototype={
 am(){return new A.Xo(B.j)}}
 A.Xo.prototype={
-E(a,b){var s,r,q,p,o,n,m,l=this,k=null,j=l.a.c.e
+E(a,b){var s,r,q,p,o,n,m,l=this,k=null,j=l.a.c.r
 j.toString
 if(j<0){l.d=B.b6.i(0,600)
-l.e=B.b6.i(0,400)}j=l.a.c.e
-j.toString
-if(j>0){l.d=B.bE.i(0,600)
+l.e=B.b6.i(0,400)}else if(j>0){l.d=B.bE.i(0,600)
 l.e=B.bE.i(0,400)}j=l.a.c.a
 j.toString
 s=t.p
