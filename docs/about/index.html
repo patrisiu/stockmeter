@@ -2,9 +2,110 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockMeter | Track Stocks with private price alerts</title>
+    <meta name="description"
+          content="Track Stocks, Mutual Funds & Indexes with private price alerts synced to your Google Drive.">
+    <meta name="keywords"
+          content="Stocks, Mutual Funds, Indexes, Alerts, price alerts">
+    <link rel="icon" type="image/png" href="../favicon.png"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #0097A7; /* Main color */
+        }
+        h2 {
+            color: #0097A7;
+            border-bottom: 1px solid #0097A7;
+            padding-bottom: 5px;
+            margin-top: 20px;
+        }
+        p {
+            line-height: 1.6;
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+    </style>
 </head>
 <body>
+<div class="container">
+    <h1>StockMeter</h1>
+    <p>Track Stocks, Mutual Funds & Indexes with private price alerts synced to your Google Drive.</p>
+
+    <h2>About</h2>
+    <p><strong>StockMeter</strong> is a Flutter project developed for educational and research purposes. It serves as a
+        personal monitoring tool for tracking <strong>Stock Exchanges, Mutual Funds, and Global Market Indexes</strong>
+        using the Google Finance ecosystem.</p>
+    <p>The project explores the integration of mobile applications with private cloud backends to feature:</p>
+    <ul>
+        <li><strong>Live Market Observation:</strong> Real-time tracking of equities and fund NAVs.</li>
+        <li><strong>Customizable Notifications:</strong> Threshold-based alerts for price movements.</li>
+        <li><strong>Trading Simulations:</strong> A sandbox environment to test strategies using historical and current
+            data.
+        </li>
+    </ul>
+    <p>StockMeter is built with a <strong>Zero-Knowledge Architecture</strong>, ensuring that your financial
+        intelligence remains entirely under your control.</p>
+
+    <h2 class="privacy-policy" id="privacy-policy">Privacy Policy (Data Sovereignty)</h2>
+    <p>To ensure maximum privacy, StockMeter utilizes your personal <strong>Google Drive</strong> as its primary
+        database rather than a third-party server.</p>
+    <ul>
+        <li><strong>Private Storage:</strong> All portfolio data and calculations are stored in <strong>Google
+            Sheets</strong> within your own account.
+        </li>
+        <li><strong>Scoped Permissions:</strong> A Google Account is required. StockMeter requests permission to access
+            <em>only</em> the specific files it creates.
+        </li>
+        <li><strong>No Tracking:</strong> The application does not collect personal data, nor does it access any files
+            beyond the strictly required Google Sheets. Your strategy is invisible to everyone—including the developers.
+        </li>
+    </ul>
+
+
+    <h2 id="terms-of-service">Terms of Service (Disclaimer)</h2>
+    <p>This application is provided for <strong>informational purposes only</strong>, not for trading advice or active
+        execution.</p>
+    <ul>
+        <li><strong>Data Latency:</strong> Market information is provided by Google Finance and may be delayed by
+            <strong>up to 20 minutes</strong>. Please refer to the <a
+                    href="https://www.google.com/googlefinance/disclaimer/">Google Finance Disclaimer</a> for details.
+        </li>
+        <li><strong>Alert Timing:</strong> Notifications may experience additional delays based on your device's
+            periodic background check configuration.
+        </li>
+        <li><strong>Investment Risk:</strong> StockMeter is a learning tool. The developers are not responsible for any
+            financial decisions or losses incurred. Always consult a professional for trading advice.
+        </li>
+    </ul>
+
+    <!-- StockMeter Icon -->
+    <div class="icon">
+        <img src="../icons/Icon-512.png" alt="StockMeter Icon"
+             style="display: block; margin: 0 auto; width: 100px; height: auto;">
+    </div>
+</div>
+
+<div style="text-align: center; margin-top: 30px; font-size: 0.9em; color: #666;">
+    <p>Last modified: January 21, 2026</p>
+    <p>&copy; 2026 patrisiu.com. All rights reserved.</p>
+</div>
 
 </body>
 </html>
