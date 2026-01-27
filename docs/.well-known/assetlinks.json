@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.patrisiu.stockmeter",
+      "sha256_cert_fingerprints": [
+        "BC:72:48:D1:55:5F:B9:22:16:27:F8:C4:59:62:0A:EC:BB:5B:CF:36:15:7D:14:5B:5A:2E:C6:15:0A:06:F4:E7"
+      ]
+    }
+  }
+]
