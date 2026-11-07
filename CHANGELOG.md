@@ -5,11 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.0.0] - 2026-11-07
 
-### Wishlist
+### Added
 
-- Review app style and design standards.
+- New range of configurable alerts.
+
+### Changed
+
+- Alerts triggered according to Security values.
+- New spreadsheet structure.
+- Stock feature disabled.
+- Refactor to be Security oriented.
+
+### Removed
+
+- Unneeded foreground service permission.
+
+## [1.2.1] - 2026-10-31
+
+### Added
+
+- ProGuard rule to preserve WorkDatabase_Impl and prevent WorkManager startup crash.
+
+### Changed
+
+- Updated compileSdkVersion from 33 to 35 in build.gradle.
+- Applied Kotlin plugin & set JVM target for workmanager_android in build.gradle.kts.
+- Gradle update from 8.14.3 to 9.8.1.
+- Migration to package:material_ui.
 
 ## [1.2.0] - 2026-03-17
 
