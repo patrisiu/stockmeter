@@ -5,7 +5,115 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - 2026-11-07
+## [2.6.1] - 2026-11-17
+
+### Added
+
+- Updated version disclaimer to easier user experience.
+
+## [2.5.0] - 2026-11-15
+
+### Added
+
+- Trends sorting functionality.
+- Analytics on alerts behavior to monitor failures.
+
+### Fixed
+
+- Race condition when loading services before load Portfolio.
+
+## [2.4.1] - 2026-11-15
+
+### Added
+
+- Async backup alerts configuration.
+- Cache on Securities to smoother user experience on startup.
+
+### Changed
+
+- Visual colors for better user experience.
+- Restored Summary view displayed in a modal.
+- Restored Stocks portfolio.
+
+### Fixed
+
+- Prioritize load Alert from Datasource to handle cross devices.
+
+## [2.3.1] - 2026-11-13
+
+### Added
+
+- Detailed learning explanation for each alert.
+- Display formula result per alert.
+- Sorting by name.
+
+## [2.3.0] - 2026-11-12
+
+### Added
+
+- Navigation between screens sliding right or left using PageView.
+- Dynamic screen title and visual indicator dots in AppBar.
+
+### Changed
+
+- Replaced BottomNavigationBar with horizontal swipe gesture navigation.
+
+## [2.2.0] - 2026-11-12
+
+### Added
+
+- Google Finance disclaimer on securities screen.
+
+### Changed
+
+- Restored partially Stocks portfolio.
+
+### Fixed
+
+- Sort Securities by price or alerts triggered.
+
+## [2.1.1] - 2026-11-09
+
+### Added
+
+- Sort Securities by price or alerts triggered.
+
+### Fixed
+
+- Security notes input.
+
+## [2.1.0] - 2026-11-08
+
+### Added
+
+- Possibility to record personal notes associated to a Security.
+- Functionality to remove a Security on watch.
+
+## [2.0.3] - 2026-11-08
+
+### Changed
+
+- Added alerts backup in all CrUD operations.
+
+### Fixed
+
+- Preventing scaffold from overlapping OS buttons.
+
+## [2.0.2] - 2026-11-07
+
+### Changed
+
+- Updated background notifications.
+- Updated compileSdkVersion from 35 to 37 in build.gradle.
+- Updated AI model to Gemini 3.8 Flash.
+- Upgraded Firebase dependencies.
+
+### Fixed
+
+- Enabled extend Body Behind AppBar.
+- Reload alerts from selected portfolio.
+
+## [2.0.1] - 2026-11-07
 
 ### Added
 
